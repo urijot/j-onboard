@@ -331,7 +331,7 @@ const deadlineBadge = (deadline) => {
   if (!deadline) return null;
   const map = {
     legal:    { cls: "text-red-700 bg-red-50 border-red-200",     icon: "⚖️", label: `Legal obligation${deadline.days ? ` — within ${deadline.days} days` : ""}` },
-    financial:{ cls: "text-orange-700 bg-orange-50 border-orange-200", icon: "💸", label: "Enroll ASAP — late = backdated fees" },
+    financial:{ cls: "text-orange-700 bg-orange-50 border-orange-200", icon: "💸", label: "Enroll same day as 転入届 — delays mean retroactive premiums" },
     advisory: { cls: "text-slate-600 bg-slate-50 border-slate-200",  icon: "📅", label: deadline.note || "No strict deadline" },
   };
   const cfg = map[deadline.type];
