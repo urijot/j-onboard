@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+# J-Onboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+来日する交換留学生・客員研究者向けの、来日直前から来日後1ヶ月間の手続きをガイドするWebアプリです。役割（留学生／研究者）、滞在期間、住居状況などを入力すると、それに応じたセットアップ・ロードマップ（フェーズ別のタスクリスト）を自動生成します。
 
-## Available Scripts
+🔗 デプロイ先: [https://j-onboard.vercel.app/](https://j-onboard.vercel.app/)
 
-In the project directory, you can run:
+## 主な機能
+
+- **プロフィール入力フォーム**：役割、滞在期間、住居状況、ビザ種別、アルバイト・TA予定などを入力
+- **フェーズ別ロードマップ**：
+  - 来日前（Certificate of Eligibility、ビザ申請など）
+  - 来日当日・空港（在留カード受け取り、資格外活動許可など）
+  - 14日以内・役所での手続き（転入届、国民健康保険、国民年金など）
+  - 生活・大学関連のセットアップ
+- 各タスクには「必要書類」「窓口で使える案内文（日本語＋英訳）」「参考情報源」などを表示
+- 期限の種類（法的義務／金銭的不利益／推奨）に応じたバッジ表示
+- 日本語・英語の切り替えに対応
+- 入力データはこの端末のみに保存（アカウント不要）
+
+## 技術スタック
+
+- [React](https://react.dev/)（Create React App）
+- [Tailwind CSS](https://tailwindcss.com/)
+- [lucide-react](https://lucide.dev/)（アイコン）
+
+## セットアップ
+
+```bash
+npm install
+```
+
+## 利用可能なコマンド
+
+プロジェクトディレクトリで以下のコマンドを実行できます。
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+開発モードでアプリを起動します。\
+ブラウザで [http://localhost:3000](http://localhost:3000) を開いて確認してください。
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+ファイルを編集して保存すると、自動的にリロードされます。
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+テストランナーをインタラクティブなウォッチモードで起動します。
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+本番用にアプリを `build` フォルダへビルドします。React が最適化されたビルドを作成し、ファイル名にハッシュが付与されます。
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**注意：これは一方向の操作です。一度 `eject` すると元に戻せません。**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+ビルド設定（webpack、Babel、ESLintなど）をすべて自分のプロジェクト配下に展開し、完全にコントロールできるようにします。通常のプロジェクトでは不要な操作です。
