@@ -68,7 +68,7 @@ const T = {
     housingTemp: "住居未確定（ホテル・Airbnb滞在中、または探し中）",
     visaLabel: "ビザ種別（客員研究者のみ）",
     visaProfessor: "教授 — 大学での研究・教育活動",
-    visaResearcher: "研究 — 政府機関・民間企業等での研究活動",
+    visaResearcher: "研究 — 国内の公的機関・民間企業等での研究活動",
     visaCultural: "文化活動 — 収入を伴わない学術上の活動",
     visaUnknown: "わからない — ビザを確認します",
     workLabel: "アルバイト・TA予定",
