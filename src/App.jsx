@@ -365,7 +365,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
 
   // 完了したら閉じる。次のアクションになったら自動的に開き、外れたら自動的に閉じる
   useEffect(() => { if (checked) setOpen(false); }, [checked]);
-  useEffect(() => { setOpen(isNext && !checked); }, [isNext]);
+  useEffect(() => { setOpen(isNext && !checked); }, [isNext, checked]);
 
   // REQUIRED依存が未完了のものを探す
   const unmetDeps = (task.deps || [])
