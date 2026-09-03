@@ -474,6 +474,7 @@ export default function JOnboard() {
     try {
       const s = localStorage.getItem("jonboard_checked"); if (s) setChecked(JSON.parse(s));
       const p = localStorage.getItem("jonboard_profile"); if (p) setProfile(JSON.parse(p));
+      const st = localStorage.getItem("jonboard_step"); if (st === "roadmap") setStep("roadmap");
     } catch {}
   }, []);
 
@@ -484,8 +485,16 @@ export default function JOnboard() {
   };
 
   const handleGenerate = () => {
-    try { localStorage.setItem("jonboard_profile", JSON.stringify(profile)); } catch {}
+    try {
+      localStorage.setItem("jonboard_profile", JSON.stringify(profile));
+      localStorage.setItem("jonboard_step", "roadmap");
+    } catch {}
     setStep("roadmap");
+  };
+
+  const goToForm = () => {
+    try { localStorage.setItem("jonboard_step", "form"); } catch {}
+    setStep("form");
   };
 
   const phases = buildPhases(profile, lang);
@@ -509,7 +518,7 @@ export default function JOnboard() {
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-            <button onClick={() => setStep("form")} className="flex items-center gap-2.5 hover:opacity-70 transition-opacity cursor-pointer group">
+            <button onClick={goToForm} className="flex items-center gap-2.5 hover:opacity-70 transition-opacity cursor-pointer group">
               <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm">
                 <BadgeCheck size={16} className="text-white" />
               </div>
@@ -687,7 +696,7 @@ export default function JOnboard() {
                     )}
                   </div>
                 </div>
-                <button onClick={() => setStep("form")} className="text-xs text-indigo-500 hover:text-indigo-700 font-semibold whitespace-nowrap flex-shrink-0">
+                <button onClick={goToForm} className="text-xs text-indigo-500 hover:text-indigo-700 font-semibold whitespace-nowrap flex-shrink-0">
                   {t.editBtn}
                 </button>
               </div>
