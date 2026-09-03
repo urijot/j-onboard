@@ -48,6 +48,8 @@ const T = {
     appScopeNote: "This app guides you through procedures from just before arrival through your first month in Japan. If you just received your acceptance letter, bookmark this page and come back closer to your departure date.",
     arrivalLabel: "Arrival Date",
     arrivalHint: "Optional — enter once your flight is confirmed. Due dates for each task will be calculated automatically.",
+    nextActionLabel: "Do This Next",
+    nextBadge: "→ Next",
   },
   ja: {
     subtitle: "日本での生活を、スムーズにスタート",
@@ -91,6 +93,8 @@ const T = {
     appScopeNote: "このアプリは来日直前から来日後1ヶ月間の手続きをサポートします。合格通知を受け取ったばかりの方は、このページをブックマークして渡航日が近づいてからご利用ください。",
     arrivalLabel: "来日日",
     arrivalHint: "任意入力 — フライトが確定したら入力してください。各タスクの期限が自動計算されます。",
+    nextActionLabel: "次にやること",
+    nextBadge: "→ 次にやる",
   },
 };
 
@@ -351,9 +355,13 @@ const depBadge = (deps) => {
   return null;
 };
 
-function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, allTasks }) {
-  const [open, setOpen] = useState(false);
+function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, allTasks, isNext }) {
+  const [open, setOpen] = useState(isNext);
   const [modal, setModal] = useState(false);
+
+  // 完了したら閉じる。次のアクションになったら自動的に開き、外れたら自動的に閉じる
+  useEffect(() => { if (checked) setOpen(false); }, [checked]);
+  useEffect(() => { setOpen(isNext && !checked); }, [isNext]);
 
   // REQUIRED依存が未完了のものを探す
   const unmetDeps = (task.deps || [])
@@ -364,8 +372,9 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
   return (
     <>
       {modal && <CounterModal text={task.counter} translation={task.counterTranslation} onClose={() => setModal(false)} />}
-      <div className={`rounded-xl border transition-all duration-200 ${
-        task.highlight ? "border-amber-300 bg-amber-50/40" : "border-slate-200 bg-white"
+      <div id={task.id} className={`rounded-xl border scroll-mt-20 transition-all duration-200 ${
+        isNext ? "border-indigo-300 ring-2 ring-indigo-100 bg-indigo-50/30"
+          : task.highlight ? "border-amber-300 bg-amber-50/40" : "border-slate-200 bg-white"
       } ${checked ? "opacity-60" : ""}`}>
         <div className="flex items-start gap-3 p-4">
           <button onClick={() => !isLocked && onToggle(task.id)}
@@ -384,6 +393,11 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
               </button>
             </div>
             <div className="flex flex-wrap gap-1.5 mt-1.5">
+              {isNext && !checked && (
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-indigo-700 bg-indigo-100 border border-indigo-200 rounded-full px-2 py-0.5">
+                  {t.nextBadge}
+                </span>
+              )}
               {task.deadline && deadlineBadge(task.deadline)}
               {dueDate && (
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded-full px-2 py-0.5">
@@ -503,6 +517,16 @@ export default function JOnboard() {
   const pct = allIds.length ? Math.round((doneCount / allIds.length) * 100) : 0;
   const isShort = profile.duration === "short";
   const isTemp = profile.housing === "temp";
+
+  // 未完了・ロック解除済み・依存タスク完了済みの中で最初のタスク＝次にやるべきアクション
+  const nextTask = phases
+    .filter(p => !(p.lockedIfTemp && isTemp))
+    .flatMap(p => p.tasks)
+    .find(tk => {
+      if (checked[tk.id]) return false;
+      const unmetDeps = (tk.deps || []).filter(d => d.type === "REQUIRED" && !checked[d.taskId]);
+      return unmetDeps.length === 0;
+    });
 
   const visaLabels = { professor: "教授ビザ", researcher: "研究ビザ", cultural: "文化活動ビザ", unknown: "ビザ種別未確認" };
 
@@ -729,6 +753,19 @@ export default function JOnboard() {
               </div>
             )}
 
+            {/* 次にやるべきアクション */}
+            {nextTask && (
+              <a href={`#${nextTask.id}`} className="flex items-start gap-3 bg-indigo-600 hover:bg-indigo-700 transition-colors rounded-2xl p-5 shadow-sm text-white">
+                <div className="flex-shrink-0 w-9 h-9 bg-white/15 rounded-xl flex items-center justify-center">
+                  <ArrowRight size={16} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold uppercase tracking-widest text-indigo-200 mb-1">{t.nextActionLabel}</p>
+                  <p className="text-base font-semibold leading-snug">{nextTask.title}</p>
+                </div>
+              </a>
+            )}
+
             {/* Phases */}
             {phases.map((phase, pi) => {
               const c = phaseColors[phase.color];
@@ -782,7 +819,8 @@ export default function JOnboard() {
                       return (
                         <TaskCard key={task.id} task={task} checked={!!checked[task.id]}
                           onToggle={handleToggle} t={t} isLocked={locked} dueDate={dueDate}
-                          checkedIds={checked} allTasks={phases.flatMap(p => p.tasks)} />
+                          checkedIds={checked} allTasks={phases.flatMap(p => p.tasks)}
+                          isNext={task.id === nextTask?.id} />
                       );
                     })}
                   </div>
