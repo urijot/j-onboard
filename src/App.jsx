@@ -12,6 +12,7 @@ const T = {
     roleLabel: "Your Role",
     roleStudent: "Exchange Student",
     roleResearcher: "Visiting Researcher",
+    roleHint: "Built for exchange students and visiting researchers. In a different situation (e.g. family dependent, degree-seeking student)? Most steps still apply — just skip the visa-specific guidance.",
     durationLabel: "Stay Duration",
     dur1: "Under 90 Days",
     dur2: "90 Days – Under 1 Year",
@@ -57,6 +58,7 @@ const T = {
     roleLabel: "役割",
     roleStudent: "交換留学生",
     roleResearcher: "客員研究者",
+    roleHint: "本アプリは交換留学生・客員研究者を想定しています。それ以外の方（家族滞在者・正規留学生など）でも大半の手続きは参考になります。ビザ関連の案内のみ読み飛ばしてください。",
     durationLabel: "滞在期間",
     dur1: "90日未満",
     dur2: "90日〜1年未満",
@@ -609,6 +611,7 @@ export default function JOnboard() {
                     </button>
                   ))}
                 </div>
+                <p className="text-xs text-slate-400 mt-2 leading-relaxed">{t.roleHint}</p>
               </div>
 
               {/* Visa Type — researcher only */}
