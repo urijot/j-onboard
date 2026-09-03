@@ -27,6 +27,7 @@ const T = {
     visaUnknown: "Not sure — I'll check my visa",
     workLabel: "Work / Part-time Plan",
     workCheck: "I plan to work part-time or as a TA (資格外活動許可)",
+    workCheckResearcher: "I plan paid activity outside my contracted research/teaching duties (e.g. translation, external lectures)",
     workResearcherNote: "Your visa type (教授/研究) already permits work within your contracted activities. If you plan activities outside your contract (e.g. translation, external lectures), individual permission may be required — check with your university or immigration office.",
     workCulturalNote: "文化活動 visa does not permit paid work. Any paid activity requires individual 資格外活動許可 — consult your university's international office before taking on any paid work.",
     generate: "Generate My Setup Roadmap",
@@ -73,6 +74,7 @@ const T = {
     visaUnknown: "わからない — ビザを確認します",
     workLabel: "アルバイト・TA予定",
     workCheck: "アルバイトまたはTAを予定している（資格外活動許可申請）",
+    workCheckResearcher: "契約範囲外の有償活動を予定している（翻訳・学外講演等）",
     workResearcherNote: "教授・研究ビザは契約範囲内の活動が就労可です。契約外の活動（翻訳・学外講演等）は個別許可が必要な場合があります。大学または入管にご確認ください。",
     workCulturalNote: "文化活動ビザは有償活動が原則不可です。有償活動を行う場合は個別に資格外活動許可が必要です。大学の国際センターにご相談ください。",
     generate: "ロードマップを生成",
@@ -625,7 +627,7 @@ export default function JOnboard() {
                       ["cultural", t.visaCultural],
                       ["unknown", t.visaUnknown],
                     ].map(([v, label]) => (
-                      <button key={v} onClick={() => setProfile(p => ({ ...p, visaType: v }))}
+                      <button key={v} onClick={() => setProfile(p => ({ ...p, visaType: v, work: v === "unknown" ? false : p.work }))}
                         className={`text-left px-4 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${profile.visaType === v ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"}`}>
                         {label}
                       </button>
@@ -671,20 +673,31 @@ export default function JOnboard() {
                     </div>
                     <span className="text-sm text-slate-700 leading-snug">{t.workCheck}</span>
                   </label>
-                ) : profile.visaType === "cultural" ? (
-                  <div className="flex gap-2.5 bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-sm text-amber-800">
-                    <AlertTriangle size={15} className="flex-shrink-0 mt-0.5" />
-                    <span>{t.workCulturalNote}</span>
-                  </div>
                 ) : profile.visaType === "unknown" ? (
                   <div className="flex gap-2.5 bg-blue-50 border border-blue-200 rounded-xl p-3.5 text-sm text-blue-800">
                     <Info size={15} className="flex-shrink-0 mt-0.5" />
                     <span>Please check your visa type to understand your work eligibility. Your university's international office can help.</span>
                   </div>
                 ) : (
-                  <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm text-slate-700">
-                    <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
-                    <span>{t.workResearcherNote}</span>
+                  <div className="space-y-2.5">
+                    <label className="flex items-start gap-3 cursor-pointer group">
+                      <div onClick={() => setProfile(p => ({ ...p, work: !p.work }))}
+                        className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all ${profile.work ? "bg-indigo-600 border-indigo-600" : "border-slate-300 group-hover:border-indigo-400"}`}>
+                        {profile.work && <CheckCircle2 size={12} className="text-white" />}
+                      </div>
+                      <span className="text-sm text-slate-700 leading-snug">{t.workCheckResearcher}</span>
+                    </label>
+                    {profile.visaType === "cultural" ? (
+                      <div className="flex gap-2.5 bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-sm text-amber-800">
+                        <AlertTriangle size={15} className="flex-shrink-0 mt-0.5" />
+                        <span>{t.workCulturalNote}</span>
+                      </div>
+                    ) : (
+                      <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm text-slate-700">
+                        <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
+                        <span>{t.workResearcherNote}</span>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
