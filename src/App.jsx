@@ -9,24 +9,30 @@ const T = {
   en: {
     subtitle: "Setup Your Life in Japan Smoothly",
     formTitle: "Tell us about your situation",
-    roleLabel: "Your Role",
+    roleLabel: "Which best describes you?",
+    roleHint: "This decides which visa, pension, and housing steps apply to you below.",
     roleStudent: "Exchange Student",
     roleResearcher: "Visiting Researcher",
-    roleHint: "Built for exchange students and visiting researchers. In a different situation (e.g. family dependent, degree-seeking student)? Most steps still apply — just skip the visa-specific guidance.",
-    durationLabel: "Stay Duration",
+    roleOther: "Other / Not Sure",
+    otherRoleNote: "This checklist is built specifically for exchange students and visiting researchers — its visa, pension, and housing steps assume one of those two categories and won't be accurate for a different status. The most reliable next step: contact whoever sponsored your Certificate of Eligibility or visa — your host institution's international office, your employer's HR/immigration desk, or your family member's sponsoring organization. They already know your exact visa category and can point you to the right procedures.",
+    durationLabel: "How long will you be in Japan this time?",
+    durationHint: "Stays under 90 days skip municipal registration entirely — we'll adjust your checklist accordingly.",
     dur1: "Under 90 Days",
     dur2: "90 Days – Under 1 Year",
     dur3: "1 Year or More",
-    housingLabel: "Housing Status",
-    housingConfirmed: "Confirmed (Dorm / Rental / Host Family)",
-    housingTemp: "Not Yet Confirmed (Hotel / Airbnb / Still Searching)",
-    visaLabel: "Visa Type (Visiting Researchers only)",
+    housingLabel: "Do you already know where you'll live in Japan?",
+    housingHint: "This decides when you can register your address at City Hall — a legal requirement within 14 days of moving in.",
+    housingConfirmed: "Yes — dorm, rental, or host family arranged",
+    housingTemp: "Not yet — hotel/Airbnb for now, or still searching",
+    visaLabel: "Which visa type do you have? (Visiting Researchers only)",
+    visaHint: "Check your Certificate of Eligibility or Residence Card if you're unsure — your visa type determines what paid work you're allowed to do.",
     visaProfessor: "教授 (Professor) — research/teaching at a university, salaried",
     visaResearcher: "研究 (Researcher) — research at a Japanese public or private organization, salaried",
     visaCultural: "文化活動 (Cultural Activities) — academic or cultural activity, unpaid",
     visaUnknown: "Not sure — I'll check my visa",
-    workLabel: "Work / Part-time Plan",
-    workCheck: "I plan to work part-time or as a TA (資格外活動許可)",
+    workLabel: "Will you work or do any paid activity in Japan?",
+    workHint: "This decides whether you need to apply for a work permit (資格外活動許可) at immigration.",
+    workCheck: "Yes, I plan to work part-time or as a TA (資格外活動許可)",
     workCheckResearcher: "I plan paid activity outside my contracted research/teaching duties (e.g. translation, external lectures)",
     workResearcherNote: "Your visa type (教授/研究) already permits work within your contracted activities. If you plan activities outside your contract (e.g. translation, external lectures), individual permission may be required — check with your university or immigration office.",
     workCulturalNote: "文化活動 visa does not permit paid work. Any paid activity requires individual 資格外活動許可 — consult your university's international office before taking on any paid work.",
@@ -56,24 +62,30 @@ const T = {
   ja: {
     subtitle: "日本での生活を、スムーズにスタート",
     formTitle: "あなたの状況を教えてください",
-    roleLabel: "役割",
+    roleLabel: "あなたに当てはまるのは？",
+    roleHint: "この選択によって、以下で案内するビザ・年金・住居の手続き内容が決まります。",
     roleStudent: "交換留学生",
     roleResearcher: "客員研究者",
-    roleHint: "本アプリは交換留学生・客員研究者を想定しています。それ以外の方（家族滞在者・正規留学生など）でも大半の手続きは参考になります。ビザ関連の案内のみ読み飛ばしてください。",
-    durationLabel: "滞在期間",
+    roleOther: "その他・わからない",
+    otherRoleNote: "このチェックリストは交換留学生・客員研究者を前提に作られており、ビザ・年金・住居の手続きはこの2区分を想定した内容です。別の区分の方に正確な案内をするのは難しいため、まずは在留資格認定証明書やビザを発行してもらった窓口——受け入れ機関の国際担当部署、勤務先の人事・在留手続き窓口、またはご家族の受け入れ先機関——に確認するのが一番確実です。あなたの正確なビザ区分を把握しているのはその窓口だからです。",
+    durationLabel: "今回、日本にはどのくらい滞在しますか？",
+    durationHint: "90日未満の滞在では住民登録などの役所手続きが不要になります。回答に応じてチェックリストを調整します。",
     dur1: "90日未満",
     dur2: "90日〜1年未満",
     dur3: "1年以上",
-    housingLabel: "住居状況",
-    housingConfirmed: "確定済（寮・賃貸・ホームステイ）",
-    housingTemp: "住居未確定（ホテル・Airbnb滞在中、または探し中）",
-    visaLabel: "ビザ種別（客員研究者のみ）",
+    housingLabel: "日本での住まいはもう決まっていますか？",
+    housingHint: "この回答によって、住民登録（転入届、来日14日以内が義務）を今行えるかが決まります。",
+    housingConfirmed: "はい — 寮・賃貸・ホームステイ先が決まっています",
+    housingTemp: "まだです — ホテル/Airbnbなど仮住まい中、または探している最中です",
+    visaLabel: "どのビザ区分をお持ちですか？（客員研究者のみ）",
+    visaHint: "在留資格認定証明書や在留カードで確認できます。ビザ区分によって可能な有償活動の範囲が決まります。",
     visaProfessor: "教授 — 大学における研究・教育活動（有給）",
     visaResearcher: "研究 — 国内の公的機関・民間企業等における研究活動（有給）",
     visaCultural: "文化活動 — 学術・文化的活動（無給）",
     visaUnknown: "わからない — ビザを確認します",
-    workLabel: "アルバイト・TA予定",
-    workCheck: "アルバイトまたはTAを予定している（資格外活動許可申請）",
+    workLabel: "日本でアルバイトなど有償の活動をする予定はありますか？",
+    workHint: "資格外活動許可の申請が必要かどうかがこれで決まります。",
+    workCheck: "はい、アルバイトまたはTAを予定している（資格外活動許可申請）",
     workCheckResearcher: "契約範囲外の有償活動を予定している（翻訳・学外講演等）",
     workResearcherNote: "教授・研究ビザは契約範囲内の活動が就労可です。契約外の活動（翻訳・学外講演等）は個別許可が必要な場合があります。大学または入管にご確認ください。",
     workCulturalNote: "文化活動ビザは有償活動が原則不可です。有償活動を行う場合は個別に資格外活動許可が必要です。大学の国際センターにご相談ください。",
@@ -588,13 +600,13 @@ export default function JOnboard() {
               </div>
             </div>
 
-            {isShort && (
+            {isShort && profile.role !== "other" && (
               <div className="flex gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-800">
                 <Info size={15} className="flex-shrink-0 mt-0.5 text-blue-500" />
                 <span>{t.shortStayAlert}</span>
               </div>
             )}
-            {isTemp && (
+            {isTemp && profile.role !== "other" && (
               <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
                 <AlertTriangle size={15} className="flex-shrink-0 mt-0.5 text-amber-500" />
                 <span>{t.tempHousingAlert}</span>
@@ -604,22 +616,30 @@ export default function JOnboard() {
             <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-sm">
               {/* Role */}
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">{t.roleLabel}</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">{t.roleLabel}</label>
+                <p className="text-xs text-slate-400 mb-2.5">{t.roleHint}</p>
                 <div className="flex gap-2.5 flex-wrap">
-                  {[["student", t.roleStudent], ["researcher", t.roleResearcher]].map(([v, label]) => (
+                  {[["student", t.roleStudent], ["researcher", t.roleResearcher], ["other", t.roleOther]].map(([v, label]) => (
                     <button key={v} onClick={() => setProfile(p => ({ ...p, role: v, work: false }))}
                       className={`px-4 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${profile.role === v ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"}`}>
                       {label}
                     </button>
                   ))}
                 </div>
-                <p className="text-xs text-slate-400 mt-2 leading-relaxed">{t.roleHint}</p>
               </div>
+
+              {profile.role === "other" && (
+                <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm text-slate-700">
+                  <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
+                  <span>{t.otherRoleNote}</span>
+                </div>
+              )}
 
               {/* Visa Type — researcher only */}
               {profile.role === "researcher" && (
                 <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">{t.visaLabel}</label>
+                  <label className="block text-sm font-semibold text-slate-700 mb-1">{t.visaLabel}</label>
+                  <p className="text-xs text-slate-400 mb-2.5">{t.visaHint}</p>
                   <div className="flex flex-col gap-2">
                     {[
                       ["professor", t.visaProfessor],
@@ -636,9 +656,12 @@ export default function JOnboard() {
                 </div>
               )}
 
+              {profile.role !== "other" && (
+              <>
               {/* Duration */}
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">{t.durationLabel}</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">{t.durationLabel}</label>
+                <p className="text-xs text-slate-400 mb-2.5">{t.durationHint}</p>
                 <div className="flex gap-2.5 flex-wrap">
                   {[["short", t.dur1], ["mid", t.dur2], ["long", t.dur3]].map(([v, label]) => (
                     <button key={v} onClick={() => setProfile(p => ({ ...p, duration: v }))}
@@ -651,7 +674,8 @@ export default function JOnboard() {
 
               {/* Housing */}
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">{t.housingLabel}</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">{t.housingLabel}</label>
+                <p className="text-xs text-slate-400 mb-2.5">{t.housingHint}</p>
                 <div className="flex gap-2.5 flex-wrap">
                   {[["confirmed", t.housingConfirmed], ["temp", t.housingTemp]].map(([v, label]) => (
                     <button key={v} onClick={() => setProfile(p => ({ ...p, housing: v }))}
@@ -664,7 +688,8 @@ export default function JOnboard() {
 
               {/* Work */}
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">{t.workLabel}</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">{t.workLabel}</label>
+                <p className="text-xs text-slate-400 mb-2.5">{t.workHint}</p>
                 {profile.role === "student" ? (
                   <label className="flex items-start gap-3 cursor-pointer group">
                     <div onClick={() => setProfile(p => ({ ...p, work: !p.work }))}
@@ -715,6 +740,8 @@ export default function JOnboard() {
                 className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl px-6 py-3.5 transition-colors shadow-sm">
                 {t.generate} <ArrowRight size={16} />
               </button>
+              </>
+              )}
             </div>
           </>
         ) : (
