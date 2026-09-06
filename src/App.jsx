@@ -58,6 +58,8 @@ const T = {
     arrivalHint: "Optional — enter once your flight is confirmed. Due dates for each task will be calculated automatically.",
     nextActionLabel: "Do This Next",
     nextBadge: "→ Next",
+    selectVisaFirst: "Select your visa type above to see this question.",
+    incompleteHint: "Answer all questions above to continue.",
   },
   ja: {
     subtitle: "日本での生活を、スムーズにスタート",
@@ -111,6 +113,8 @@ const T = {
     arrivalHint: "任意入力 — フライトが確定したら入力してください。各タスクの期限が自動計算されます。",
     nextActionLabel: "次にやること",
     nextBadge: "→ 次にやる",
+    selectVisaFirst: "上記でビザ区分を選択すると、この質問が表示されます。",
+    incompleteHint: "上記の質問にすべて回答すると次に進めます。",
   },
 };
 
@@ -323,6 +327,11 @@ const phaseColors = {
   violet: { badge: "bg-violet-100 text-violet-700", dot: "bg-violet-500", ring: "ring-violet-200" },
 };
 
+function AnsweredMark({ answered }) {
+  if (!answered) return null;
+  return <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />;
+}
+
 function CounterModal({ text, translation, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
@@ -495,7 +504,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
 export default function JOnboard() {
   const [lang, setLang] = useState("en");
   const [step, setStep] = useState("form");
-  const [profile, setProfile] = useState({ role: "student", visaType: "professor", duration: "mid", housing: "confirmed", work: false, arrival: "" });
+  const [profile, setProfile] = useState({ role: null, visaType: null, duration: null, housing: null, work: false, arrival: "" });
   const [checked, setChecked] = useState({});
   const [langOpen, setLangOpen] = useState(false);
   const t = T[lang];
@@ -533,6 +542,7 @@ export default function JOnboard() {
   const pct = allIds.length ? Math.round((doneCount / allIds.length) * 100) : 0;
   const isShort = profile.duration === "short";
   const isTemp = profile.housing === "temp";
+  const isFormComplete = !!profile.duration && !!profile.housing && (profile.role !== "researcher" || !!profile.visaType);
 
   // 未完了・ロック解除済み・依存タスク完了済みの中で最初のタスク＝次にやるべきアクション
   const nextTask = phases
@@ -616,7 +626,9 @@ export default function JOnboard() {
             <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-sm">
               {/* Role */}
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">{t.roleLabel}</label>
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-1">
+                  {t.roleLabel} <AnsweredMark answered={!!profile.role} />
+                </label>
                 <p className="text-xs text-slate-400 mb-2.5">{t.roleHint}</p>
                 <div className="flex gap-2.5 flex-wrap">
                   {[["student", t.roleStudent], ["researcher", t.roleResearcher], ["other", t.roleOther]].map(([v, label]) => (
@@ -638,7 +650,9 @@ export default function JOnboard() {
               {/* Visa Type — researcher only */}
               {profile.role === "researcher" && (
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">{t.visaLabel}</label>
+                  <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-1">
+                    {t.visaLabel} <AnsweredMark answered={!!profile.visaType} />
+                  </label>
                   <p className="text-xs text-slate-400 mb-2.5">{t.visaHint}</p>
                   <div className="flex flex-col gap-2">
                     {[
@@ -656,11 +670,13 @@ export default function JOnboard() {
                 </div>
               )}
 
-              {profile.role !== "other" && (
+              {(profile.role === "student" || profile.role === "researcher") && (
               <>
               {/* Duration */}
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">{t.durationLabel}</label>
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-1">
+                  {t.durationLabel} <AnsweredMark answered={!!profile.duration} />
+                </label>
                 <p className="text-xs text-slate-400 mb-2.5">{t.durationHint}</p>
                 <div className="flex gap-2.5 flex-wrap">
                   {[["short", t.dur1], ["mid", t.dur2], ["long", t.dur3]].map(([v, label]) => (
@@ -674,7 +690,9 @@ export default function JOnboard() {
 
               {/* Housing */}
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">{t.housingLabel}</label>
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-1">
+                  {t.housingLabel} <AnsweredMark answered={!!profile.housing} />
+                </label>
                 <p className="text-xs text-slate-400 mb-2.5">{t.housingHint}</p>
                 <div className="flex gap-2.5 flex-wrap">
                   {[["confirmed", t.housingConfirmed], ["temp", t.housingTemp]].map(([v, label]) => (
@@ -698,6 +716,11 @@ export default function JOnboard() {
                     </div>
                     <span className="text-sm text-slate-700 leading-snug">{t.workCheck}</span>
                   </label>
+                ) : !profile.visaType ? (
+                  <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm text-slate-500">
+                    <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
+                    <span>{t.selectVisaFirst}</span>
+                  </div>
                 ) : profile.visaType === "unknown" ? (
                   <div className="flex gap-2.5 bg-blue-50 border border-blue-200 rounded-xl p-3.5 text-sm text-blue-800">
                     <Info size={15} className="flex-shrink-0 mt-0.5" />
@@ -736,10 +759,15 @@ export default function JOnboard() {
                 <p className="text-xs text-slate-400 mt-1.5">{t.arrivalHint}</p>
               </div>
 
-              <button onClick={handleGenerate}
-                className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl px-6 py-3.5 transition-colors shadow-sm">
+              <button onClick={handleGenerate} disabled={!isFormComplete}
+                className={`w-full flex items-center justify-center gap-2 font-semibold text-sm rounded-xl px-6 py-3.5 transition-colors shadow-sm ${
+                  isFormComplete ? "bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer" : "bg-slate-100 text-slate-400 cursor-not-allowed shadow-none"
+                }`}>
                 {t.generate} <ArrowRight size={16} />
               </button>
+              {!isFormComplete && (
+                <p className="text-xs text-center text-slate-400">{t.incompleteHint}</p>
+              )}
               </>
               )}
             </div>
