@@ -148,21 +148,6 @@ const buildPhases = (profile, lang) => {
       icon: <Plane size={15} />,
       tasks: [
         {
-          id: "cash", title: "Prepare Cash, Credit Cards / Debit Cards & Travel eSIM",
-          location: "Online / Your Home Country",
-          required: [
-            "International debit or credit card (Visa / Mastercard) — e.g. Wise, Revolut, or your home bank's debit card",
-            "JPY cash ~¥50,000 for first days",
-            "Travel eSIM (recommended) or prepaid physical SIM as backup",
-          ],
-          why: "Many Japanese ATMs reject foreign cards. Wise or Revolut cards work reliably at Japanese ATMs and convenience stores — set one up before departure. For eSIM: buy and install before leaving home, it activates the moment you land with no queuing. If your phone is not eSIM-compatible, prepaid physical SIM cards are available at airport counters (Narita/Haneda) but expect queues after long-haul flights.",
-          counter: "両替と海外クレジットカードを持参しました。現金とSIMカードの準備についてお聞きしたいです。",
-          counterTranslation: "I have brought foreign currency and an international card. I'd like to ask about cash exchange and SIM card options.",
-          deadline: null,
-          deps: [],
-          source: null,
-        },
-        {
           id: "coe", title: "Receive your Certificate of Eligibility (CoE) from your Host University in Japan",
           location: "Sent by your host university in Japan — delivered by international mail or email",
           required: [
@@ -192,6 +177,21 @@ const buildPhases = (profile, lang) => {
           deadline: null,
           deps: [{ taskId: "coe", type: "REQUIRED" }],
           source: { url: "https://www.mofa.go.jp/j_info/visit/visa/index.html", verified: "2026-08" },
+        },
+        {
+          id: "cash", title: "Prepare Cash, Credit Cards / Debit Cards & Travel eSIM",
+          location: "Online / Your Home Country",
+          required: [
+            "International debit or credit card (Visa / Mastercard) — e.g. Wise, Revolut, or your home bank's debit card",
+            "JPY cash ~¥50,000 for first days",
+            "Travel eSIM (recommended) or prepaid physical SIM as backup",
+          ],
+          why: "Many Japanese ATMs reject foreign cards. Wise or Revolut cards work reliably at Japanese ATMs and convenience stores — set one up before departure. For eSIM: buy and install before leaving home, it activates the moment you land with no queuing. If your phone is not eSIM-compatible, prepaid physical SIM cards are available at airport counters (Narita/Haneda) but expect queues after long-haul flights.",
+          counter: "両替と海外クレジットカードを持参しました。現金とSIMカードの準備についてお聞きしたいです。",
+          counterTranslation: "I have brought foreign currency and an international card. I'd like to ask about cash exchange and SIM card options.",
+          deadline: null,
+          deps: [],
+          source: null,
         },
       ],
     },
