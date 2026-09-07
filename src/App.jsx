@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
   CheckCircle2, Circle, ChevronDown, ChevronUp,
   AlertTriangle, Info, Globe, ArrowRight, Clock, Building2,
-  Plane, MapPin, Shield, X, FileText, BadgeCheck, Lock
+  Plane, MapPin, Shield, X, FileText, BadgeCheck, Lock, ExternalLink
 } from "lucide-react";
 
 const T = {
@@ -53,7 +53,23 @@ const T = {
     close: "Close",
     editBtn: "← Edit Answers",
     noAccount: "No account needed · Your data stays on this device only",
-    appScopeNote: "This app guides you through procedures from just before arrival through your first month in Japan. If you just received your acceptance letter, bookmark this page and come back closer to your departure date.",
+    appScopeNote: "This app covers the procedures from about 2 weeks before your departure through your first month in Japan — think of it as a guideline, not a deadline. Just got your acceptance letter? The paperwork can wait, but it's never too early to think about housing — see the guide below.",
+    reassuranceNote: "Not sure about an answer below? That's fine — answer what you know now, you can always update it later.",
+    housingGuideToggle: "Didn't get into the dorm — or still deciding where to live?",
+    housingGuideIntro: "Before starting a full apartment search, it's worth knowing that furnished monthly/share-house services aimed at foreign residents exist — Sakura House and Oakhouse are two well-known examples. They typically offer:",
+    housingGuideFeatures: [
+      "No guarantor or guarantor company required",
+      "No key money, deposit, or agent fees",
+      "Furniture, appliances, Wi-Fi, and utilities bundled into the rent — no separate contracts with electric/gas/water companies",
+      "Contracts completed online before you even arrive in Japan",
+      "Multilingual staff support",
+    ],
+    housingGuideLinks: [
+      { name: "Sakura House", url: "https://www.sakura-house.com/" },
+      { name: "Oakhouse", url: "https://www.oakhouse.jp/eng" },
+    ],
+    housingGuideMiddle: "In short, they let you skip most of the friction of a standard Japanese lease — finding a guarantor, gathering upfront costs, and setting up utilities one by one. A common approach: use one of these for your first few months while you settle in, then move to a standard rental once you're comfortable navigating things locally.",
+    housingGuideCostNote: "Monthly rent tends to run higher than a standard lease, though — if you're staying a year or more and want to minimize cost, it's also worth asking your university's international office about standard rental options.",
     arrivalLabel: "Arrival Date",
     arrivalHint: "Optional — enter once your flight is confirmed. Due dates for each task will be calculated automatically.",
     nextActionLabel: "Do This Next",
@@ -108,7 +124,23 @@ const T = {
     close: "閉じる",
     editBtn: "← 入力に戻る",
     noAccount: "アカウント不要・データはこの端末のみに保存",
-    appScopeNote: "このアプリは来日直前から来日後1ヶ月間の手続きをサポートします。合格通知を受け取ったばかりの方は、このページをブックマークして渡航日が近づいてからご利用ください。",
+    appScopeNote: "行政手続きは出発の2週間前から来日後1ヶ月の間を目安に進めれば大丈夫です（あくまで目安なので、多少前後しても問題ありません）。合格通知を受け取ったばかりの方も、手続きはまだ先で大丈夫ですが、住まい探しだけは今日から考え始めても早すぎません — 下のガイドをご覧ください。",
+    reassuranceNote: "この先の質問、わからないものがあってもOKです。今わかる範囲で答えれば大丈夫。あとから編集できます。",
+    housingGuideToggle: "寮に入れなかった？まだ住まいを決めていない方へ",
+    housingGuideIntro: "寮の抽選に落ちた、あるいはまだ住まいが決まっていない——そんなときにまず検討する価値があるのが「外国人向けマンスリー・シェアハウス」です。代表的なところでSakura House、Oakhouseなどがあり、共通して次のような特徴があります。",
+    housingGuideFeatures: [
+      "保証人・保証会社が不要",
+      "敷金・礼金・仲介手数料がかからない",
+      "家具・家電・Wi-Fi・光熱費が家賃に込み（電力会社やガス会社に自分で連絡する必要がない）",
+      "来日前にオンラインで契約・予約が完結する",
+      "多言語対応のスタッフがいる",
+    ],
+    housingGuideLinks: [
+      { name: "Sakura House", url: "https://www.sakura-house.com/jp/" },
+      { name: "Oakhouse", url: "https://www.oakhouse.jp/" },
+    ],
+    housingGuideMiddle: "つまり、通常の賃貸で発生する「保証人探し」「初期費用の準備」「電気・ガス・水道の個別契約」を、まとめて省ける選択肢です。慣れない土地で一つずつ手続きするのが不安なら、最初の数ヶ月だけこうしたサービスを使い、生活に慣れてから通常の賃貸に移る、という進め方もできます。",
+    housingGuideCostNote: "ただし月額はやや割高になりがちなので、1年以上の長期滞在で費用を抑えたい場合は、大学の国際担当窓口に相談しながら通常の賃貸も検討するとよいでしょう。",
     arrivalLabel: "来日日",
     arrivalHint: "任意入力 — フライトが確定したら入力してください。各タスクの期限が自動計算されます。",
     nextActionLabel: "次にやること",
@@ -507,6 +539,7 @@ export default function JOnboard() {
   const [profile, setProfile] = useState({ role: null, visaType: null, duration: null, housing: null, work: false, arrival: "" });
   const [checked, setChecked] = useState({});
   const [langOpen, setLangOpen] = useState(false);
+  const [housingGuideOpen, setHousingGuideOpen] = useState(false);
   const t = T[lang];
 
   useEffect(() => {
@@ -606,8 +639,38 @@ export default function JOnboard() {
               <p className="text-sm text-slate-400 mt-1">{t.noAccount}</p>
               <div className="flex gap-2.5 bg-indigo-50 border border-indigo-200 rounded-xl p-3.5 mt-3 text-sm text-indigo-800">
                 <Info size={15} className="flex-shrink-0 mt-0.5 text-indigo-400" />
-                <span>{t.appScopeNote}</span>
+                <div className="space-y-1.5">
+                  <p>{t.appScopeNote}</p>
+                  <p className="text-indigo-700/70">{t.reassuranceNote}</p>
+                </div>
               </div>
+
+              <button onClick={() => setHousingGuideOpen(o => !o)}
+                className="w-full flex items-center justify-between gap-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-xl px-4 py-3 mt-2.5 hover:border-indigo-300 transition-colors">
+                <span className="flex items-center gap-2">
+                  <Building2 size={15} className="text-indigo-400 flex-shrink-0" />
+                  {t.housingGuideToggle}
+                </span>
+                {housingGuideOpen ? <ChevronUp size={16} className="flex-shrink-0" /> : <ChevronDown size={16} className="flex-shrink-0" />}
+              </button>
+              {housingGuideOpen && (
+                <div className="bg-white border border-slate-200 rounded-xl p-4 mt-2 text-sm text-slate-700 space-y-3 leading-relaxed">
+                  <p>{t.housingGuideIntro}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {t.housingGuideLinks.map(l => (
+                      <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 bg-indigo-50 border border-indigo-200 rounded-full px-3 py-1 hover:bg-indigo-100 transition-colors">
+                        {l.name} <ExternalLink size={10} />
+                      </a>
+                    ))}
+                  </div>
+                  <ul className="list-disc pl-5 space-y-1">
+                    {t.housingGuideFeatures.map((f, i) => <li key={i}>{f}</li>)}
+                  </ul>
+                  <p>{t.housingGuideMiddle}</p>
+                  <p className="text-slate-500 text-xs">{t.housingGuideCostNote}</p>
+                </div>
+              )}
             </div>
 
             {isTemp && profile.role !== "other" && (
