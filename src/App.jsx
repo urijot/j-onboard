@@ -24,18 +24,20 @@ const T = {
     housingHint: "This decides when you can register your address at City Hall — a legal requirement within 14 days of moving in.",
     housingConfirmed: "Yes — dorm, rental, or host family arranged",
     housingTemp: "Not yet — hotel/Airbnb for now, or still searching",
-    visaLabel: "Which visa type do you have? (Visiting Researchers only)",
-    visaHint: "Check your Certificate of Eligibility or Residence Card if you're unsure — your visa type determines what paid work you're allowed to do.",
+    visaLabel: "What is your status of residence? (Visiting Researchers only)",
+    visaHint: "Check your Certificate of Eligibility or Residence Card if you're unsure. This is your status of residence (在留資格) — not the visa stamp in your passport — and it determines what paid work you're allowed to do.",
     visaProfessor: "教授 (Professor) — research/teaching at a university, salaried",
     visaResearcher: "研究 (Researcher) — research at a Japanese public or private organization, salaried",
     visaCultural: "文化活動 (Cultural Activities) — academic or cultural activity, unpaid",
-    visaUnknown: "Not sure — I'll check my visa",
+    visaTemporary: "短期滞在 (Temporary Visitor) — short academic visit (days to ~90 days), no salary paid in Japan",
+    visaUnknown: "Not sure — I'll check my status of residence",
     workLabel: "Will you work or do any paid activity in Japan?",
     workHint: "This decides whether you need to apply for a work permit (資格外活動許可) at immigration.",
     workCheck: "Yes, I plan to work part-time or as a TA (資格外活動許可)",
     workCheckResearcher: "I plan paid activity outside my contracted research/teaching duties (e.g. translation, external lectures)",
-    workResearcherNote: "Your visa type (教授/研究) already permits work within your contracted activities. If you plan activities outside your contract (e.g. translation, external lectures), individual permission may be required — check with your university or immigration office.",
-    workCulturalNote: "文化活動 visa does not permit paid work. Any paid activity requires individual 資格外活動許可 — consult your university's international office before taking on any paid work.",
+    workResearcherNote: "Your status of residence (教授/研究) already permits work within your contracted activities. If you plan activities outside your contract (e.g. translation, external lectures), individual permission may be required — check with your university or immigration office.",
+    workCulturalNote: "文化活動 status does not permit paid work. Any paid activity requires individual 資格外活動許可 — consult your university's international office before taking on any paid work.",
+    workTemporaryNote: "短期滞在 status does not permit any paid work, and — unlike 文化活動 — you cannot apply for permission (資格外活動許可) to work while on this status. If you're receiving a salary or honorarium in Japan, this may be the wrong status — check with your host institution.",
     generate: "Generate My Setup Roadmap",
     shortStayAlert: "Short stays (3 months or less) don't require municipal registration. Please prepare travel insurance and an eSIM before departure.",
     tempHousingAlert: "You cannot register your residence at a hotel or temporary address. Come back to City Hall once your permanent address is confirmed.",
@@ -74,7 +76,7 @@ const T = {
     arrivalHint: "Optional — enter once your flight is confirmed. Due dates for each task will be calculated automatically.",
     nextActionLabel: "Do This Next",
     nextBadge: "→ Next",
-    selectVisaFirst: "Select your visa type above to see this question.",
+    selectVisaFirst: "Select your status of residence above to see this question.",
     incompleteHint: "Answer all questions above to continue.",
   },
   ja: {
@@ -95,18 +97,20 @@ const T = {
     housingHint: "この回答によって、住民登録（転入届、来日14日以内が義務）を今行えるかが決まります。",
     housingConfirmed: "はい — 寮・賃貸・ホームステイ先が決まっています",
     housingTemp: "まだです — ホテル/Airbnbなど仮住まい中、または探している最中です",
-    visaLabel: "どのビザ区分をお持ちですか？（客員研究者のみ）",
-    visaHint: "在留資格認定証明書や在留カードで確認できます。ビザ区分によって可能な有償活動の範囲が決まります。",
+    visaLabel: "どの在留資格をお持ちですか？（客員研究者のみ）",
+    visaHint: "在留資格認定証明書や在留カードで確認できます。ここでいう「在留資格」はパスポートに貼付される査証（ビザ）とは別のもので、日本国内で行える有償活動の範囲を決めるのはこの在留資格です。",
     visaProfessor: "教授 — 大学における研究・教育活動（有給）",
     visaResearcher: "研究 — 国内の公的機関・民間企業等における研究活動（有給）",
     visaCultural: "文化活動 — 学術・文化的活動（無給）",
-    visaUnknown: "わからない — ビザを確認します",
+    visaTemporary: "短期滞在 — 数日〜90日程度の学術交流等（日本国内からの報酬なし）",
+    visaUnknown: "わからない — 在留資格を確認します",
     workLabel: "日本でアルバイトなど有償の活動をする予定はありますか？",
     workHint: "資格外活動許可の申請が必要かどうかがこれで決まります。",
     workCheck: "はい、アルバイトまたはTAを予定している（資格外活動許可申請）",
     workCheckResearcher: "契約範囲外の有償活動を予定している（翻訳・学外講演等）",
-    workResearcherNote: "教授・研究ビザは契約範囲内の活動が就労可です。契約外の活動（翻訳・学外講演等）は個別許可が必要な場合があります。大学または入管にご確認ください。",
-    workCulturalNote: "文化活動ビザは有償活動が原則不可です。有償活動を行う場合は個別に資格外活動許可が必要です。大学の国際センターにご相談ください。",
+    workResearcherNote: "教授・研究の在留資格は契約範囲内の活動が就労可です。契約外の活動（翻訳・学外講演等）は個別許可が必要な場合があります。大学または入管にご確認ください。",
+    workCulturalNote: "文化活動の在留資格は有償活動が原則不可です。有償活動を行う場合は個別に資格外活動許可が必要です。大学の国際センターにご相談ください。",
+    workTemporaryNote: "短期滞在の在留資格では有償活動は一切認められておらず、文化活動と異なり資格外活動許可を申請することもできません。日本側から給与・謝金が支払われる場合は在留資格が異なる可能性があるため、受け入れ機関にご確認ください。",
     generate: "ロードマップを生成",
     shortStayAlert: "3ヶ月以下の短期滞在では住民登録などの行政手続きは不要です。海外旅行保険やeSIMの準備をご確認ください。",
     tempHousingAlert: "ホテル等の仮住まいでは住民登録（転入届）ができません。本住居確定後に役所へ行く必要があります。",
@@ -145,7 +149,7 @@ const T = {
     arrivalHint: "任意入力 — フライトが確定したら入力してください。各タスクの期限が自動計算されます。",
     nextActionLabel: "次にやること",
     nextBadge: "→ 次にやる",
-    selectVisaFirst: "上記でビザ区分を選択すると、この質問が表示されます。",
+    selectVisaFirst: "上記で在留資格を選択すると、この質問が表示されます。",
     incompleteHint: "上記の質問にすべて回答すると次に進めます。",
   },
 };
@@ -536,7 +540,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
 export default function JOnboard() {
   const [lang, setLang] = useState("en");
   const [step, setStep] = useState("form");
-  const [profile, setProfile] = useState({ role: null, visaType: null, duration: null, housing: null, work: false, arrival: "" });
+  const [profile, setProfile] = useState({ role: null, residenceStatus: null, duration: null, housing: null, work: false, arrival: "" });
   const [checked, setChecked] = useState({});
   const [langOpen, setLangOpen] = useState(false);
   const [housingGuideOpen, setHousingGuideOpen] = useState(false);
@@ -575,7 +579,7 @@ export default function JOnboard() {
   const pct = allIds.length ? Math.round((doneCount / allIds.length) * 100) : 0;
   const isShort = profile.duration === "short";
   const isTemp = profile.housing === "temp";
-  const isFormComplete = !!profile.duration && !!profile.housing && (profile.role !== "researcher" || !!profile.visaType);
+  const isFormComplete = !!profile.duration && !!profile.housing && (profile.role !== "researcher" || !!profile.residenceStatus);
 
   // 未完了・ロック解除済み・依存タスク完了済みの中で最初のタスク＝次にやるべきアクション
   const nextTask = phases
@@ -587,11 +591,11 @@ export default function JOnboard() {
       return unmetDeps.length === 0;
     });
 
-  const visaLabels = { professor: "教授ビザ", researcher: "研究ビザ", cultural: "文化活動ビザ", unknown: "ビザ種別未確認" };
+  const residenceStatusLabels = { professor: "教授", researcher: "研究", cultural: "文化活動", temporary: "短期滞在", unknown: "在留資格未確認" };
 
   const badges = [
     profile.role === "student" ? t.roleStudent : t.roleResearcher,
-    ...(profile.role === "researcher" ? [visaLabels[profile.visaType] || ""] : []),
+    ...(profile.role === "researcher" ? [residenceStatusLabels[profile.residenceStatus] || ""] : []),
     profile.duration === "short" ? t.dur1 : profile.duration === "mid" ? t.dur2 : t.dur3,
     profile.housing === "confirmed" ? "Housing ✓" : "Housing ⚠",
   ];
@@ -708,7 +712,7 @@ export default function JOnboard() {
               {profile.role === "researcher" && (
                 <div>
                   <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-1">
-                    {t.visaLabel} <AnsweredMark answered={!!profile.visaType} />
+                    {t.visaLabel} <AnsweredMark answered={!!profile.residenceStatus} />
                   </label>
                   <p className="text-xs text-slate-400 mb-2.5">{t.visaHint}</p>
                   <div className="flex flex-col gap-2">
@@ -716,10 +720,11 @@ export default function JOnboard() {
                       ["professor", t.visaProfessor],
                       ["researcher", t.visaResearcher],
                       ["cultural", t.visaCultural],
+                      ["temporary", t.visaTemporary],
                       ["unknown", t.visaUnknown],
                     ].map(([v, label]) => (
-                      <button key={v} onClick={() => setProfile(p => ({ ...p, visaType: v, work: v === "unknown" ? false : p.work }))}
-                        className={`text-left px-4 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${profile.visaType === v ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"}`}>
+                      <button key={v} onClick={() => setProfile(p => ({ ...p, residenceStatus: v, work: (v === "unknown" || v === "temporary") ? false : p.work }))}
+                        className={`text-left px-4 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${profile.residenceStatus === v ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"}`}>
                         {label}
                       </button>
                     ))}
@@ -780,15 +785,20 @@ export default function JOnboard() {
                     </div>
                     <span className="text-sm text-slate-700 leading-snug">{t.workCheck}</span>
                   </label>
-                ) : !profile.visaType ? (
+                ) : !profile.residenceStatus ? (
                   <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm text-slate-500">
                     <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
                     <span>{t.selectVisaFirst}</span>
                   </div>
-                ) : profile.visaType === "unknown" ? (
+                ) : profile.residenceStatus === "unknown" ? (
                   <div className="flex gap-2.5 bg-blue-50 border border-blue-200 rounded-xl p-3.5 text-sm text-blue-800">
                     <Info size={15} className="flex-shrink-0 mt-0.5" />
-                    <span>Please check your visa type to understand your work eligibility. Your university's international office can help.</span>
+                    <span>Please check your status of residence to understand your work eligibility. Your university's international office can help.</span>
+                  </div>
+                ) : profile.residenceStatus === "temporary" ? (
+                  <div className="flex gap-2.5 bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-sm text-amber-800">
+                    <AlertTriangle size={15} className="flex-shrink-0 mt-0.5" />
+                    <span>{t.workTemporaryNote}</span>
                   </div>
                 ) : (
                   <div className="space-y-2.5">
@@ -799,7 +809,7 @@ export default function JOnboard() {
                       </div>
                       <span className="text-sm text-slate-700 leading-snug">{t.workCheckResearcher}</span>
                     </label>
-                    {profile.visaType === "cultural" ? (
+                    {profile.residenceStatus === "cultural" ? (
                       <div className="flex gap-2.5 bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-sm text-amber-800">
                         <AlertTriangle size={15} className="flex-shrink-0 mt-0.5" />
                         <span>{t.workCulturalNote}</span>
