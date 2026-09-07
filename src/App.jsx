@@ -610,12 +610,6 @@ export default function JOnboard() {
               </div>
             </div>
 
-            {isShort && profile.role !== "other" && (
-              <div className="flex gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-800">
-                <Info size={15} className="flex-shrink-0 mt-0.5 text-blue-500" />
-                <span>{t.shortStayAlert}</span>
-              </div>
-            )}
             {isTemp && profile.role !== "other" && (
               <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800">
                 <AlertTriangle size={15} className="flex-shrink-0 mt-0.5 text-amber-500" />
@@ -687,6 +681,13 @@ export default function JOnboard() {
                   ))}
                 </div>
               </div>
+
+              {isShort && profile.role !== "other" && (
+                <div className="flex gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-800">
+                  <Info size={15} className="flex-shrink-0 mt-0.5 text-blue-500" />
+                  <span>{t.shortStayAlert}</span>
+                </div>
+              )}
 
               {/* Housing */}
               <div>
