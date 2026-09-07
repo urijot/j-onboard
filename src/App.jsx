@@ -39,7 +39,8 @@ const T = {
     workCulturalNote: "Cultural Activities status (文化活動) does not permit paid work. Any paid activity requires individual permission (資格外活動許可) — consult your university's international office before taking on any paid work.",
     workTemporaryNote: "Temporary Visitor status (短期滞在) does not permit any paid work. Unlike Cultural Activities status, you cannot apply for a work permit (資格外活動許可) while on this status — no paid work is allowed at all. If you're receiving a salary or honorarium in Japan, this may be the wrong status — check with your host institution.",
     generate: "Generate My Setup Roadmap",
-    shortStayAlert: "Short stays (3 months or less) don't require municipal registration. Please prepare travel insurance and an eSIM before departure.",
+    shortStayExitTitle: "No further steps needed here",
+    shortStayExitBody: "This app's checklist — residence registration, health insurance, pension, My Number, bank account — only applies once your stay exceeds 3 months (a Residence Card isn't even issued for shorter stays). Just make sure you have travel/international health insurance and a data SIM or eSIM before you depart, and you're all set.",
     tempHousingAlert: "You cannot register your residence at a hotel or temporary address. Come back to City Hall once your permanent address is confirmed.",
     summaryLabel: "Your Profile",
     progressLabel: "Completed",
@@ -112,7 +113,8 @@ const T = {
     workCulturalNote: "文化活動の在留資格は有償活動が原則不可です。有償活動を行う場合は個別に資格外活動許可が必要です。大学の国際センターにご相談ください。",
     workTemporaryNote: "短期滞在の在留資格では有償活動は一切認められておらず、文化活動と異なり資格外活動許可を申請することもできません。日本側から給与・謝金が支払われる場合は在留資格が異なる可能性があるため、受け入れ機関にご確認ください。",
     generate: "ロードマップを生成",
-    shortStayAlert: "3ヶ月以下の短期滞在では住民登録などの行政手続きは不要です。海外旅行保険やeSIMの準備をご確認ください。",
+    shortStayExitTitle: "この先の手続きは不要です",
+    shortStayExitBody: "このアプリが案内する手続き（住民登録・国民健康保険・年金・マイナンバー・銀行口座など）は、滞在が3ヶ月を超える場合にのみ対象になります（3ヶ月以下の滞在では在留カード自体が発行されません）。海外旅行保険（または国際健康保険）とデータSIM・eSIMを出発前に準備しておけば十分です。",
     tempHousingAlert: "ホテル等の仮住まいでは住民登録（転入届）ができません。本住居確定後に役所へ行く必要があります。",
     summaryLabel: "あなたのプロフィール",
     progressLabel: "完了",
@@ -750,13 +752,16 @@ export default function JOnboard() {
                 </div>
               </div>
 
-              {isShort && profile.role !== "other" && (
+              {isShort ? (
                 <div className="flex gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-800">
                   <Info size={15} className="flex-shrink-0 mt-0.5 text-blue-500" />
-                  <span>{t.shortStayAlert}</span>
+                  <div className="space-y-1">
+                    <p className="font-semibold">{t.shortStayExitTitle}</p>
+                    <p>{t.shortStayExitBody}</p>
+                  </div>
                 </div>
-              )}
-
+              ) : (
+              <>
               {/* Housing */}
               <div>
                 <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-1">
@@ -841,6 +846,8 @@ export default function JOnboard() {
               </button>
               {!isFormComplete && (
                 <p className="text-xs text-center text-slate-400">{t.incompleteHint}</p>
+              )}
+              </>
               )}
               </>
               )}
