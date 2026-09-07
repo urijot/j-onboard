@@ -48,7 +48,7 @@ const T = {
     noAccount: "No account needed · Your data stays on this device only",
     appScopeNote: "This app is mainly designed to ease pre-departure anxiety for exchange students and visiting researchers staying in Japan over 3 months and under 1 year. It supports you from the moment your university sends your visa paperwork through settling in after you arrive.",
     reassuranceNote: "Not sure about an answer below? That's fine — answer what you know now, you can always update it later.",
-    housingGuideToggle: "Didn't get into the dorm — or still deciding where to live?",
+    housingGuideToggle: "University dorm isn't your only option — here's what else is out there",
     housingGuideIntro: "Before starting a full apartment search, it's worth knowing that furnished monthly/share-house services aimed at foreign residents exist — Sakura House and Oakhouse are two well-known examples. They typically offer:",
     housingGuideFeatures: [
       "No guarantor or guarantor company required",
@@ -111,7 +111,7 @@ const T = {
     noAccount: "アカウント不要・データはこの端末のみに保存",
     appScopeNote: "このアプリは主に、3ヶ月超〜1年未満日本に滞在する交換留学生・客員研究者の渡航前の不安を軽減するために作られています。大学からビザの書類が届いた時点から、来日後の行政手続き・生活の準備までのプロセスに対応しています。",
     reassuranceNote: "この先の質問、わからないものがあってもOKです。今わかる範囲で答えれば大丈夫。あとから編集できます。",
-    housingGuideToggle: "寮に入れなかった？まだ住まいを決めていない方へ",
+    housingGuideToggle: "住まいは大学の寮だけじゃない——他の選択肢もチェック",
     housingGuideIntro: "寮の抽選に落ちた、あるいはまだ住まいが決まっていない——そんなときにまず検討する価値があるのが「外国人向けマンスリー・シェアハウス」です。代表的なところでSakura House、Oakhouseなどがあり、共通して次のような特徴があります。",
     housingGuideFeatures: [
       "保証人・保証会社が不要",
