@@ -546,6 +546,7 @@ export default function JOnboard() {
       localStorage.setItem("jonboard_step", "roadmap");
     } catch {}
     setStep("roadmap");
+    window.scrollTo(0, 0);
   };
 
   const goToForm = () => {
