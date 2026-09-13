@@ -128,7 +128,7 @@ const T = {
 // level: required=義務（法的に必須 or 飛ばすと先に進めない） / recommended=推奨（任意だがやらないと損） / optional=任意
 // deadline.days: 入国日からの法定期限（日数）。期日バッジの計算に使う
 
-const buildPhases = (profile, lang) => {
+export const buildPhases = (profile, lang) => {
   const t = T[lang];
   const isStudent = profile.role === "student";
   const wantsWork = profile.work;
