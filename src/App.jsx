@@ -248,30 +248,25 @@ const buildPhases = (profile, lang) => {
         {
           id: "pension",
           title: isStudent
-            ? "National Pension + Student Payment Exception (学生納付特例)"
+            ? "Join National Pension (国民年金)"
             : "Confirm Whether You Need to Join National Pension (国民年金)",
           location: "City Hall — pension window",
           required: [
-            "Residence Card", "Residence record",
-            ...(isStudent ? ["Student ID or enrollment certificate — either accepted"] : []),
+            "Residence Card",
+            "Residence record showing your My Number — needed until you have a My Number Card",
           ],
           why: isStudent
-            ? "If you're 20 or older, joining National Pension is mandatory, and a payment slip for ¥17,920 a month (FY2026) arrives about two weeks after you enroll. With the Student Payment Exception, you pay nothing and those months aren't recorded as unpaid — it's open to students whose income last year was ¥1.28 million or less (higher with dependents). Apply on this same City Hall visit: if you apply late, an accident or illness before your application date may not qualify for the disability pension."
+            ? "If you're 20 or older and registered as a resident, joining National Pension is mandatory regardless of nationality — handle it on the same City Hall visit as your moving-in notification. A payment slip for ¥17,920 a month (FY2026) arrives about two weeks later. If you'll apply for the Student Payment Exception once classes start, hold off on paying: months you've already paid aren't refunded, and the slip stays usable for two years if you end up needing it."
             : "Not everyone living in Japan pays into National Pension — people covered by Employees' Pension through their job don't — and which applies to you depends on your employment situation. Ask at the pension window. If you do need to join, a payment slip for ¥17,920 a month (FY2026) arrives about two weeks after you enroll, so ask at the same time whether you can apply for a premium exemption.",
           counter: isStudent
-            ? "国民年金の学生納付特例の申請をしたいです。学生証を持参しました。"
+            ? "国民年金の加入手続きをしたいです。留学生なので、授業が始まったら学生納付特例を申請する予定です。"
             : "国民年金に加入する必要があるか確認したいです。加入が必要な場合、保険料の免除は申請できますか？",
           counterTranslation: isStudent
-            ? "I would like to apply for the Student Payment Exception. I have my Student ID with me."
+            ? "I would like to enroll in National Pension. I'm an international student, and I plan to apply for the Student Payment Exception once my classes start."
             : "I would like to check whether I need to join National Pension. If I do, can I apply for a premium exemption?",
-          level: "recommended",
-          source: isStudent
-            ? { url: "https://www.nenkin.go.jp/service/kokunen/menjo/20150514.html", verified: "2026-09" }
-            : { url: "https://www.nenkin.go.jp/service/kokunen/kanyu/20140710-04.html", verified: "2026-09" },
-          deps: [
-            { taskId: "juminhyo", type: "REQUIRED" },
-            ...(isStudent ? [{ taskId: "university", type: "STRONGLY_ADVISED", note: "Student ID or enrollment certificate needed" }] : []),
-          ],
+          level: isStudent ? "required" : "recommended",
+          source: { url: "https://www.nenkin.go.jp/service/kokunen/kanyu/20140710-04.html", verified: "2026-09" },
+          deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
         },
         {
           id: "mynumber", title: "My Number Card Application (マイナンバーカード)",
@@ -326,6 +321,23 @@ const buildPhases = (profile, lang) => {
           deps: [{ taskId: "rezcard", type: "REQUIRED" }],
           source: null,
         },
+        ...(isStudent ? [{
+          id: "gakutoku", title: "Apply for the Student Payment Exception (学生納付特例)",
+          location: "Your university, Mynaportal on your phone, or City Hall — pension window",
+          required: [
+            "Student ID",
+            "My Number Card — or, until you have one, a residence record showing your My Number plus your Residence Card",
+          ],
+          why: "With the Student Payment Exception, you pay no National Pension premiums and those months aren't recorded as unpaid — it's open to students whose income last year was ¥1.28 million or less (higher with dependents). You can apply once your classes have started. Easiest first: ask your international office whether your university accepts the application on campus; if you have your My Number Card, apply from your phone on Mynaportal with a photo of your Student ID (only some screens are in English); otherwise, apply at the City Hall pension window. Don't put it off — an accident or illness before your application date may not qualify for the disability pension.",
+          counter: "国民年金の学生納付特例の申請をしたいです。交換留学生ですが対象になりますか？学生証を持参しました。",
+          counterTranslation: "I would like to apply for the Student Payment Exception. I'm an exchange student — am I eligible? I have my Student ID with me.",
+          level: "recommended",
+          deps: [
+            { taskId: "pension", type: "REQUIRED" },
+            { taskId: "university", type: "REQUIRED" },
+          ],
+          source: { url: "https://www.nenkin.go.jp/service/pamphlet/kaigai/gakuseinouhutokurei.html", verified: "2026-09" },
+        }] : []),
       ],
     },
   ];
@@ -870,18 +882,6 @@ export default function JOnboard() {
               <p className="text-xs text-slate-400 leading-relaxed">
                 Administrative procedures and requirements may change. Always confirm with your university's international office or the relevant government agency before acting.
               </p>
-              <div className="flex flex-wrap gap-2 pt-1">
-                {[
-                  { label: "Immigration Services Agency", url: "https://www.moj.go.jp/isa/index.html" },
-                  { label: "Mynaportal", url: "https://myna.go.jp" },
-                  { label: "Japan Pension Service", url: "https://www.nenkin.go.jp" },
-                ].map(({ label, url }) => (
-                  <a key={label} href={url} target="_blank" rel="noopener noreferrer"
-                    className="text-xs text-indigo-500 hover:text-indigo-700 underline underline-offset-2">
-                    {label} ↗
-                  </a>
-                ))}
-              </div>
             </div>
 
             <p className="text-center text-xs text-slate-400 pb-4">
