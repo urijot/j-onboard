@@ -407,8 +407,8 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
         isNext ? "border-indigo-300 ring-2 ring-indigo-100 bg-indigo-50/30"
           : task.highlight ? "border-amber-300 bg-amber-50/40" : "border-slate-200 bg-white"
       } ${checked ? "opacity-60" : ""}`}>
-        <div className="flex items-start gap-3 p-4">
-          <button onClick={() => !isLocked && onToggle(task.id)}
+        <div onClick={() => setOpen(o => !o)} className="flex items-start gap-3 p-4 cursor-pointer">
+          <button onClick={e => { e.stopPropagation(); if (!isLocked) onToggle(task.id); }}
             className={`mt-0.5 flex-shrink-0 transition-colors ${isLocked ? "opacity-25 cursor-not-allowed" : "cursor-pointer"}`}>
             {checked
               ? <CheckCircle2 size={20} className="text-emerald-500" />
@@ -419,7 +419,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
               <p className={`text-sm font-semibold leading-snug ${checked ? "line-through text-slate-400" : "text-slate-800"}`}>
                 {task.title}
               </p>
-              <button onClick={() => setOpen(o => !o)} className="flex-shrink-0 text-slate-300 hover:text-slate-500 transition-colors ml-1">
+              <button aria-expanded={open} className="flex-shrink-0 text-slate-300 hover:text-slate-500 transition-colors ml-1">
                 {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
             </div>
