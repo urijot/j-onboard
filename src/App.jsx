@@ -736,9 +736,9 @@ export default function JOnboard() {
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">{t.workLabel}</label>
                 <p className="text-xs text-slate-400 mb-2.5">{t.workHint}</p>
-                <label className="flex items-start gap-3 cursor-pointer group">
-                  <div onClick={() => setProfile(p => ({ ...p, work: !p.work }))}
-                    className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all ${profile.work ? "bg-indigo-600 border-indigo-600" : "border-slate-300 group-hover:border-indigo-400"}`}>
+                <label onClick={() => setProfile(p => ({ ...p, work: !p.work }))}
+                  className="flex items-start gap-3 cursor-pointer group">
+                  <div className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all ${profile.work ? "bg-indigo-600 border-indigo-600" : "border-slate-300 group-hover:border-indigo-400"}`}>
                     {profile.work && <CheckCircle2 size={12} className="text-white" />}
                   </div>
                   <span className="text-sm text-slate-700 leading-snug">{t.workCheck}</span>
