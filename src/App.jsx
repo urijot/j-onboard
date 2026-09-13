@@ -15,11 +15,6 @@ const T = {
     roleResearcher: "Visiting Researcher",
     roleOther: "Other / Not Sure",
     otherRoleNote: "This checklist is built specifically for exchange students and visiting researchers — its visa, pension, and housing steps assume one of those two categories and won't be accurate for a different status. The most reliable next step: contact whoever sponsored your Certificate of Eligibility or visa — your host institution's international office, your employer's HR/immigration desk, or your family member's sponsoring organization. They already know your exact visa category and can point you to the right procedures.",
-    durationLabel: "How long will you be in Japan this time?",
-    durationHint: "Stays of 3 months or less skip municipal registration entirely — we'll adjust your checklist accordingly.",
-    dur1: "3 Months or Less",
-    dur2: "Over 3 Months – Under 1 Year",
-    dur3: "1 Year or More",
     housingLabel: "Do you already know where you'll live in Japan?",
     housingHint: "This decides when you can register your address at City Hall — a legal requirement within 14 days of moving in.",
     housingConfirmed: "Yes — dorm, rental, or host family arranged",
@@ -29,8 +24,6 @@ const T = {
     workCheck: "Yes, I plan to work part-time",
     workPermitNote: "You'll apply for a work permit — either at the airport when you receive your Residence Card, or later at a regional immigration bureau. This works the same way regardless of your specific status of residence.",
     generate: "Generate My Setup Roadmap",
-    shortStayExitTitle: "No further steps needed here",
-    shortStayExitBody: "This app's checklist — residence registration, health insurance, pension, My Number, bank account — only applies once your stay exceeds 3 months (a Residence Card isn't even issued for shorter stays). Just make sure you have travel/international health insurance and a data SIM or eSIM before you depart, and you're all set.",
     tempHousingAlert: "You cannot register your residence at a hotel or temporary address. Come back to City Hall once your permanent address is confirmed.",
     summaryLabel: "Your Profile",
     progressLabel: "Completed",
@@ -46,9 +39,11 @@ const T = {
     close: "Close",
     editBtn: "← Edit Answers",
     noAccount: "No account needed · Your data stays on this device only",
-    appScopeNote: "This app is mainly designed to ease pre-departure anxiety for exchange students and visiting researchers staying in Japan over 3 months and under 1 year. It supports you from the moment your university sends your visa paperwork through settling in after you arrive.",
-    reassuranceNote: "Not sure about an answer below? That's fine — answer what you know now, you can always update it later.",
-    housingGuideToggle: "University dorm isn't your only option — here's what else is out there",
+    appScopeNote: "For exchange students and visiting researchers staying in Japan for more than 3 months — from the day your visa paperwork arrives to settling in.",
+    shortStayToggle: "Staying 3 months or less?",
+    shortStayBody: "You won't receive a Residence Card, so the procedures in this app (residence registration, health insurance, pension, etc.) don't apply to you. Just arrange travel health insurance and a data SIM or eSIM before you leave.",
+    reassuranceNote: "Not sure about something? Answer what you know — you can edit later.",
+    housingGuideToggle: "Dorms aren't your only housing option",
     housingGuideIntro: "Before starting a full apartment search, it's worth knowing that furnished monthly/share-house services aimed at foreign residents exist — Sakura House and Oakhouse are two well-known examples. They typically offer:",
     housingGuideFeatures: [
       "No guarantor or guarantor company required",
@@ -78,11 +73,6 @@ const T = {
     roleResearcher: "客員研究者",
     roleOther: "その他・わからない",
     otherRoleNote: "このチェックリストは交換留学生・客員研究者を前提に作られており、ビザ・年金・住居の手続きはこの2区分を想定した内容です。別の区分の方に正確な案内をするのは難しいため、まずは在留資格認定証明書やビザを発行してもらった窓口——受け入れ機関の国際担当部署、勤務先の人事・在留手続き窓口、またはご家族の受け入れ先機関——に確認するのが一番確実です。あなたの正確なビザ区分を把握しているのはその窓口だからです。",
-    durationLabel: "今回、日本にはどのくらい滞在しますか？",
-    durationHint: "3ヶ月以下の滞在では住民登録などの役所手続きが不要になります。回答に応じてチェックリストを調整します。",
-    dur1: "3ヶ月以下",
-    dur2: "3ヶ月超〜1年未満",
-    dur3: "1年以上",
     housingLabel: "日本での住まいはもう決まっていますか？",
     housingHint: "この回答によって、住民登録（転入届、来日14日以内が義務）を今行えるかが決まります。",
     housingConfirmed: "はい — 寮・賃貸・ホームステイ先が決まっています",
@@ -92,8 +82,6 @@ const T = {
     workCheck: "はい、アルバイトを予定している（資格外活動許可申請）",
     workPermitNote: "資格外活動許可は、在留カードを受け取る空港窓口で同時に申請するか、後日地方出入国在留管理局で申請します。在留資格の種類（教授・研究・文化活動など）に関わらず同じ手続きです。",
     generate: "ロードマップを生成",
-    shortStayExitTitle: "この先の手続きは不要です",
-    shortStayExitBody: "このアプリが案内する手続き（住民登録・国民健康保険・年金・マイナンバー・銀行口座など）は、滞在が3ヶ月を超える場合にのみ対象になります（3ヶ月以下の滞在では在留カード自体が発行されません）。海外旅行保険（または国際健康保険）とデータSIM・eSIMを出発前に準備しておけば十分です。",
     tempHousingAlert: "ホテル等の仮住まいでは住民登録（転入届）ができません。本住居確定後に役所へ行く必要があります。",
     summaryLabel: "あなたのプロフィール",
     progressLabel: "完了",
@@ -109,9 +97,11 @@ const T = {
     close: "閉じる",
     editBtn: "← 入力に戻る",
     noAccount: "アカウント不要・データはこの端末のみに保存",
-    appScopeNote: "このアプリは主に、3ヶ月超〜1年未満日本に滞在する交換留学生・客員研究者の渡航前の不安を軽減するために作られています。大学からビザの書類が届いた時点から、来日後の行政手続き・生活の準備までのプロセスに対応しています。",
-    reassuranceNote: "この先の質問、わからないものがあってもOKです。今わかる範囲で答えれば大丈夫。あとから編集できます。",
-    housingGuideToggle: "住まいは大学の寮だけじゃない——他の選択肢もチェック",
+    appScopeNote: "3ヶ月を超えて日本に滞在する交換留学生・客員研究者向けに、ビザ書類が届いた日から来日後の生活準備までを案内します。",
+    shortStayToggle: "3ヶ月以下の滞在の方へ",
+    shortStayBody: "3ヶ月以下の滞在では在留カードが発行されないため、このアプリの手続き（住民登録・国民健康保険・年金など）は対象外です。出発前に海外旅行保険とデータSIM・eSIMを用意しておけば十分です。",
+    reassuranceNote: "わからない質問があっても大丈夫。あとから編集できます。",
+    housingGuideToggle: "住まいは大学の寮だけじゃない",
     housingGuideIntro: "寮の抽選に落ちた、あるいはまだ住まいが決まっていない——そんなときにまず検討する価値があるのが「外国人向けマンスリー・シェアハウス」です。代表的なところでSakura House、Oakhouseなどがあり、共通して次のような特徴があります。",
     housingGuideFeatures: [
       "保証人・保証会社が不要",
@@ -522,10 +512,11 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
 export default function JOnboard() {
   const [lang, setLang] = useState("en");
   const [step, setStep] = useState("form");
-  const [profile, setProfile] = useState({ role: null, duration: null, housing: null, work: false, arrival: "" });
+  const [profile, setProfile] = useState({ role: null, housing: null, work: false, arrival: "" });
   const [checked, setChecked] = useState({});
   const [langOpen, setLangOpen] = useState(false);
   const [housingGuideOpen, setHousingGuideOpen] = useState(false);
+  const [shortStayOpen, setShortStayOpen] = useState(false);
   const t = T[lang];
 
   useEffect(() => {
@@ -560,9 +551,8 @@ export default function JOnboard() {
   const allIds = phases.flatMap(p => p.tasks.map(tk => tk.id));
   const doneCount = allIds.filter(id => checked[id]).length;
   const pct = allIds.length ? Math.round((doneCount / allIds.length) * 100) : 0;
-  const isShort = profile.duration === "short";
   const isTemp = profile.housing === "temp";
-  const isFormComplete = !!profile.duration && !!profile.housing;
+  const isFormComplete = !!profile.housing;
 
   // 未完了・ロック解除済み・依存タスク完了済みの中で最初のタスク＝次にやるべきアクション
   const nextTask = phases
@@ -576,7 +566,6 @@ export default function JOnboard() {
 
   const badges = [
     profile.role === "student" ? t.roleStudent : t.roleResearcher,
-    profile.duration === "short" ? t.dur1 : profile.duration === "mid" ? t.dur2 : t.dur3,
     profile.housing === "confirmed" ? "Housing ✓" : "Housing ⚠",
   ];
 
@@ -620,12 +609,17 @@ export default function JOnboard() {
           <>
             <div>
               <h1 className="text-2xl font-bold text-slate-900">{t.formTitle}</h1>
-              <p className="text-sm text-slate-400 mt-1">{t.noAccount}</p>
+              <p className="text-sm text-slate-500 mt-1">{t.reassuranceNote}</p>
               <div className="flex gap-2.5 bg-indigo-50 border border-indigo-200 rounded-xl p-3.5 mt-3 text-sm text-indigo-800">
                 <Info size={15} className="flex-shrink-0 mt-0.5 text-indigo-400" />
                 <div className="space-y-1.5">
                   <p>{t.appScopeNote}</p>
-                  <p className="text-indigo-700/70">{t.reassuranceNote}</p>
+                  <button onClick={() => setShortStayOpen(o => !o)}
+                    className="flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">
+                    {t.shortStayToggle}
+                    {shortStayOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                  </button>
+                  {shortStayOpen && <p className="text-xs text-indigo-700/80">{t.shortStayBody}</p>}
                 </div>
               </div>
 
@@ -690,32 +684,6 @@ export default function JOnboard() {
 
               {(profile.role === "student" || profile.role === "researcher") && (
               <>
-              {/* Duration */}
-              <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-1">
-                  {t.durationLabel} <AnsweredMark answered={!!profile.duration} />
-                </label>
-                <p className="text-xs text-slate-400 mb-2.5">{t.durationHint}</p>
-                <div className="flex gap-2.5 flex-wrap">
-                  {[["short", t.dur1], ["mid", t.dur2], ["long", t.dur3]].map(([v, label]) => (
-                    <button key={v} onClick={() => setProfile(p => ({ ...p, duration: v }))}
-                      className={`px-4 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${profile.duration === v ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"}`}>
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {isShort ? (
-                <div className="flex gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-800">
-                  <Info size={15} className="flex-shrink-0 mt-0.5 text-blue-500" />
-                  <div className="space-y-1">
-                    <p className="font-semibold">{t.shortStayExitTitle}</p>
-                    <p>{t.shortStayExitBody}</p>
-                  </div>
-                </div>
-              ) : (
-              <>
               {/* Housing */}
               <div>
                 <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-1">
@@ -766,11 +734,9 @@ export default function JOnboard() {
                 }`}>
                 {t.generate} <ArrowRight size={16} />
               </button>
-              {!isFormComplete && (
-                <p className="text-xs text-center text-slate-400">{t.incompleteHint}</p>
-              )}
-              </>
-              )}
+              <p className="text-xs text-center text-slate-400">
+                {isFormComplete ? t.noAccount : t.incompleteHint}
+              </p>
               </>
               )}
             </div>
