@@ -148,15 +148,15 @@ const buildPhases = (profile, lang) => {
       icon: <Plane size={15} />,
       tasks: [
         {
-          id: "coe", title: "Receive your Certificate of Eligibility (CoE) from your Host University in Japan",
+          id: "coe", title: "Receive your Certificate of Eligibility (在留資格認定証明書) from your Host University in Japan",
           location: "Sent by your host university in Japan — delivered by international mail or email",
           required: [
             "Confirmation email from your university's international office",
             "Check that your name, nationality, and visa type are correct",
           ],
-          why: "The Certificate of Eligibility (CoE) is issued by Japanese Immigration on behalf of your host university in Japan — you don't apply for it yourself. Without it, you cannot apply for a visa. Contact your host university's international office if it hasn't arrived 2–3 months before departure.",
+          why: "The Certificate of Eligibility (在留資格認定証明書) is issued by the Immigration Services Agency (出入国在留管理庁) on behalf of your host university in Japan — you don't apply for it yourself. Without it, you cannot apply for a visa. Contact your host university's international office if it hasn't arrived 2–3 months before departure.",
           counter: "在留資格認定証明書の発行状況を確認したいです。いつ頃届きますか？",
-          counterTranslation: "I would like to check the status of my Certificate of Eligibility (CoE). When can I expect to receive it?",
+          counterTranslation: "I would like to check the status of my Certificate of Eligibility (在留資格認定証明書). When can I expect to receive it?",
           deadline: null,
           deps: [],
           source: { url: "https://www.moj.go.jp/isa/applications/procedures/16-3.html", verified: "2026-08" },
@@ -165,7 +165,7 @@ const buildPhases = (profile, lang) => {
           id: "visa", title: "Apply for your Student / Researcher Visa at the Embassy",
           location: "Japanese Embassy, Consulate, or Visa Application Center (e.g. VFS Global) in your country",
           required: [
-            "Certificate of Eligibility (CoE) — original",
+            "Certificate of Eligibility (在留資格認定証明書) — original",
             "Passport (valid 6+ months beyond intended stay)",
             "Visa application form (download from embassy website)",
             "Passport-size photo",
@@ -173,7 +173,7 @@ const buildPhases = (profile, lang) => {
           ],
           why: "You cannot board a flight to Japan without a visa. Processing typically takes 5–10 business days. Check your country's Japanese embassy website for exact requirements as they vary by country.",
           counter: "学生ビザの申請をしたいです。在留資格認定証明書を持参しました。",
-          counterTranslation: "I would like to apply for a student visa. I have my Certificate of Eligibility (CoE) with me.",
+          counterTranslation: "I would like to apply for a student visa. I have my Certificate of Eligibility (在留資格認定証明書) with me.",
           deadline: null,
           deps: [{ taskId: "coe", type: "REQUIRED" }],
           source: { url: "https://www.mofa.go.jp/j_info/visit/visa/index.html", verified: "2026-08" },
@@ -201,11 +201,11 @@ const buildPhases = (profile, lang) => {
       tasks: [
         {
           id: "rezcard", title: "Receive Residence Card (在留カード)",
-          location: "Immigration counter at your arrival airport — issued automatically during immigration inspection. No application needed.",
-          required: ["Passport with valid visa", "Certificate of Eligibility (CoE) — original"],
-          why: "The Residence Card is issued automatically during immigration — you don't apply for it. At 10 major airports (Narita, Haneda, Kansai, Chubu, Chitose, Sendai, Niigata, Hiroshima, Fukuoka, Naha) it is handed to you on the spot. At other airports, your passport gets a 'Residence Card to be issued later' stamp and the card is mailed to your registered address after you complete resident registration (allow ~2 weeks). Until it arrives, your stamped passport serves as a substitute.",
+          location: "Immigration counter (入国審査場) at your arrival airport — issued automatically during immigration inspection. No application needed.",
+          required: ["Passport with valid visa", "Certificate of Eligibility (在留資格認定証明書) — original"],
+          why: "The Residence Card (在留カード) is issued automatically during immigration — you don't apply for it. At 10 major airports (Narita, Haneda, Kansai, Chubu, Chitose, Sendai, Niigata, Hiroshima, Fukuoka, Naha) it is handed to you on the spot. At other airports, your passport gets a 'Residence Card to be issued later' (在留カード後日交付) stamp and the card is mailed to your registered address after you complete your moving-in notification (転入届) — allow ~2 weeks. Until it arrives, your stamped passport serves as a substitute.",
           counter: "在留カードを受け取りに来ました。どちらの窓口ですか？",
-          counterTranslation: "I am here to receive my Residence Card. Which counter should I go to?",
+          counterTranslation: "I am here to receive my Residence Card (在留カード). Which counter should I go to?",
           deadline: null,
           deps: [],
           source: { url: "https://www.moj.go.jp/isa/publications/faq/newimmiact_4_port-city.html", verified: "2026-08" },
@@ -213,12 +213,12 @@ const buildPhases = (profile, lang) => {
         ...(wantsWork ? [{
           id: "workpermit",
           title: "Apply for Work Permit (資格外活動許可)",
-          location: "Immigration counter at your arrival airport — same counter as your Residence Card. Application form is available at the counter, fill in and submit on the spot.",
-          required: ["Passport", "Certificate of Eligibility (CoE)", "Residence Card — received at the same counter simultaneously"],
-          why: "Applying here gets the stamp on your Residence Card immediately — saving a separate trip to the Immigration office later (typically a half-day errand). You receive your Residence Card and Work Permit stamp at the same counter in one go.",
+          location: "Immigration counter (入国審査場) at your arrival airport — same counter as your Residence Card (在留カード). Application form is available at the counter, fill in and submit on the spot.",
+          required: ["Passport", "Certificate of Eligibility (在留資格認定証明書)", "Residence Card (在留カード) — received at the same counter simultaneously"],
+          why: "Applying here gets the stamp on your Residence Card (在留カード) immediately — saving a separate trip to a regional immigration bureau (地方出入国在留管理局) later (typically a half-day errand). You receive your Residence Card and Work Permit (資格外活動許可) stamp at the same counter in one go.",
           counter: "資格外活動許可の申請をしたいのですが、ここで手続きできますか？在留カードも同時に受け取りたいです。",
-          counterTranslation: "I would like to apply for a Work Permit (資格外活動許可). Can I do it here? I also need to receive my Residence Card at the same time.",
-          highlight: "Apply simultaneously with your Residence Card — same counter",
+          counterTranslation: "I would like to apply for a Work Permit (資格外活動許可). Can I do it here? I also need to receive my Residence Card (在留カード) at the same time.",
+          highlight: "Apply simultaneously with your Residence Card (在留カード) — same counter",
           deadline: null,
           deps: [],
           source: { url: "https://www.moj.go.jp/isa/applications/procedures/nyuukokukanri10_00015.html", verified: "2026-08" },
@@ -231,10 +231,10 @@ const buildPhases = (profile, lang) => {
       lockedIfTemp: true,
       tasks: [
         {
-          id: "juminhyo", title: "Moving-in Notification — 転入届 (Resident Registration)",
-          location: "City Hall (市区町村役場) — 市民課 / 住民登録窓口",
-          required: ["Passport", "Residence Card (在留カード)", "Lease contract or dorm registration letter"],
-          why: "Legal obligation within 14 days of moving in. Get 1–2 certified copies of your 住民票 at the same visit — you'll need them for SIM contracts and bank accounts.",
+          id: "juminhyo", title: "Moving-in Notification (転入届)",
+          location: "City Hall (市区町村役場) — Residents Affairs Division (市民課) / resident registration window (住民登録窓口)",
+          required: ["Passport", "Residence Card (在留カード)", "Lease contract (賃貸借契約書) or dorm registration letter"],
+          why: "The moving-in notification (転入届) is a legal obligation within 14 days of moving in. Get 1–2 certified copies of your residence record (住民票) at the same visit — you'll need them for SIM contracts and bank accounts.",
           counter: "転入届を提出したいです。住民票の写しも2部お願いします。",
           counterTranslation: "I would like to submit my moving-in notification (転入届). Could I also get 2 copies of my residence record (住民票)?",
           deadline: { type: "legal", days: 14, note: "Legal obligation within 14 days" },
@@ -242,50 +242,50 @@ const buildPhases = (profile, lang) => {
           source: { url: "https://www.soumu.go.jp/main_sosiki/jichi_gyousei/daityo/jjn.html", verified: "2026-08" },
         },
         {
-          id: "health", title: "National Health Insurance — 国民健康保険 (NHI)",
-          location: "Same City Hall visit — 国民健康保険窓口",
-          required: ["Residence Card", "住民票 (just obtained)", "Passport"],
-          why: "NHI covers 70% of medical costs. If your Japan income last year was zero, you can apply for a premium reduction (保険料軽減) at the same window.",
+          id: "health", title: "National Health Insurance (国民健康保険)",
+          location: "Same City Hall visit — National Health Insurance window (国民健康保険窓口)",
+          required: ["Residence Card (在留カード)", "Residence record (住民票) — just obtained", "Passport"],
+          why: "National Health Insurance (国民健康保険) covers 70% of medical costs. If your Japan income last year was zero, you can apply for a premium reduction (保険料軽減) at the same window.",
           counter: "国民健康保険に加入したいです。前年の日本での所得はゼロです。保険料の軽減申請もお願いできますか？",
-          counterTranslation: "I would like to enroll in National Health Insurance. My income in Japan last year was zero. Could I also apply for a premium reduction?",
-          deadline: { type: "financial", days: null, note: "Enroll same day as 転入届 — delays mean retroactive premiums" },
+          counterTranslation: "I would like to enroll in National Health Insurance (国民健康保険). My income in Japan last year was zero. Could I also apply for a premium reduction (保険料軽減)?",
+          deadline: { type: "financial", days: null, note: "Enroll same day as your moving-in notification (転入届) — delays mean retroactive premiums" },
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
           source: { url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/newpage_16819.html", verified: "2026-08" },
         },
         {
           id: "pension",
-          title: `National Pension + ${isStudent ? "Student Exemption (学生納付特例)" : "Income Exemption (所得免除申請)"}`,
-          location: "City Hall — 年金窓口",
+          title: `National Pension (国民年金) + ${isStudent ? "Student Payment Exception (学生納付特例)" : "Income Exemption (所得免除)"}`,
+          location: "City Hall — pension window (年金窓口)",
           required: [
-            "Residence Card", "住民票",
-            ...(isStudent ? ["Student ID (学生証) or 在学証明書 — either accepted"] : ["Income declaration or proof"]),
+            "Residence Card (在留カード)", "Residence record (住民票)",
+            ...(isStudent ? ["Student ID (学生証) or enrollment certificate (在学証明書) — either accepted"] : ["Income declaration or proof"]),
           ],
           why: isStudent
-            ? "学生納付特例制度で在学中の保険料の支払いを猶予できます（将来の年金受給権は保全）。保険料を払わなくていいのに加入資格だけ得られるため、デメリットはほぼありません。学生証がまだ発行されていない場合は在学証明書で代替可能。また申請は来日から2年以内なら遡及適用されるため、14日以内の義務はありません。"
-            : "所得免除制度で保険料負担を大幅に軽減できます。申請しないと未納扱いになるため、必ず申請してください。申請は2年以内なら遡及適用されます。",
+            ? "The Student Payment Exception (学生納付特例) lets you defer pension premiums while enrolled, while still preserving your future pension entitlement — you keep coverage without paying, so there is almost no downside to applying. If your student ID hasn't been issued yet, an enrollment certificate (在学証明書) is accepted instead. Applications can be backdated up to 2 years, so there is no 14-day deadline here."
+            : "The income-based exemption (所得免除) can substantially reduce or eliminate your premium burden. If you don't apply, unpaid months are recorded as delinquent (未納), so be sure to submit the application. Applications can be backdated up to 2 years.",
           counter: isStudent
             ? "国民年金の学生納付特例の申請をしたいです。学生証を持参しました。"
             : "国民年金の所得免除申請をしたいです。前年の日本所得はゼロです。",
           counterTranslation: isStudent
-            ? "I would like to apply for the Student Pension Payment Exemption (学生納付特例). I have my student ID with me."
-            : "I would like to apply for a National Pension income exemption. My income in Japan last year was zero.",
+            ? "I would like to apply for the Student Payment Exception (学生納付特例). I have my Student ID (学生証) with me."
+            : "I would like to apply for a National Pension (国民年金) income exemption (所得免除). My income in Japan last year was zero.",
           deadline: { type: "advisory", days: null, note: "Retroactive up to 2 years — no 14-day rule" },
           source: { url: "https://www.nenkin.go.jp/service/kokunen/menjo/20150514.html", verified: "2026-08" },
           deps: [
             { taskId: "juminhyo", type: "REQUIRED" },
-            ...(isStudent ? [{ taskId: "university", type: "STRONGLY_ADVISED", note: "学生証 or 在学証明書 needed" }] : []),
+            ...(isStudent ? [{ taskId: "university", type: "STRONGLY_ADVISED", note: "Student ID (学生証) or enrollment certificate (在学証明書) needed" }] : []),
           ],
         },
         {
           id: "mynumber", title: "My Number Card Application (マイナンバーカード)",
-          location: "City Hall — マイナンバー窓口 or online via マイナポータル",
-          required: ["個人番号通知書 (mailed ~1–2 weeks after registration) — not usable as ID", "Passport", "Photo via certificate photo app (e.g. ピクチャン)"],
-          why: "Increasingly required for online tax filing, digital health insurance, and government services. Note: the 個人番号通知書 that arrives by mail cannot be used as ID — the card itself is needed. Takes ~1 month to receive after applying.",
-          counter: "マイナンバーカードを申請したいです。個人番号通知書を持参しました。写真はスマートフォンで用意しています。",
-          counterTranslation: "I would like to apply for a My Number Card. I have my individual number notification letter with me. I have a photo ready on my smartphone.",
+          location: "City Hall — My Number window (マイナンバー窓口) or online via Mynaportal (マイナポータル)",
+          required: ["Individual number notification letter (個人番号通知書) — arrives by registered mail 2–3 weeks after your moving-in notification (転入届); not valid as ID", "Passport", "Photo via a certificate photo app (e.g. Pic-chan / ピクチャン)"],
+          why: "The My Number Card (マイナンバーカード) is increasingly required for online tax filing, digital health insurance, and government services. The individual number notification letter (個人番号通知書) that arrives 2–3 weeks after you register your address cannot be used as ID or as proof of your My Number — you need the card itself. Normally you apply, receive a distribution notice (交付通知書) about a month later, then collect the card in person at City Hall. Moving in from overseas qualifies you for expedited issuance (特急発行), which mails the card to your address in about a week — but you must apply within 30 days of registering.",
+          counter: "マイナンバーカードを申請したいです。海外から転入したので特急発行の対象になりますか？個人番号通知書と写真を持参しています。",
+          counterTranslation: "I would like to apply for a My Number Card (マイナンバーカード). I moved in from overseas — am I eligible for expedited issuance (特急発行)? I have my individual number notification letter (個人番号通知書) and a photo with me.",
           deadline: null,
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
-          source: { url: "https://www.digital.go.jp/policies/mynumber_faq_02", verified: "2026-08" },
+          source: { url: "https://www.kojinbango-card.go.jp/apprec/apply/express_apply/", verified: "2026-09" },
         },
       ],
     },
@@ -296,23 +296,23 @@ const buildPhases = (profile, lang) => {
         {
           id: "sim", title: "Voice/SMS SIM Contract (格安SIM)",
           location: "IIJmio, Mineo, or Rakuten Mobile — store or online",
-          required: ["Residence Card (with address on back)", "住民票 ⚠️ required", "Passport", "Credit card or international debit card (Wise / Revolut / overseas Visa・Mastercard) — mineo requires credit card"],
-          why: "A registered address is legally required to sign any SIM contract in Japan. Obtain your 住民票 first. Most carriers (Rakuten, ahamo, LINEMO) accept international debit cards — no Japanese bank account needed.",
+          required: ["Residence Card (在留カード) — with address on back", "Residence record (住民票) ⚠️ required", "Passport", "Credit card or international debit card (Wise / Revolut / overseas Visa / Mastercard) — mineo requires credit card"],
+          why: "A registered address is legally required to sign any SIM contract in Japan. Obtain your residence record (住民票) first. Most carriers (Rakuten, ahamo, LINEMO) accept international debit cards — no Japanese bank account needed.",
           counter: "格安SIMの新規契約をしたいです。住民票と在留カードを持参しました。",
-          counterTranslation: "I would like to sign up for a new SIM contract. I have my residence record (住民票) and Residence Card with me.",
-          warning: "Requires 住民票 (Registered Address) first",
+          counterTranslation: "I would like to sign up for a new SIM contract. I have my residence record (住民票) and Residence Card (在留カード) with me.",
+          warning: "Requires residence record (住民票) first",
           deadline: null,
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
           source: null,
         },
         {
-          id: "bank", title: "Bank Account — Japan Post Bank / ゆうちょ銀行 (recommended)",
-          location: "Post Office (郵便局) or Japan Post Bank branch",
-          required: ["Residence Card", "住民票 ⚠️ required", "Japanese phone number ⚠️ required", "Passport"],
-          why: "Japan Post Bank is the most foreigner-friendly. Important: you need a Japanese phone number to complete the application — get your SIM before opening a bank account.",
+          id: "bank", title: "Bank Account — Japan Post Bank (ゆうちょ銀行) recommended",
+          location: "Post Office (郵便局) or Japan Post Bank (ゆうちょ銀行) branch",
+          required: ["Residence Card (在留カード)", "Residence record (住民票) ⚠️ required", "Japanese phone number ⚠️ required", "Passport"],
+          why: "Japan Post Bank (ゆうちょ銀行) is the most foreigner-friendly. Important: you need a Japanese phone number to complete the application — get your SIM before opening a bank account.",
           counter: "ゆうちょ銀行の口座を開設したいです。在留カードと住民票を持参しました。",
-          counterTranslation: "I would like to open a Japan Post Bank account. I have my Residence Card and residence record (住民票) with me.",
-          warning: "Requires 住民票 + Japanese Phone — get SIM first!",
+          counterTranslation: "I would like to open a Japan Post Bank (ゆうちょ銀行) account. I have my Residence Card (在留カード) and residence record (住民票) with me.",
+          warning: "Requires residence record (住民票) + Japanese phone — get SIM first!",
           deadline: null,
           source: null,
           deps: [
@@ -321,12 +321,12 @@ const buildPhases = (profile, lang) => {
           ],
         },
         {
-          id: "university", title: "University Onboarding & Student ID",
-          location: "International Office / 国際センター at your university",
-          required: ["Passport", "Residence Card", "Admission letter / research agreement", "ID photo"],
-          why: "Student ID is required for campus facilities, library access, and the National Pension student exemption. Timing depends on your university's orientation schedule — complete as early as possible. If your student ID isn't ready yet, ask for a 在学証明書 (enrollment certificate) instead, which is accepted as a substitute for the pension exemption application.",
+          id: "university", title: "University Onboarding & Student ID (学生証)",
+          location: "International Office (国際センター) at your university",
+          required: ["Passport", "Residence Card (在留カード)", "Admission letter / research agreement", "ID photo"],
+          why: "Your Student ID (学生証) is required for campus facilities, library access, and the National Pension Student Payment Exception (学生納付特例). Timing depends on your university's orientation schedule — complete as early as possible. If your student ID isn't ready yet, ask for an enrollment certificate (在学証明書) instead, which is accepted as a substitute for the pension exemption application.",
           counter: "国際センターで学生証の発行手続きをしたいのですが、必要な書類を教えてください。",
-          counterTranslation: "I would like to get my student ID issued at the International Office. Could you tell me what documents I need?",
+          counterTranslation: "I would like to get my Student ID (学生証) issued at the International Office (国際センター). Could you tell me what documents I need?",
           deadline: { type: "advisory", days: null, note: "Timing depends on university orientation schedule" },
           deps: [{ taskId: "rezcard", type: "REQUIRED" }],
           source: null,
@@ -376,7 +376,7 @@ const deadlineBadge = (deadline) => {
   if (!deadline) return null;
   const map = {
     legal:    { cls: "text-red-700 bg-red-50 border-red-200",     icon: "⚖️", label: `Legal obligation${deadline.days ? ` — within ${deadline.days} days` : ""}` },
-    financial:{ cls: "text-orange-700 bg-orange-50 border-orange-200", icon: "💸", label: "Enroll same day as 転入届 — delays mean retroactive premiums" },
+    financial:{ cls: "text-orange-700 bg-orange-50 border-orange-200", icon: "💸", label: "Enroll same day as your moving-in notification (転入届) — delays mean retroactive premiums" },
     advisory: { cls: "text-slate-600 bg-slate-50 border-slate-200",  icon: "📅", label: deadline.note || "No strict deadline" },
   };
   const cfg = map[deadline.type];
@@ -390,7 +390,7 @@ const depBadge = (deps) => {
   if (hasStrongly) {
     const d = deps.find(d => d.type === "STRONGLY_ADVISED");
     return <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">
-      <AlertTriangle size={10} /> Strongly advised: complete prior step first{d.note ? ` (${d.note})` : ""}
+      <AlertTriangle size={10} /> Strongly advised: complete prior step first{d.note ? ` — ${d.note}` : ""}
     </span>;
   }
   return null;
@@ -460,7 +460,8 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
           </div>
         </div>
 
-        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${open ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"}`}>
+        <div className={`grid transition-all duration-300 ease-in-out ${open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+          <div className="overflow-hidden">
           <div className="px-4 pb-4 pt-2 border-t border-slate-100 space-y-4">
             {/* 未完了の依存タスク警告 */}
             {unmetDeps.length > 0 && (
@@ -510,6 +511,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
                 </a>
               )}
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -880,7 +882,7 @@ export default function JOnboard() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-emerald-800 mb-0.5">💡 Save time — do these in one City Hall visit</p>
-                        <p className="text-xs text-emerald-700 leading-relaxed">転入届・国民健康保険・国民年金 can all be handled at the same City Hall on the same day. Tell the first counter you need all three — they'll direct you.</p>
+                        <p className="text-xs text-emerald-700 leading-relaxed">Your moving-in notification (転入届), National Health Insurance (国民健康保険), and National Pension (国民年金) can all be handled at the same City Hall on the same day. Tell the first counter you need all three — they'll direct you.</p>
                       </div>
                     </div>
                   )}
