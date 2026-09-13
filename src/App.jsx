@@ -125,7 +125,8 @@ const T = {
 };
 
 // 依存の強さ: REQUIRED=物理的・法的に必須 / STRONGLY_ADVISED=事業者運用依存・例外あり / TIP=アドバイス
-// deadline.type: legal=法的義務 / financial=遅れると金銭的不利益 / advisory=推奨・遡及可 / null=期限なし
+// level: required=義務（法的に必須 or 飛ばすと先に進めない） / recommended=推奨（任意だがやらないと損） / optional=任意
+// deadline.days: 入国日からの法定期限（日数）。期日バッジの計算に使う
 
 const buildPhases = (profile, lang) => {
   const t = T[lang];
@@ -147,7 +148,7 @@ const buildPhases = (profile, lang) => {
           why: "The Certificate of Eligibility is issued by the Immigration Services Agency on behalf of your host university in Japan — you don't apply for it yourself. Without it, you cannot apply for a visa. Contact your host university's international office if it hasn't arrived 2–3 months before departure.",
           counter: "在留資格認定証明書の発行状況を確認したいです。いつ頃届きますか？",
           counterTranslation: "I would like to check the status of my Certificate of Eligibility. When can I expect to receive it?",
-          deadline: null,
+          level: "required",
           deps: [],
           source: { url: "https://www.moj.go.jp/isa/applications/procedures/16-3.html", verified: "2026-08" },
         },
@@ -164,7 +165,7 @@ const buildPhases = (profile, lang) => {
           why: "You cannot board a flight to Japan without a visa. Processing typically takes 5–10 business days. Check your country's Japanese embassy website for exact requirements as they vary by country.",
           counter: "学生ビザの申請をしたいです。在留資格認定証明書を持参しました。",
           counterTranslation: "I would like to apply for a student visa. I have my Certificate of Eligibility with me.",
-          deadline: null,
+          level: "required",
           deps: [{ taskId: "coe", type: "REQUIRED" }],
           source: { url: "https://www.mofa.go.jp/j_info/visit/visa/index.html", verified: "2026-08" },
         },
@@ -179,7 +180,7 @@ const buildPhases = (profile, lang) => {
           why: "Many Japanese ATMs reject foreign cards. Wise or Revolut cards work reliably at Japanese ATMs and convenience stores — set one up before departure. For eSIM: buy and install before leaving home, it activates the moment you land with no queuing. If your phone is not eSIM-compatible, prepaid physical SIM cards are available at airport counters (Narita/Haneda) but expect queues after long-haul flights.",
           counter: "両替と海外クレジットカードを持参しました。現金とSIMカードの準備についてお聞きしたいです。",
           counterTranslation: "I have brought foreign currency and an international card. I'd like to ask about cash exchange and SIM card options.",
-          deadline: null,
+          level: "optional",
           deps: [],
           source: null,
         },
@@ -196,7 +197,7 @@ const buildPhases = (profile, lang) => {
           why: "The Residence Card is issued automatically during immigration — you don't apply for it. At 10 major airports (Narita, Haneda, Kansai, Chubu, Chitose, Sendai, Niigata, Hiroshima, Fukuoka, Naha) it is handed to you on the spot. At other airports, your passport gets a 'Residence Card to be issued later' stamp and the card is mailed to your registered address after you complete your moving-in notification — allow ~2 weeks. Until it arrives, your stamped passport serves as a substitute.",
           counter: "在留カードを受け取りに来ました。どちらの窓口ですか？",
           counterTranslation: "I am here to receive my Residence Card. Which counter should I go to?",
-          deadline: null,
+          level: "required",
           deps: [],
           source: { url: "https://www.moj.go.jp/isa/publications/faq/newimmiact_4_port-city.html", verified: "2026-08" },
         },
@@ -209,7 +210,7 @@ const buildPhases = (profile, lang) => {
           counter: "資格外活動許可の申請をしたいのですが、ここで手続きできますか？在留カードも同時に受け取りたいです。",
           counterTranslation: "I would like to apply for a Work Permit. Can I do it here? I also need to receive my Residence Card at the same time.",
           highlight: "Apply simultaneously with your Residence Card — same counter",
-          deadline: null,
+          level: "required",
           deps: [],
           source: { url: "https://www.moj.go.jp/isa/applications/procedures/nyuukokukanri10_00015.html", verified: "2026-08" },
         }] : []),
@@ -227,7 +228,8 @@ const buildPhases = (profile, lang) => {
           why: "The moving-in notification is a legal obligation within 14 days of moving in. Get 1–2 certified copies of your residence record at the same visit — you'll need them for SIM contracts and bank accounts.",
           counter: "転入届を提出したいです。住民票の写しも2部お願いします。",
           counterTranslation: "I would like to submit my moving-in notification. Could I also get 2 copies of my residence record?",
-          deadline: { type: "legal", days: 14, note: "Legal obligation within 14 days" },
+          level: "required",
+          deadline: { days: 14 },
           deps: [{ taskId: "rezcard", type: "REQUIRED" }],
           source: { url: "https://www.soumu.go.jp/main_sosiki/jichi_gyousei/daityo/jjn.html", verified: "2026-08" },
         },
@@ -238,29 +240,34 @@ const buildPhases = (profile, lang) => {
           why: "National Health Insurance covers 70% of medical costs. If your Japan income last year was zero, you can apply for a premium reduction at the same window.",
           counter: "国民健康保険に加入したいです。前年の日本での所得はゼロです。保険料の軽減申請もお願いできますか？",
           counterTranslation: "I would like to enroll in National Health Insurance. My income in Japan last year was zero. Could I also apply for a premium reduction?",
-          deadline: { type: "financial", days: null, note: "Enroll same day as your moving-in notification — delays mean retroactive premiums" },
+          level: "required",
+          deadline: { days: 14 },
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
-          source: { url: "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/newpage_16819.html", verified: "2026-08" },
+          source: { url: "https://www.mhlw.go.jp/stf/newpage_21539.html", verified: "2026-09" },
         },
         {
           id: "pension",
-          title: `National Pension + ${isStudent ? "Student Payment Exception (学生納付特例)" : "Income Exemption (所得免除)"}`,
+          title: isStudent
+            ? "National Pension + Student Payment Exception (学生納付特例)"
+            : "Confirm Whether You Need to Join National Pension (国民年金)",
           location: "City Hall — pension window",
           required: [
             "Residence Card", "Residence record",
-            ...(isStudent ? ["Student ID or enrollment certificate — either accepted"] : ["Income declaration or proof"]),
+            ...(isStudent ? ["Student ID or enrollment certificate — either accepted"] : []),
           ],
           why: isStudent
-            ? "The Student Payment Exception lets you defer pension premiums while enrolled, while still preserving your future pension entitlement — you keep coverage without paying, so there is almost no downside to applying. If your student ID hasn't been issued yet, an enrollment certificate is accepted instead. Applications can be backdated up to 2 years, so there is no 14-day deadline here."
-            : "The income-based exemption can substantially reduce or eliminate your premium burden. If you don't apply, unpaid months are recorded as delinquent, so be sure to submit the application. Applications can be backdated up to 2 years.",
+            ? "If you're 20 or older, joining National Pension is mandatory, and a payment slip for ¥17,920 a month (FY2026) arrives about two weeks after you enroll. With the Student Payment Exception, you pay nothing and those months aren't recorded as unpaid — it's open to students whose income last year was ¥1.28 million or less (higher with dependents). Apply on this same City Hall visit: if you apply late, an accident or illness before your application date may not qualify for the disability pension."
+            : "Not everyone living in Japan pays into National Pension — people covered by Employees' Pension through their job don't — and which applies to you depends on your employment situation. Ask at the pension window. If you do need to join, a payment slip for ¥17,920 a month (FY2026) arrives about two weeks after you enroll, so ask at the same time whether you can apply for a premium exemption.",
           counter: isStudent
             ? "国民年金の学生納付特例の申請をしたいです。学生証を持参しました。"
-            : "国民年金の所得免除申請をしたいです。前年の日本所得はゼロです。",
+            : "国民年金に加入する必要があるか確認したいです。加入が必要な場合、保険料の免除は申請できますか？",
           counterTranslation: isStudent
             ? "I would like to apply for the Student Payment Exception. I have my Student ID with me."
-            : "I would like to apply for a National Pension income exemption. My income in Japan last year was zero.",
-          deadline: { type: "advisory", days: null, note: "Retroactive up to 2 years — no 14-day rule" },
-          source: { url: "https://www.nenkin.go.jp/service/kokunen/menjo/20150514.html", verified: "2026-08" },
+            : "I would like to check whether I need to join National Pension. If I do, can I apply for a premium exemption?",
+          level: "recommended",
+          source: isStudent
+            ? { url: "https://www.nenkin.go.jp/service/kokunen/menjo/20150514.html", verified: "2026-09" }
+            : { url: "https://www.nenkin.go.jp/service/kokunen/kanyu/20140710-04.html", verified: "2026-09" },
           deps: [
             { taskId: "juminhyo", type: "REQUIRED" },
             ...(isStudent ? [{ taskId: "university", type: "STRONGLY_ADVISED", note: "Student ID or enrollment certificate needed" }] : []),
@@ -273,7 +280,7 @@ const buildPhases = (profile, lang) => {
           why: "The My Number Card is increasingly required for online tax filing, digital health insurance, and government services. The individual number notification letter that arrives 2–3 weeks after you register your address cannot be used as ID or as proof of your My Number — you need the card itself. Normally you apply, receive a distribution notice about a month later, then collect the card in person at City Hall. Moving in from overseas qualifies you for expedited issuance, which mails the card to your address in about a week — but you must apply within 30 days of registering.",
           counter: "マイナンバーカードを申請したいです。海外から転入したので特急発行の対象になりますか？個人番号通知書と写真を持参しています。",
           counterTranslation: "I would like to apply for a My Number Card. I moved in from overseas — am I eligible for expedited issuance? I have my individual number notification letter and a photo with me.",
-          deadline: null,
+          level: "recommended",
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
           source: { url: "https://www.kojinbango-card.go.jp/apprec/apply/express_apply/", verified: "2026-09" },
         },
@@ -286,24 +293,22 @@ const buildPhases = (profile, lang) => {
         {
           id: "sim", title: "Voice/SMS SIM Contract (格安SIM)",
           location: "IIJmio, Mineo, or Rakuten Mobile — store or online",
-          required: ["Residence Card — with address on back", "Residence record ⚠️ required", "Passport", "Credit card or international debit card (Wise / Revolut / overseas Visa / Mastercard) — mineo requires credit card"],
+          required: ["Residence Card — with address on back", "Residence record", "Passport", "Credit card or international debit card (Wise / Revolut / overseas Visa / Mastercard) — mineo requires credit card"],
           why: "A registered address is legally required to sign any SIM contract in Japan. Obtain your residence record first. Most carriers (Rakuten, ahamo, LINEMO) accept international debit cards — no Japanese bank account needed.",
           counter: "格安SIMの新規契約をしたいです。住民票と在留カードを持参しました。",
           counterTranslation: "I would like to sign up for a new SIM contract. I have my residence record and Residence Card with me.",
-          warning: "Requires residence record first",
-          deadline: null,
+          level: "recommended",
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
           source: null,
         },
         {
-          id: "bank", title: "Bank Account — Japan Post Bank (ゆうちょ銀行) recommended",
+          id: "bank", title: "Bank Account — Japan Post Bank (ゆうちょ銀行)",
           location: "Post Office or Japan Post Bank branch",
-          required: ["Residence Card", "Residence record ⚠️ required", "Japanese phone number ⚠️ required", "Passport"],
+          required: ["Residence Card", "Residence record", "Japanese phone number", "Passport"],
           why: "Japan Post Bank is the most foreigner-friendly. Important: you need a Japanese phone number to complete the application — get your SIM before opening a bank account.",
           counter: "ゆうちょ銀行の口座を開設したいです。在留カードと住民票を持参しました。",
           counterTranslation: "I would like to open a Japan Post Bank account. I have my Residence Card and residence record with me.",
-          warning: "Requires residence record + Japanese phone — get SIM first!",
-          deadline: null,
+          level: "recommended",
           source: null,
           deps: [
             { taskId: "juminhyo", type: "REQUIRED" },
@@ -317,7 +322,7 @@ const buildPhases = (profile, lang) => {
           why: "Your Student ID is required for campus facilities, library access, and the National Pension Student Payment Exception. Timing depends on your university's orientation schedule — complete as early as possible. If your student ID isn't ready yet, ask for an enrollment certificate instead, which is accepted as a substitute for the pension exemption application.",
           counter: "国際センターで学生証の発行手続きをしたいのですが、必要な書類を教えてください。",
           counterTranslation: "I would like to get my Student ID issued at the International Office. Could you tell me what documents I need?",
-          deadline: { type: "advisory", days: null, note: "Timing depends on university orientation schedule" },
+          level: "required",
           deps: [{ taskId: "rezcard", type: "REQUIRED" }],
           source: null,
         },
@@ -361,29 +366,18 @@ function CounterModal({ text, translation, onClose }) {
   );
 }
 
-// deadline と deps のバッジ設定
-const deadlineBadge = (deadline) => {
-  if (!deadline) return null;
+// level のバッジ設定
+// 入国日が入力済みなら "Due by" バッジが具体的な期日を出すので、日数はそちらに任せる
+const levelBadge = (task, hasDueDate) => {
   const map = {
-    legal:    { cls: "text-red-700 bg-red-50 border-red-200",     icon: "⚖️", label: `Legal obligation${deadline.days ? ` — within ${deadline.days} days` : ""}` },
-    financial:{ cls: "text-orange-700 bg-orange-50 border-orange-200", icon: "💸", label: "Enroll same day as your moving-in notification — delays mean retroactive premiums" },
-    advisory: { cls: "text-slate-600 bg-slate-50 border-slate-200",  icon: "📅", label: deadline.note || "No strict deadline" },
+    required:    { cls: "text-red-700 bg-red-50 border-red-200",    label: "Required" },
+    recommended: { cls: "text-sky-700 bg-sky-50 border-sky-200",    label: "Recommended" },
+    optional:    { cls: "text-slate-600 bg-slate-50 border-slate-200", label: "Optional" },
   };
-  const cfg = map[deadline.type];
+  const cfg = map[task.level];
   if (!cfg) return null;
-  return <span className={`inline-flex items-center gap-1 text-xs font-medium border rounded-full px-2 py-0.5 ${cfg.cls}`}>{cfg.icon} {cfg.label}</span>;
-};
-
-const depBadge = (deps) => {
-  if (!deps || deps.length === 0) return null;
-  const hasStrongly = deps.some(d => d.type === "STRONGLY_ADVISED");
-  if (hasStrongly) {
-    const d = deps.find(d => d.type === "STRONGLY_ADVISED");
-    return <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">
-      <AlertTriangle size={10} /> Strongly advised: complete prior step first{d.note ? ` — ${d.note}` : ""}
-    </span>;
-  }
-  return null;
+  const days = task.deadline?.days && !hasDueDate ? ` · within ${task.deadline.days} days` : "";
+  return <span className={`inline-flex items-center text-xs font-semibold border rounded-full px-2 py-0.5 ${cfg.cls}`}>{cfg.label}{days}</span>;
 };
 
 function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, allTasks, isNext }) {
@@ -429,16 +423,10 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
                   {t.nextBadge}
                 </span>
               )}
-              {task.deadline && deadlineBadge(task.deadline)}
+              {levelBadge(task, !!dueDate)}
               {dueDate && (
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded-full px-2 py-0.5">
                   <Clock size={10} /> Due by {dueDate}
-                </span>
-              )}
-              {task.deps && depBadge(task.deps)}
-              {task.warning && (
-                <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">
-                  <AlertTriangle size={10} /> {task.warning}
                 </span>
               )}
               {task.highlight && (
