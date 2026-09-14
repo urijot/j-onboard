@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import {
   CheckCircle2, Circle, ChevronDown, ChevronUp,
-  AlertTriangle, Info, Globe, ArrowRight, Clock, Building2,
+  AlertTriangle, Info, Globe, ArrowRight, Building2,
   Plane, MapPin, Shield, X, FileText, BadgeCheck, Lock, ExternalLink
 } from "lucide-react";
 
@@ -58,8 +58,6 @@ const T = {
     ],
     housingGuideMiddle: "In short, they let you skip most of the friction of a standard Japanese lease — finding a guarantor, gathering upfront costs, and setting up utilities one by one. A common approach: use one of these for your first few months while you settle in, then move to a standard rental once you're comfortable navigating things locally.",
     housingGuideCostNote: "Monthly rent tends to run higher than a standard lease, though — if you're staying a year or more and want to minimize cost, it's also worth asking your university's international office about standard rental options.",
-    arrivalLabel: "Arrival Date",
-    arrivalHint: "Optional — enter once your flight is confirmed. Due dates for each task will be calculated automatically.",
     nextActionLabel: "Do This Next",
     nextBadge: "→ Next",
     incompleteHint: "Answer all questions above to continue.",
@@ -116,8 +114,6 @@ const T = {
     ],
     housingGuideMiddle: "つまり、通常の賃貸で発生する「保証人探し」「初期費用の準備」「電気・ガス・水道の個別契約」を、まとめて省ける選択肢です。慣れない土地で一つずつ手続きするのが不安なら、最初の数ヶ月だけこうしたサービスを使い、生活に慣れてから通常の賃貸に移る、という進め方もできます。",
     housingGuideCostNote: "ただし月額はやや割高になりがちなので、1年以上の長期滞在で費用を抑えたい場合は、大学の国際担当窓口に相談しながら通常の賃貸も検討するとよいでしょう。",
-    arrivalLabel: "来日日",
-    arrivalHint: "任意入力 — フライトが確定したら入力してください。各タスクの期限が自動計算されます。",
     nextActionLabel: "次にやること",
     nextBadge: "→ 次にやる",
     incompleteHint: "上記の質問にすべて回答すると次に進めます。",
@@ -126,7 +122,7 @@ const T = {
 
 // 依存の強さ: REQUIRED=物理的・法的に必須 / STRONGLY_ADVISED=事業者運用依存・例外あり / TIP=アドバイス
 // level: required=義務（法的に必須 or 飛ばすと先に進めない） / recommended=推奨（任意だがやらないと損） / optional=任意
-// deadline.days: 入国日からの法定期限（日数）。期日バッジの計算に使う
+// deadline.days: 住み始めた日からの法定期限（日数）。バッジに「within N days」と出す
 
 export const buildPhases = (profile, lang) => {
   const t = T[lang];
@@ -386,16 +382,8 @@ function CounterModal({ text, translation, onClose, t }) {
   );
 }
 
-// 期日 = 入国日 + deadline.days
-// "YYYY-MM-DD" を new Date() に渡すとUTCとして解釈され、日本より西のタイムゾーン（来日前の利用者）では1日前にずれるので、年月日からローカル日付を作る
-export const dueDateFor = (arrival, days) => {
-  const [y, m, d] = arrival.split("-").map(Number);
-  return new Date(y, m - 1, d + days).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-};
-
 // level のバッジ設定
-// 入国日が入力済みなら "Due by" バッジが具体的な期日を出すので、日数はそちらに任せる
-const levelBadge = (task, hasDueDate) => {
+const levelBadge = (task) => {
   const map = {
     required:    { cls: "text-red-700 bg-red-50 border-red-200",    label: "Required" },
     recommended: { cls: "text-sky-700 bg-sky-50 border-sky-200",    label: "Recommended" },
@@ -403,11 +391,11 @@ const levelBadge = (task, hasDueDate) => {
   };
   const cfg = map[task.level];
   if (!cfg) return null;
-  const days = task.deadline?.days && !hasDueDate ? ` · within ${task.deadline.days} days` : "";
+  const days = task.deadline?.days ? ` · within ${task.deadline.days} days` : "";
   return <span className={`inline-flex items-center text-xs font-semibold border rounded-full px-2 py-0.5 ${cfg.cls}`}>{cfg.label}{days}</span>;
 };
 
-function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, allTasks, isNext }) {
+function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, isNext }) {
   const [open, setOpen] = useState(isNext);
   const [modal, setModal] = useState(false);
   const closeModal = useCallback(() => setModal(false), []);
@@ -452,12 +440,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
                   {t.nextBadge}
                 </span>
               )}
-              {levelBadge(task, !!dueDate)}
-              {dueDate && (
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded-full px-2 py-0.5">
-                  <Clock size={10} /> Due by {dueDate}
-                </span>
-              )}
+              {levelBadge(task)}
               {task.highlight && (
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-800 bg-amber-100 border border-amber-300 rounded-full px-2 py-0.5">
                   ★ {typeof task.highlight === "string" ? task.highlight : "Do this at the airport — saves a separate trip!"}
@@ -530,7 +513,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
 export default function JOnboard() {
   const [lang, setLang] = useState("en");
   const [step, setStep] = useState("form");
-  const [profile, setProfile] = useState({ role: null, housing: null, work: false, arrival: "" });
+  const [profile, setProfile] = useState({ role: null, housing: null, work: false });
   const [checked, setChecked] = useState({});
   const [langOpen, setLangOpen] = useState(false);
   const [housingGuideOpen, setHousingGuideOpen] = useState(false);
@@ -742,15 +725,6 @@ export default function JOnboard() {
                 )}
               </div>
 
-              {/* Arrival */}
-              <div>
-                <label htmlFor="arrival" className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">{t.arrivalLabel}</label>
-                <input id="arrival" type="date" value={profile.arrival}
-                  onChange={e => setProfile(p => ({ ...p, arrival: e.target.value }))}
-                  className="border-2 border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-0 focus:border-indigo-400 transition-all hover:border-slate-300" />
-                <p className="text-xs text-slate-400 mt-1.5">{t.arrivalHint}</p>
-              </div>
-
               <button onClick={handleGenerate} disabled={!isFormComplete}
                 className={`w-full flex items-center justify-center gap-2 font-semibold text-sm rounded-xl px-6 py-3.5 transition-colors shadow-sm ${
                   isFormComplete ? "bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer" : "bg-slate-100 text-slate-400 cursor-not-allowed shadow-none"
@@ -776,11 +750,6 @@ export default function JOnboard() {
                       <span key={i} className="text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100 rounded-full px-2.5 py-0.5">{b}</span>
                     ))}
                     {profile.work && <span className="text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200 rounded-full px-2.5 py-0.5">Work Permit</span>}
-                    {profile.arrival && (
-                      <span className="text-xs font-medium bg-slate-100 text-slate-500 rounded-full px-2.5 py-0.5 flex items-center gap-1">
-                        <Clock size={10} /> {profile.arrival}
-                      </span>
-                    )}
                   </div>
                 </div>
                 <button onClick={goToForm} className="text-xs text-indigo-500 hover:text-indigo-700 font-semibold whitespace-nowrap flex-shrink-0">
@@ -834,10 +803,6 @@ export default function JOnboard() {
               const c = phaseColors[phase.color];
               const locked = phase.lockedIfTemp && isTemp;
 
-              // 仮住まいの人は期限の起点が本住居に住み始めた日になるので、入国日からの期日は出さない
-              const calcDeadline = (task) =>
-                !locked && profile.arrival && task.deadline?.days ? dueDateFor(profile.arrival, task.deadline.days) : null;
-
               return (
                 <div key={phase.id}>
                   <div className="flex items-center gap-2.5 mb-3">
@@ -872,15 +837,12 @@ export default function JOnboard() {
                   )}
 
                   <div className="space-y-2.5">
-                    {phase.tasks.map(task => {
-                      const dueDate = calcDeadline(task);
-                      return (
-                        <TaskCard key={task.id} task={task} checked={!!checked[task.id]}
-                          onToggle={handleToggle} t={t} isLocked={locked} dueDate={dueDate}
-                          checkedIds={checked} allTasks={phases.flatMap(p => p.tasks)}
-                          isNext={task.id === nextTask?.id} />
-                      );
-                    })}
+                    {phase.tasks.map(task => (
+                      <TaskCard key={task.id} task={task} checked={!!checked[task.id]}
+                        onToggle={handleToggle} t={t} isLocked={locked}
+                        checkedIds={checked} allTasks={phases.flatMap(p => p.tasks)}
+                        isNext={task.id === nextTask?.id} />
+                    ))}
                   </div>
 
                   {pi < phases.length - 1 && (

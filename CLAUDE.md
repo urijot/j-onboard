@@ -22,7 +22,7 @@
 | 項目 | 意味 |
 |---|---|
 | `level` | `required`（法的に必須、または飛ばすと先に進めない）/ `recommended`（任意だがやらないと損）/ `optional` |
-| `deadline.days` | 入国日からの法定期限。`required` のタスクにだけ付ける。入国日が入力されると期日バッジになる |
+| `deadline.days` | 住み始めた日からの法定期限。`required` のタスクにだけ付ける。バッジに「within N days」と出る |
 | `deps` | `REQUIRED` は「Complete this first」表示と「次にやること」の判定に使う。`STRONGLY_ADVISED` は現在表示していない |
 | `counter` / `counterTranslation` | 窓口で見せる日本語フレーズとその英訳 |
 | `source` | 公式情報のURLと確認した年月（`verified: "YYYY-MM"`）。民間の手続きは `null` |
