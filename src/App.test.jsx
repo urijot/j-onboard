@@ -66,9 +66,11 @@ describe('app', () => {
     expect(screen.queryByRole('button', { name: /Generate/ })).not.toBeInTheDocument();
   });
 
-  test('shows the 14-day deadline on the City Hall tasks', () => {
+  // Health insurance also has 14 days, but cities count them from arrival or from move-in, so only the moving-in notification gets the badge
+  test('shows the 14-day deadline only on the moving-in notification', () => {
     generateStudentRoadmap();
-    expect(screen.getAllByText('Required · within 14 days')).toHaveLength(2);
+    const badge = screen.getByText('Required · within 14 days of moving in');
+    expect(document.getElementById('juminhyo')).toContainElement(badge);
   });
 
   test('tapping a task header toggles its details, but the checkbox does not', () => {

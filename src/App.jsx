@@ -29,7 +29,7 @@ const T = {
     progressLabel: "Completed",
     phase1: "Before Arrival",
     phase2: "At the Airport",
-    phase3: "Within 14 Days — City Hall & Legal",
+    phase3: "At City Hall",
     phase4: "Living Setup & University",
     lockedHousing: "Complete these steps after your permanent address is confirmed.",
     location: "Location / Office",
@@ -85,7 +85,7 @@ const T = {
     progressLabel: "完了",
     phase1: "来日前",
     phase2: "来日当日（空港）",
-    phase3: "14日以内 — 役所・法的手続き",
+    phase3: "役所の手続き",
     phase4: "生活・決済・大学手続き",
     lockedHousing: "住居確定後に実施してください。",
     location: "場所・窓口",
@@ -122,7 +122,7 @@ const T = {
 
 // 依存の強さ: REQUIRED=物理的・法的に必須 / STRONGLY_ADVISED=事業者運用依存・例外あり / TIP=アドバイス
 // level: required=義務（法的に必須 or 飛ばすと先に進めない） / recommended=推奨（任意だがやらないと損） / optional=任意
-// deadline.days: 住み始めた日からの法定期限（日数）。バッジに「within N days」と出す
+// deadline.days: 住み始めた日からの法定期限（日数）。バッジに「within N days of moving in」と出す。起点が住み始めた日でない期限には付けない
 
 export const buildPhases = (profile, lang) => {
   const t = T[lang];
@@ -233,11 +233,10 @@ export const buildPhases = (profile, lang) => {
           id: "health", title: "National Health Insurance (国民健康保険)",
           location: "Same City Hall visit — National Health Insurance window",
           required: ["Residence Card", "Residence record — just obtained", "Passport"],
-          why: "National Health Insurance covers 70% of medical costs. If your Japan income last year was zero, you can apply for a premium reduction at the same window.",
+          why: "National Health Insurance covers 70% of medical costs. You must enroll within 14 days, but cities count those days differently — some from your arrival date, others from your move-in date — so enroll on the same City Hall visit as your moving-in notification. If your Japan income last year was zero, you can apply for a premium reduction at the same window.",
           counter: "国民健康保険に加入したいです。前年の日本での所得はゼロです。保険料の軽減申請もお願いできますか？",
           counterTranslation: "I would like to enroll in National Health Insurance. My income in Japan last year was zero. Could I also apply for a premium reduction?",
           level: "required",
-          deadline: { days: 14 },
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
           source: { url: "https://www.mhlw.go.jp/stf/newpage_21539.html", verified: "2026-09" },
         },
@@ -391,7 +390,7 @@ const levelBadge = (task) => {
   };
   const cfg = map[task.level];
   if (!cfg) return null;
-  const days = task.deadline?.days ? ` · within ${task.deadline.days} days` : "";
+  const days = task.deadline?.days ? ` · within ${task.deadline.days} days of moving in` : "";
   return <span className={`inline-flex items-center text-xs font-semibold border rounded-full px-2 py-0.5 ${cfg.cls}`}>{cfg.label}{days}</span>;
 };
 
