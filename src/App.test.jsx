@@ -24,11 +24,13 @@ describe('task data', () => {
     }
   });
 
-  test('only students get the Student Payment Exception task', () => {
+  test('only students get the Student ID and Student Payment Exception tasks', () => {
     const student = tasksFor({ role: 'student', housing: 'confirmed', work: false });
     const researcher = tasksFor({ role: 'researcher', housing: 'confirmed', work: false });
-    expect(student.map(tk => tk.id)).toContain('gakutoku');
-    expect(researcher.map(tk => tk.id)).not.toContain('gakutoku');
+    for (const id of ['university', 'gakutoku']) {
+      expect(student.map(tk => tk.id)).toContain(id);
+      expect(researcher.map(tk => tk.id)).not.toContain(id);
+    }
   });
 
   test('the work permit task appears only when the user plans to work', () => {

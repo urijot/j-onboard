@@ -30,7 +30,7 @@ const T = {
     phase1: "Before Arrival",
     phase2: "At the Airport",
     phase3: "At City Hall",
-    phase4: "Living Setup & University",
+    phase4: "Living Setup",
     lockedHousing: "Complete these steps after your permanent address is confirmed.",
     location: "Location / Office",
     required: "Required Items",
@@ -86,7 +86,7 @@ const T = {
     phase1: "来日前",
     phase2: "来日当日（空港）",
     phase3: "役所の手続き",
-    phase4: "生活・決済・大学手続き",
+    phase4: "生活・決済",
     lockedHousing: "住居確定後に実施してください。",
     location: "場所・窓口",
     required: "持ち物",
@@ -305,31 +305,17 @@ export const buildPhases = (profile, lang) => {
             { taskId: "sim", type: "STRONGLY_ADVISED", note: "Japanese phone number needed for application" },
           ],
         },
-        {
-          id: "university",
-          title: isStudent
-            ? "Check In at Your University's International Office"
-            : "Check In at Your Host University",
-          location: isStudent
-            ? "International Office at your university"
-            : "The office your host university told you to contact",
-          required: [isStudent
-            ? "Whatever your university asks you to bring"
-            : "Whatever your host university asks you to bring"],
-          why: isStudent
-            ? "Your university has its own arrival procedures for exchange students — follow its instructions and complete them as early as you can. Ask whether you'll be issued a Student ID: not every university issues one to exchange students. The pension Student Payment Exception accepts either a Student ID or a Certificate of Enrollment, so if you won't get a Student ID, ask for a Certificate of Enrollment."
-            : "Your host university has its own arrival procedures — follow its instructions and complete them as early as you can.",
-          counter: isStudent
-            ? "到着後の手続きをしたいです。学生証は発行されますか？発行されない場合は、在学証明書を発行していただけますか？"
-            : "日本に到着しました。必要な手続きを教えてください。",
-          counterTranslation: isStudent
-            ? "I'd like to complete my arrival procedures. Will I be issued a Student ID? If not, could you issue me a Certificate of Enrollment?"
-            : "I've arrived in Japan. Could you tell me what procedures I need to complete?",
-          level: "required",
-          deps: [{ taskId: "rezcard", type: "REQUIRED" }],
-          source: null,
-        },
         ...(isStudent ? [{
+          id: "university", title: "Get a Student ID (学生証) or Certificate of Enrollment (在学証明書)",
+          location: "International Office at your university",
+          required: ["Whatever your university asks you to bring"],
+          why: "You'll need one of these to apply for the pension Student Payment Exception — either one is accepted. Not every university issues a Student ID to exchange students, so if yours doesn't, ask for a Certificate of Enrollment instead.",
+          counter: "学生証は発行されますか？発行されない場合は、在学証明書を発行していただけますか？",
+          counterTranslation: "Will I be issued a Student ID? If not, could you issue me a Certificate of Enrollment?",
+          level: "recommended",
+          deps: [],
+          source: { url: "https://www.nenkin.go.jp/service/kokunen/menjo/20150514.html", verified: "2026-09" },
+        }, {
           id: "gakutoku", title: "Apply for the Student Payment Exception (学生納付特例)",
           location: "Your university, Mynaportal on your phone, or City Hall — pension window",
           required: [
