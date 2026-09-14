@@ -19,9 +19,10 @@
 
 ## 技術スタック
 
-- [React](https://react.dev/)（Create React App）
+- [React](https://react.dev/)（[Vite](https://vite.dev/) でビルド）
 - [Tailwind CSS](https://tailwindcss.com/)
 - [lucide-react](https://lucide.dev/)（アイコン）
+- [Vitest](https://vitest.dev/) + Testing Library（テスト）
 
 ## セットアップ
 
@@ -31,25 +32,17 @@ npm install
 
 ## 利用可能なコマンド
 
-プロジェクトディレクトリで以下のコマンドを実行できます。
-
 ### `npm start`
 
 開発モードでアプリを起動します。\
 ブラウザで [http://localhost:3000](http://localhost:3000) を開いて確認してください。
 
-ファイルを編集して保存すると、自動的にリロードされます。
+ファイルを編集して保存すると、自動的に反映されます。
 
 ### `npm test`
 
-テストランナーをインタラクティブなウォッチモードで起動します。
+テストを1回実行します。
 
 ### `npm run build`
 
-本番用にアプリを `build` フォルダへビルドします。React が最適化されたビルドを作成し、ファイル名にハッシュが付与されます。
-
-### `npm run eject`
-
-**注意：これは一方向の操作です。一度 `eject` すると元に戻せません。**
-
-ビルド設定（webpack、Babel、ESLintなど）をすべて自分のプロジェクト配下に展開し、完全にコントロールできるようにします。通常のプロジェクトでは不要な操作です。
+本番用にアプリを `dist` フォルダへビルドします。`npm run preview` でビルド結果を手元で確認できます。

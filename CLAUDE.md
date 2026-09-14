@@ -4,9 +4,9 @@
 
 ## コマンド
 
-- `npm start` — 開発サーバー（http://localhost:3000）
-- `CI=true npm test -- --watchAll=false` — テストを1回だけ実行
-- `npm run build` — 本番ビルド
+- `npm start` — 開発サーバー（Vite、http://localhost:3000）
+- `npm test` — テストを1回だけ実行（Vitest）
+- `npm run build` — 本番ビルド（`dist/` に出力。Vercel の設定は `vercel.json`）
 
 ## 構成
 

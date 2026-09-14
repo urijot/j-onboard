@@ -49,7 +49,7 @@ describe('dueDateFor', () => {
 describe('app', () => {
   beforeEach(() => {
     localStorage.clear();
-    window.scrollTo = jest.fn();
+    window.scrollTo = vi.fn();
   });
 
   const generateStudentRoadmap = () => {
