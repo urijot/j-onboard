@@ -306,12 +306,25 @@ export const buildPhases = (profile, lang) => {
           ],
         },
         {
-          id: "university", title: "University Onboarding & Student ID (学生証)",
-          location: "International Office at your university",
-          required: ["Passport", "Residence Card", "Admission letter / research agreement", "ID photo"],
-          why: "Your Student ID is required for campus facilities, library access, and the National Pension Student Payment Exception. Timing depends on your university's orientation schedule — complete as early as possible. If your student ID isn't ready yet, ask for an enrollment certificate instead, which is accepted as a substitute for the pension exemption application.",
-          counter: "国際センターで学生証の発行手続きをしたいのですが、必要な書類を教えてください。",
-          counterTranslation: "I would like to get my Student ID issued at the International Office. Could you tell me what documents I need?",
+          id: "university",
+          title: isStudent
+            ? "Check In at Your University's International Office"
+            : "Check In at Your Host University",
+          location: isStudent
+            ? "International Office at your university"
+            : "The office your host university told you to contact",
+          required: [isStudent
+            ? "Whatever your university asks you to bring"
+            : "Whatever your host university asks you to bring"],
+          why: isStudent
+            ? "Your university has its own arrival procedures for exchange students — follow its instructions and complete them as early as you can. Ask whether you'll be issued a Student ID: not every university issues one to exchange students. The pension Student Payment Exception accepts either a Student ID or a Certificate of Enrollment, so if you won't get a Student ID, ask for a Certificate of Enrollment."
+            : "Your host university has its own arrival procedures — follow its instructions and complete them as early as you can.",
+          counter: isStudent
+            ? "到着後の手続きをしたいです。学生証は発行されますか？発行されない場合は、在学証明書を発行していただけますか？"
+            : "日本に到着しました。必要な手続きを教えてください。",
+          counterTranslation: isStudent
+            ? "I'd like to complete my arrival procedures. Will I be issued a Student ID? If not, could you issue me a Certificate of Enrollment?"
+            : "I've arrived in Japan. Could you tell me what procedures I need to complete?",
           level: "required",
           deps: [{ taskId: "rezcard", type: "REQUIRED" }],
           source: null,
@@ -320,12 +333,12 @@ export const buildPhases = (profile, lang) => {
           id: "gakutoku", title: "Apply for the Student Payment Exception (学生納付特例)",
           location: "Your university, Mynaportal on your phone, or City Hall — pension window",
           required: [
-            "Student ID",
+            "Student ID or Certificate of Enrollment from your university",
             "My Number Card — or, until you have one, a residence record showing your My Number plus your Residence Card",
           ],
-          why: "With the Student Payment Exception, you pay no National Pension premiums and those months aren't recorded as unpaid — it's open to students whose income last year was ¥1.28 million or less (higher with dependents). You can apply once your classes have started. Easiest first: ask your international office whether your university accepts the application on campus; if you have your My Number Card, apply from your phone on Mynaportal with a photo of your Student ID (only some screens are in English); otherwise, apply at the City Hall pension window. Don't put it off — an accident or illness before your application date may not qualify for the disability pension.",
-          counter: "国民年金の学生納付特例の申請をしたいです。交換留学生ですが対象になりますか？学生証を持参しました。",
-          counterTranslation: "I would like to apply for the Student Payment Exception. I'm an exchange student — am I eligible? I have my Student ID with me.",
+          why: "With the Student Payment Exception, you pay no National Pension premiums and those months aren't recorded as unpaid — it's open to students whose income last year was ¥1.28 million or less (higher with dependents). You can apply once your classes have started. Easiest first: ask your international office whether your university accepts the application on campus; if you have your My Number Card, apply from your phone on Mynaportal with a photo of your Student ID or Certificate of Enrollment (only some screens are in English); otherwise, apply at the City Hall pension window. Don't put it off — an accident or illness before your application date may not qualify for the disability pension.",
+          counter: "国民年金の学生納付特例の申請をしたいです。交換留学生ですが対象になりますか？学生証（または在学証明書）を持参しました。",
+          counterTranslation: "I would like to apply for the Student Payment Exception. I'm an exchange student — am I eligible? I have my Student ID (or Certificate of Enrollment) with me.",
           level: "recommended",
           deps: [
             { taskId: "pension", type: "REQUIRED" },
