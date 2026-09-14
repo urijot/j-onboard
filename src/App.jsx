@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   CheckCircle2, Circle, ChevronDown, ChevronUp,
   AlertTriangle, Info, Globe, ArrowRight, Clock, Building2,
@@ -355,16 +355,24 @@ function AnsweredMark({ answered }) {
   return <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />;
 }
 
-function CounterModal({ text, translation, onClose }) {
+function CounterModal({ text, translation, onClose, t }) {
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4" onClick={e => e.stopPropagation()}>
+      <div role="dialog" aria-modal="true" aria-label="Show at Counter"
+        className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4" onClick={e => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Show at Counter 🇯🇵</span>
-          <button onClick={onClose} className="text-slate-300 hover:text-slate-500 transition-colors"><X size={18} /></button>
+          <button onClick={onClose} aria-label={t.close} className="text-slate-300 hover:text-slate-500 transition-colors"><X size={18} /></button>
         </div>
         <div className="bg-slate-50 rounded-xl p-5 text-center">
-          <p className="text-xl leading-relaxed text-slate-800 font-medium">{text}</p>
+          {/* lang="ja" がないと、中国語設定の端末などで漢字が中国語の字形で表示される */}
+          <p lang="ja" className="text-xl leading-relaxed text-slate-800 font-medium">{text}</p>
         </div>
         {translation && (
           <div className="border border-slate-200 rounded-xl p-4">
@@ -377,6 +385,13 @@ function CounterModal({ text, translation, onClose }) {
     </div>
   );
 }
+
+// 期日 = 入国日 + deadline.days
+// "YYYY-MM-DD" を new Date() に渡すとUTCとして解釈され、日本より西のタイムゾーン（来日前の利用者）では1日前にずれるので、年月日からローカル日付を作る
+export const dueDateFor = (arrival, days) => {
+  const [y, m, d] = arrival.split("-").map(Number);
+  return new Date(y, m - 1, d + days).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+};
 
 // level のバッジ設定
 // 入国日が入力済みなら "Due by" バッジが具体的な期日を出すので、日数はそちらに任せる
@@ -395,6 +410,7 @@ const levelBadge = (task, hasDueDate) => {
 function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, allTasks, isNext }) {
   const [open, setOpen] = useState(isNext);
   const [modal, setModal] = useState(false);
+  const closeModal = useCallback(() => setModal(false), []);
 
   // 完了したら閉じる。次のアクションになったら自動的に開き、外れたら自動的に閉じる
   useEffect(() => { if (checked) setOpen(false); }, [checked]);
@@ -408,13 +424,14 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
 
   return (
     <>
-      {modal && <CounterModal text={task.counter} translation={task.counterTranslation} onClose={() => setModal(false)} />}
+      {modal && <CounterModal text={task.counter} translation={task.counterTranslation} onClose={closeModal} t={t} />}
       <div id={task.id} className={`rounded-xl border scroll-mt-20 transition-all duration-200 ${
         isNext ? "border-indigo-300 ring-2 ring-indigo-100 bg-indigo-50/30"
           : task.highlight ? "border-amber-300 bg-amber-50/40" : "border-slate-200 bg-white"
       } ${checked ? "opacity-60" : ""}`}>
         <div onClick={() => setOpen(o => !o)} className="flex items-start gap-3 p-4 cursor-pointer">
           <button onClick={e => { e.stopPropagation(); if (!isLocked) onToggle(task.id); }}
+            role="checkbox" aria-checked={checked} aria-disabled={isLocked} aria-label={task.title}
             className={`mt-0.5 flex-shrink-0 transition-colors ${isLocked ? "opacity-25 cursor-not-allowed" : "cursor-pointer"}`}>
             {checked
               ? <CheckCircle2 size={20} className="text-emerald-500" />
@@ -425,7 +442,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
               <p className={`text-sm font-semibold leading-snug ${checked ? "line-through text-slate-400" : "text-slate-800"}`}>
                 {task.title}
               </p>
-              <button aria-expanded={open} className="flex-shrink-0 text-slate-300 hover:text-slate-500 transition-colors ml-1">
+              <button aria-expanded={open} aria-label={task.title} className="flex-shrink-0 text-slate-300 hover:text-slate-500 transition-colors ml-1">
                 {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
             </div>
@@ -451,7 +468,8 @@ function TaskCard({ task, checked, onToggle, t, isLocked, dueDate, checkedIds, a
         </div>
 
         <div className={`grid transition-all duration-300 ease-in-out ${open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
-          <div className="overflow-hidden">
+          {/* 閉じている間は中のボタン・リンクにキーボードや読み上げで入れないようにする */}
+          <div className="overflow-hidden" inert={!open}>
           <div className="px-4 pb-4 pt-2 border-t border-slate-100 space-y-4">
             {/* 未完了の依存タスク警告 */}
             {unmetDeps.length > 0 && (
@@ -526,6 +544,8 @@ export default function JOnboard() {
       const st = localStorage.getItem("jonboard_step"); if (st === "roadmap") setStep("roadmap");
     } catch {}
   }, []);
+
+  useEffect(() => { document.documentElement.lang = lang; }, [lang]);
 
   const handleToggle = (id) => {
     const next = { ...checked, [id]: !checked[id] };
@@ -668,6 +688,7 @@ export default function JOnboard() {
                 <div className="flex gap-2.5 flex-wrap">
                   {[["student", t.roleStudent], ["researcher", t.roleResearcher], ["other", t.roleOther]].map(([v, label]) => (
                     <button key={v} onClick={() => setProfile(p => ({ ...p, role: v, work: false }))}
+                      aria-pressed={profile.role === v}
                       className={`px-4 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${profile.role === v ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"}`}>
                       {label}
                     </button>
@@ -693,6 +714,7 @@ export default function JOnboard() {
                 <div className="flex gap-2.5 flex-wrap">
                   {[["confirmed", t.housingConfirmed], ["temp", t.housingTemp]].map(([v, label]) => (
                     <button key={v} onClick={() => setProfile(p => ({ ...p, housing: v }))}
+                      aria-pressed={profile.housing === v}
                       className={`px-4 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${profile.housing === v ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"}`}>
                       {label}
                     </button>
@@ -704,13 +726,14 @@ export default function JOnboard() {
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">{t.workLabel}</label>
                 <p className="text-xs text-slate-400 mb-2.5">{t.workHint}</p>
-                <label onClick={() => setProfile(p => ({ ...p, work: !p.work }))}
-                  className="flex items-start gap-3 cursor-pointer group">
+                <button type="button" role="checkbox" aria-checked={profile.work}
+                  onClick={() => setProfile(p => ({ ...p, work: !p.work }))}
+                  className="flex items-start gap-3 cursor-pointer group text-left">
                   <div className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all ${profile.work ? "bg-indigo-600 border-indigo-600" : "border-slate-300 group-hover:border-indigo-400"}`}>
                     {profile.work && <CheckCircle2 size={12} className="text-white" />}
                   </div>
                   <span className="text-sm text-slate-700 leading-snug">{t.workCheck}</span>
-                </label>
+                </button>
                 {profile.work && (
                   <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm text-slate-700 mt-2.5">
                     <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
@@ -721,8 +744,8 @@ export default function JOnboard() {
 
               {/* Arrival */}
               <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">{t.arrivalLabel}</label>
-                <input type="date" value={profile.arrival}
+                <label htmlFor="arrival" className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5">{t.arrivalLabel}</label>
+                <input id="arrival" type="date" value={profile.arrival}
                   onChange={e => setProfile(p => ({ ...p, arrival: e.target.value }))}
                   className="border-2 border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-0 focus:border-indigo-400 transition-all hover:border-slate-300" />
                 <p className="text-xs text-slate-400 mt-1.5">{t.arrivalHint}</p>
@@ -811,14 +834,9 @@ export default function JOnboard() {
               const c = phaseColors[phase.color];
               const locked = phase.lockedIfTemp && isTemp;
 
-              // 期日計算: 入国日 + deadline.days
-              const calcDeadline = (task) => {
-                if (!profile.arrival || !task.deadline?.days) return null;
-                const arrival = new Date(profile.arrival);
-                const due = new Date(arrival);
-                due.setDate(due.getDate() + task.deadline.days);
-                return due.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-              };
+              // 仮住まいの人は期限の起点が本住居に住み始めた日になるので、入国日からの期日は出さない
+              const calcDeadline = (task) =>
+                !locked && profile.arrival && task.deadline?.days ? dueDateFor(profile.arrival, task.deadline.days) : null;
 
               return (
                 <div key={phase.id}>

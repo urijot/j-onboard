@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, within } from '@testing-library/react';
-import App, { buildPhases } from './App';
+import App, { buildPhases, dueDateFor } from './App';
 
 const profiles = ['student', 'researcher'].flatMap(role =>
   [false, true].map(work => ({ role, housing: 'confirmed', work, arrival: '' }))
@@ -38,6 +38,14 @@ describe('task data', () => {
   });
 });
 
+describe('dueDateFor', () => {
+  // Users west of Japan (e.g. TZ=America/New_York) used to get a date one day early
+  test('counts days from the arrival date in any time zone', () => {
+    expect(dueDateFor('2026-10-01', 14)).toBe('Oct 15, 2026');
+    expect(dueDateFor('2026-12-25', 14)).toBe('Jan 8, 2027');
+  });
+});
+
 describe('app', () => {
   beforeEach(() => {
     localStorage.clear();
@@ -71,6 +79,22 @@ describe('app', () => {
     expect(screen.getAllByText('Required · within 14 days')).toHaveLength(2);
   });
 
+  test('shows a due date from the arrival date only when housing is confirmed', () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: 'Exchange Student' }));
+    fireEvent.change(screen.getByLabelText('Arrival Date'), { target: { value: '2026-10-01' } });
+
+    // Temporary housing: the 14 days start when they move into a permanent address, not on arrival
+    fireEvent.click(screen.getByRole('button', { name: /Not yet/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Generate/ }));
+    expect(screen.queryByText(/Due by/)).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /Edit Answers/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Yes — dorm/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Generate/ }));
+    expect(screen.getAllByText(/Due by Oct 15, 2026/)).toHaveLength(2);
+  });
+
   test('tapping a task header toggles its details, but the checkbox does not', () => {
     generateStudentRoadmap();
     const card = within(document.getElementById('visa'));
@@ -81,8 +105,7 @@ describe('app', () => {
     fireEvent.click(card.getByText(/Apply for your Student \/ Researcher Visa/));
     expect(chevron).toHaveAttribute('aria-expanded', 'false');
 
-    const [checkbox] = card.getAllByRole('button');
-    fireEvent.click(checkbox);
+    fireEvent.click(card.getByRole('checkbox'));
     expect(chevron).toHaveAttribute('aria-expanded', 'false');
     expect(screen.getByText('1 / 12 Completed')).toBeInTheDocument();
   });
