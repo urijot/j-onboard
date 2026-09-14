@@ -74,7 +74,7 @@ const T = {
     roleOther: "その他・わからない",
     otherRoleNote: "このチェックリストは交換留学生・客員研究者を前提に作られており、ビザ・年金・住居の手続きはこの2区分を想定した内容です。別の区分の方に正確な案内をするのは難しいため、まずは在留資格認定証明書やビザを発行してもらった窓口——受け入れ機関の国際担当部署、勤務先の人事・在留手続き窓口、またはご家族の受け入れ先機関——に確認するのが一番確実です。あなたの正確なビザ区分を把握しているのはその窓口だからです。",
     housingLabel: "日本での住まいはもう決まっていますか？",
-    housingHint: "この回答によって、住民登録（転入届、来日14日以内が義務）を今行えるかが決まります。",
+    housingHint: "この回答によって、住民登録（転入届、住み始めてから14日以内が義務）を今行えるかが決まります。",
     housingConfirmed: "はい — 寮・賃貸・ホームステイ先が決まっています",
     housingTemp: "まだです — ホテル/Airbnbなど仮住まい中、または探している最中です",
     workLabel: "日本でアルバイトなど有償の活動をする予定はありますか？",
@@ -231,7 +231,7 @@ export const buildPhases = (profile, lang) => {
           level: "required",
           deadline: { days: 14 },
           deps: [{ taskId: "rezcard", type: "REQUIRED" }],
-          source: { url: "https://www.soumu.go.jp/main_sosiki/jichi_gyousei/daityo/jjn.html", verified: "2026-08" },
+          source: { url: "https://www.soumu.go.jp/main_sosiki/jichi_gyousei/c-gyousei/zairyu/move-in_move-out.html", verified: "2026-09" },
         },
         {
           id: "health", title: "National Health Insurance (国民健康保険)",
