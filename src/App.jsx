@@ -853,18 +853,14 @@ export default function JOnboard() {
               );
             })}
 
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
-              <div className="flex items-center gap-2">
-                <Info size={13} className="text-slate-400 flex-shrink-0" />
-                <p className="text-xs font-semibold text-slate-500">Information last verified: August 2026</p>
-              </div>
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
               <p className="text-xs text-slate-400 leading-relaxed">
                 Administrative procedures and requirements may change. Always confirm with your university's international office or the relevant government agency before acting.
               </p>
             </div>
 
             <p className="text-center text-xs text-slate-400 pb-4">
-              J-Onboard · No personal data stored on servers · For reference only
+              J-Onboard · No personal data stored on servers
             </p>
           </>
         )}
