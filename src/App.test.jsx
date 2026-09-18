@@ -19,9 +19,11 @@ describe('task data', () => {
       // Every task needs a key point: the why text now sits behind a modal
       expect(tk.keyPoint?.length).toBeGreaterThan(0);
       for (const dep of tk.deps || []) expect(ids).toContain(dep.taskId);
-      if (tk.source) {
-        expect(tk.source.url).toMatch(/^https:\/\//);
-        expect(tk.source.verified).toMatch(/^\d{4}-\d{2}$/);
+      for (const src of [tk.source ?? []].flat()) {
+        expect(src.url).toMatch(/^https:\/\//);
+        expect(src.verified).toMatch(/^\d{4}-\d{2}$/);
+        // Several sources on one task are only distinguishable if each says what it backs
+        if (Array.isArray(tk.source)) expect(src.label?.length).toBeGreaterThan(0);
       }
     }
   });
@@ -121,7 +123,9 @@ describe('app', () => {
     const card = within(document.getElementById('health'));
     fireEvent.click(card.getByText('National Health Insurance (国民健康保険)'));
     expect(card.getByText(/Enroll within 14 days/)).toBeInTheDocument();
-    expect(card.getByRole('link', { name: /Official source/ })).toBeInTheDocument();
+    // This task rests on three official pages, each labelled with what it backs
+    expect(card.getAllByRole('link')).toHaveLength(3);
+    expect(card.getByRole('link', { name: /14-day deadline/ })).toBeInTheDocument();
   });
 });
 

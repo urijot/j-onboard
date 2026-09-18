@@ -249,13 +249,17 @@ export const buildPhases = (profile, lang) => {
             { text: "Residence record — just obtained", onSite: true },
             "Passport",
           ],
-          keyPoint: "Enroll within 14 days. Cities count those days differently, so enroll on the same visit as your moving-in notification.",
-          why: "National Health Insurance covers 70% of medical costs. You must enroll within 14 days, but cities count those days differently — some from your arrival date, others from your move-in date — so enroll on the same City Hall visit as your moving-in notification. If your Japan income last year was zero, you can apply for a premium reduction at the same window.",
+          keyPoint: "Enroll within 14 days — cities count the days differently, so go on the same visit as your moving-in notification. If you had no income in Japan last year, ask for the low-income reduction: it is not applied automatically.",
+          why: "National Health Insurance covers 70% of medical costs, and everyone registered as a resident pays premiums. Being a student does not reduce them by itself — the Student Payment Exception that exists for National Pension has no equivalent here. What can reduce them is the reduction for low-income households, which students arriving with no income in Japan often qualify for. You have to claim it: cities ask you to declare last year's income, and a household that declares nothing is left out of the reduction. Each city sets its own premiums, and its own income limit if you work part-time, so ask at the window what applies to you. If you stay into another fiscal year, expect to declare again — some cities ask students to repeat it every year.",
           counter: "国民健康保険に加入したいです。前年の日本での所得はゼロです。保険料の軽減申請もお願いできますか？",
           counterTranslation: "I would like to enroll in National Health Insurance. My income in Japan last year was zero. Could I also apply for a premium reduction?",
           level: "required",
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
-          source: { url: "https://www.mhlw.go.jp/stf/newpage_21539.html", verified: "2026-09" },
+          source: [
+            { url: "https://www.mhlw.go.jp/stf/newpage_21539.html", label: "Who must enrol, and the 14-day deadline", verified: "2026-09" },
+            { url: "https://www.mhlw.go.jp/stf/newpage_21517.html", label: "How premiums are set", verified: "2026-09" },
+            { url: "https://www.city.shinjuku.lg.jp/kenkou/hoken01_000001_00025.html", label: "Reduction for students with no income (Shinjuku example)", verified: "2026-09" },
+          ],
         },
         {
           id: "pension",
@@ -449,6 +453,10 @@ function WhyModal({ task, onClose, t }) {
   );
 }
 
+// source は1件のオブジェクトでも、複数の配列でもよい
+const taskSources = (task) =>
+  !task.source ? [] : Array.isArray(task.source) ? task.source : [task.source];
+
 // required の項目は文字列か { text, onSite }。onSite は窓口で受け取るもので、家から持っていくものではない
 const itemText = (item) => (typeof item === "string" ? item : item.text);
 const isOnSite = (item) => typeof item !== "string" && !!item.onSite;
@@ -586,13 +594,6 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
                 </div>
               </div>
             )}
-            {/* 期限・金額・順番は「?」の奥に隠さず、開けば必ず目に入る位置に置く */}
-            {task.keyPoint && (
-              <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3">
-                <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
-                <p className="text-sm text-slate-700 leading-relaxed">{task.keyPoint}</p>
-              </div>
-            )}
             <div>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t.location}</p>
               <p className="text-sm text-slate-600">{task.location}</p>
@@ -608,20 +609,29 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
                 ))}
               </ul>
             </div>
-            <div className="flex items-center gap-3">
+            {/* 期限・金額・順番は「?」の奥に隠さず、開けば必ず目に入る位置に置く */}
+            {task.keyPoint && (
+              <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3">
+                <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
+                <p className="text-sm text-slate-700 leading-relaxed">{task.keyPoint}</p>
+              </div>
+            )}
+            <div className="space-y-2.5">
               <button onClick={() => setModal(true)}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg px-3 py-2 transition-colors">
                 <FileText size={13} /> {t.showCounter}
               </button>
-              {task.source?.url && (
-                <a href={task.source.url} target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-indigo-600 transition-colors">
-                  Official source ↗
-                  {task.source.verified && (
-                    <span className="text-slate-300 ml-1">· verified {task.source.verified}</span>
-                  )}
-                </a>
-              )}
+              <div className="flex flex-col items-start gap-1">
+                {taskSources(task).map((src, i) => (
+                  <a key={i} href={src.url} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-indigo-600 transition-colors">
+                    {src.label || "Official source"} ↗
+                    {src.verified && (
+                      <span className="text-slate-300 ml-1">· verified {src.verified}</span>
+                    )}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
           </div>
