@@ -22,7 +22,6 @@ const T = {
     workLabel: "Will you work or do any paid activity in Japan?",
     workHint: "This decides whether you need to apply for a work permit at immigration.",
     workCheck: "Yes, I plan to work part-time",
-    workPermitNote: "You'll apply for a work permit — either at the airport when you receive your Residence Card, or later at a regional immigration bureau. This works the same way regardless of your specific status of residence.",
     generate: "Generate My Setup Roadmap",
     tempHousingAlert: "You cannot register your residence at a hotel or temporary address. Come back to City Hall once your permanent address is confirmed.",
     summaryLabel: "Your Profile",
@@ -78,7 +77,6 @@ const T = {
     workLabel: "日本でアルバイトなど有償の活動をする予定はありますか？",
     workHint: "資格外活動許可の申請が必要かどうかがこれで決まります。",
     workCheck: "はい、アルバイトを予定している（資格外活動許可申請）",
-    workPermitNote: "資格外活動許可は、在留カードを受け取る空港窓口で同時に申請するか、後日地方出入国在留管理局で申請します。在留資格の種類（教授・研究・文化活動など）に関わらず同じ手続きです。",
     generate: "ロードマップを生成",
     tempHousingAlert: "ホテル等の仮住まいでは住民登録（転入届）ができません。本住居確定後に役所へ行く必要があります。",
     summaryLabel: "あなたのプロフィール",
@@ -197,18 +195,18 @@ export const buildPhases = (profile, lang) => {
           deps: [],
           source: { url: "https://www.moj.go.jp/isa/publications/faq/newimmiact_4_port-city.html", verified: "2026-08" },
         },
-        ...(wantsWork ? [{
+        ...(wantsWork && isStudent ? [{
           id: "workpermit",
           title: "Apply for Work Permit (資格外活動許可)",
           location: "Immigration counter at your arrival airport — same counter as your Residence Card. Application form is available at the counter, fill in and submit on the spot.",
           required: ["Passport", "Certificate of Eligibility", "Residence Card — received at the same counter simultaneously"],
-          why: "Applying here gets the stamp on your Residence Card immediately — saving a separate trip to a regional immigration bureau later (typically a half-day errand). You receive your Residence Card and Work Permit stamp at the same counter in one go.",
+          why: "You cannot do any paid work without this permit. The airport counter accepts the application from new arrivals granted the Student status of residence, unless your period of stay is 3 months — so apply here and the stamp goes on your Residence Card on the spot, saving a separate trip to a regional immigration bureau later (typically a half-day errand).",
           counter: "資格外活動許可の申請をしたいのですが、ここで手続きできますか？在留カードも同時に受け取りたいです。",
           counterTranslation: "I would like to apply for a Work Permit. Can I do it here? I also need to receive my Residence Card at the same time.",
           highlight: "Apply simultaneously with your Residence Card — same counter",
           level: "required",
           deps: [],
-          source: { url: "https://www.moj.go.jp/isa/applications/procedures/nyuukokukanri10_00015.html", verified: "2026-08" },
+          source: { url: "https://www.moj.go.jp/isa/publications/faq/newimmiact_4_port-city.html", verified: "2026-09" },
         }] : []),
       ],
     },
@@ -280,6 +278,23 @@ export const buildPhases = (profile, lang) => {
       id: "p4", label: t.phase4, color: "violet",
       icon: <Shield size={15} />,
       tasks: [
+        ...(wantsWork && !isStudent ? [{
+          id: "workpermitoffice",
+          title: "Apply for Work Permit (資格外活動許可)",
+          location: "Regional immigration bureau covering the area where you live",
+          required: [
+            "Application form (資格外活動許可申請書) — available at the counter",
+            "A document showing what work you will be doing",
+            "Residence Card",
+            "Passport",
+          ],
+          why: "You cannot do any paid work without this permit. The airport counter only accepts these applications from new arrivals granted the Student status of residence, so you apply at the regional immigration bureau for your address instead. There is no fee. Processing takes 2 weeks to 2 months, so apply well before you plan to start working.",
+          counter: "資格外活動許可の申請に来ました。必要な書類がそろっているか確認していただけますか？",
+          counterTranslation: "I am here to apply for a Work Permit. Could you check whether I have all the documents I need?",
+          level: "required",
+          deps: [{ taskId: "rezcard", type: "REQUIRED" }],
+          source: { url: "https://www.moj.go.jp/isa/applications/procedures/16-8.html", verified: "2026-09" },
+        }] : []),
         {
           id: "sim", title: "Voice/SMS SIM Contract (格安SIM)",
           location: "IIJmio, Mineo, or Rakuten Mobile — store or online",
@@ -715,12 +730,6 @@ export default function JOnboard() {
                   </div>
                   <span className="text-sm text-slate-700 leading-snug">{t.workCheck}</span>
                 </button>
-                {profile.work && (
-                  <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm text-slate-700 mt-2.5">
-                    <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
-                    <span>{t.workPermitNote}</span>
-                  </div>
-                )}
               </div>
 
               <button onClick={handleGenerate} disabled={!isFormComplete}

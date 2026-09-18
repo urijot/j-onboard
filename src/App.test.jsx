@@ -38,6 +38,16 @@ describe('task data', () => {
     expect(tasksFor({ ...base, work: true }).map(tk => tk.id)).toContain('workpermit');
     expect(tasksFor({ ...base, work: false }).map(tk => tk.id)).not.toContain('workpermit');
   });
+
+  // 空港で申請できるのは「留学」で新規入国した人だけ。研究者は地方出入国在留管理官署で申請する
+  test('only students apply for the work permit at the airport', () => {
+    const student = tasksFor({ role: 'student', housing: 'confirmed', work: true }).map(tk => tk.id);
+    const researcher = tasksFor({ role: 'researcher', housing: 'confirmed', work: true }).map(tk => tk.id);
+    expect(student).toContain('workpermit');
+    expect(student).not.toContain('workpermitoffice');
+    expect(researcher).toContain('workpermitoffice');
+    expect(researcher).not.toContain('workpermit');
+  });
 });
 
 describe('app', () => {
