@@ -143,6 +143,7 @@ export const buildPhases = (profile, lang) => {
             "Confirmation email from your university's international office",
             "Check that your name, nationality, and visa type are correct",
           ],
+          keyPoint: "If it hasn't arrived 2–3 months before departure, contact your host university's international office.",
           why: "The Certificate of Eligibility is issued by the Immigration Services Agency on behalf of your host university in Japan — you don't apply for it yourself. Without it, you cannot apply for a visa. Contact your host university's international office if it hasn't arrived 2–3 months before departure.",
           counter: "在留資格認定証明書の発行状況を確認したいです。いつ頃届きますか？",
           counterTranslation: "I would like to check the status of my Certificate of Eligibility. When can I expect to receive it?",
@@ -160,6 +161,7 @@ export const buildPhases = (profile, lang) => {
             "Passport-size photo",
             "Application fee (varies by country)",
           ],
+          keyPoint: "Processing typically takes 5–10 business days, and the exact requirements vary by country.",
           why: "You cannot board a flight to Japan without a visa. Processing typically takes 5–10 business days. Check your country's Japanese embassy website for exact requirements as they vary by country.",
           counter: "学生ビザの申請をしたいです。在留資格認定証明書を持参しました。",
           counterTranslation: "I would like to apply for a student visa. I have my Certificate of Eligibility with me.",
@@ -175,6 +177,7 @@ export const buildPhases = (profile, lang) => {
             "JPY cash ~¥50,000 for first days",
             "Travel eSIM (recommended) or prepaid physical SIM as backup",
           ],
+          keyPoint: "Many Japanese ATMs reject foreign cards. Buy and install your eSIM before you leave home.",
           why: "Many Japanese ATMs reject foreign cards. Wise or Revolut cards work reliably at Japanese ATMs and convenience stores — set one up before departure. For eSIM: buy and install before leaving home, it activates the moment you land with no queuing. If your phone is not eSIM-compatible, prepaid physical SIM cards are available at airport counters (Narita/Haneda) but expect queues after long-haul flights.",
           counter: "両替と海外クレジットカードを持参しました。現金とSIMカードの準備についてお聞きしたいです。",
           counterTranslation: "I have brought foreign currency and an international card. I'd like to ask about cash exchange and SIM card options.",
@@ -192,6 +195,7 @@ export const buildPhases = (profile, lang) => {
           id: "rezcard", title: "Receive Residence Card (在留カード)",
           location: "Immigration counter at your arrival airport — issued automatically during immigration inspection. No application needed.",
           required: ["Passport — with your visa", "Certificate of Eligibility — original"],
+          keyPoint: "Only 10 major airports hand the card over on the spot. Elsewhere it is mailed after your moving-in notification — allow about 2 weeks.",
           why: "The Residence Card is issued automatically during immigration — you don't apply for it. At 10 major airports (Narita, Haneda, Kansai, Chubu, Chitose, Sendai, Niigata, Hiroshima, Fukuoka, Naha) it is handed to you on the spot. At other airports, your passport gets a 'Residence Card to be issued later' stamp and the card is mailed to your registered address after you complete your moving-in notification — allow ~2 weeks. Until it arrives, your stamped passport serves as a substitute.",
           counter: "在留カードを受け取りに来ました。どちらの窓口ですか？",
           counterTranslation: "I am here to receive my Residence Card. Which counter should I go to?",
@@ -208,6 +212,7 @@ export const buildPhases = (profile, lang) => {
             "Certificate of Eligibility",
             { text: "Residence Card — received at the same counter simultaneously", onSite: true },
           ],
+          keyPoint: "The airport counter cannot accept this if your period of stay is 3 months.",
           why: "You cannot do any paid work without this permit. The airport counter accepts the application from new arrivals granted the Student status of residence, unless your period of stay is 3 months — so apply here and the stamp goes on your Residence Card on the spot, saving a separate trip to a regional immigration bureau later (typically a half-day errand).",
           counter: "資格外活動許可の申請をしたいのですが、ここで手続きできますか？在留カードも同時に受け取りたいです。",
           counterTranslation: "I would like to apply for a Work Permit. Can I do it here? I also need to receive my Residence Card at the same time.",
@@ -227,6 +232,7 @@ export const buildPhases = (profile, lang) => {
           id: "juminhyo", title: "Moving-in Notification (転入届)",
           location: "City Hall — Residents Affairs Division / resident registration window",
           required: ["Passport", "Residence Card", "Lease contract or dorm registration letter"],
+          keyPoint: "Get 1–2 certified copies of your residence record at the same visit — you'll need them for SIM and bank contracts.",
           why: "The moving-in notification is a legal obligation within 14 days of moving in. Get 1–2 certified copies of your residence record at the same visit — you'll need them for SIM contracts and bank accounts.",
           counter: "転入届を提出したいです。住民票の写しも2部お願いします。",
           counterTranslation: "I would like to submit my moving-in notification. Could I also get 2 copies of my residence record?",
@@ -243,6 +249,7 @@ export const buildPhases = (profile, lang) => {
             { text: "Residence record — just obtained", onSite: true },
             "Passport",
           ],
+          keyPoint: "Enroll within 14 days. Cities count those days differently, so enroll on the same visit as your moving-in notification.",
           why: "National Health Insurance covers 70% of medical costs. You must enroll within 14 days, but cities count those days differently — some from your arrival date, others from your move-in date — so enroll on the same City Hall visit as your moving-in notification. If your Japan income last year was zero, you can apply for a premium reduction at the same window.",
           counter: "国民健康保険に加入したいです。前年の日本での所得はゼロです。保険料の軽減申請もお願いできますか？",
           counterTranslation: "I would like to enroll in National Health Insurance. My income in Japan last year was zero. Could I also apply for a premium reduction?",
@@ -260,6 +267,9 @@ export const buildPhases = (profile, lang) => {
             "Residence Card",
             { text: "Residence record showing your My Number — needed until you have a My Number Card", onSite: true },
           ],
+          keyPoint: isStudent
+            ? "¥17,920 a month (FY2026). If you'll apply for the Student Payment Exception, don't pay yet — payments aren't refunded."
+            : "Whether you need to join depends on your employment situation — ask at the pension window.",
           why: isStudent
             ? "If you're 20 or older and registered as a resident, joining National Pension is mandatory regardless of nationality — handle it on the same City Hall visit as your moving-in notification. A payment slip for ¥17,920 a month (FY2026) arrives about two weeks later. If you'll apply for the Student Payment Exception once classes start, hold off on paying: months you've already paid aren't refunded, and the slip stays usable for two years if you end up needing it."
             : "Not everyone living in Japan pays into National Pension — people covered by Employees' Pension through their job don't — and which applies to you depends on your employment situation. Ask at the pension window. If you do need to join, a payment slip for ¥17,920 a month (FY2026) arrives about two weeks after you enroll, so ask at the same time whether you can apply for a premium exemption.",
@@ -280,6 +290,7 @@ export const buildPhases = (profile, lang) => {
             "Residence Card",
             "Passport",
           ],
+          keyPoint: "Apply within 30 days of registering your address — don't wait for the notification letter, it isn't needed for this route.",
           why: "The My Number Card is increasingly required for online tax filing, digital health insurance, and government services. Moving in from overseas qualifies you for expedited issuance: you apply at the City Hall window, staff hand you the forms there, and the card arrives at your address by registered post in about a week. You must apply within 30 days of registering your address — so don't wait for the individual number notification letter that comes 2–3 weeks later. That letter isn't needed for this route, and it can't be used as ID or as proof of your My Number. Ask at the window whether you need to bring a photo.",
           counter: "マイナンバーカードを申請したいです。海外から転入したので特急発行の対象になりますか？顔写真は必要でしょうか。",
           counterTranslation: "I would like to apply for a My Number Card. I moved in from overseas — am I eligible for expedited issuance? Do I need to bring a photo?",
@@ -303,6 +314,7 @@ export const buildPhases = (profile, lang) => {
             "Residence Card",
             "Passport",
           ],
+          keyPoint: "Processing takes 2 weeks to 2 months, so apply well before you plan to start working. There is no fee.",
           why: "You cannot do any paid work without this permit. The airport counter only accepts these applications from new arrivals granted the Student status of residence, so you apply at the regional immigration bureau for your address instead. There is no fee. Processing takes 2 weeks to 2 months, so apply well before you plan to start working.",
           counter: "資格外活動許可の申請に来ました。必要な書類がそろっているか確認していただけますか？",
           counterTranslation: "I am here to apply for a Work Permit. Could you check whether I have all the documents I need?",
@@ -314,6 +326,7 @@ export const buildPhases = (profile, lang) => {
           id: "sim", title: "Voice/SMS SIM Contract (格安SIM)",
           location: "IIJmio, Mineo, or Rakuten Mobile — store or online",
           required: ["Residence Card — with address on back", "Residence record", "Passport", "Credit card or international debit card (Wise / Revolut / overseas Visa / Mastercard) — mineo requires credit card"],
+          keyPoint: "Obtain your residence record first — a registered address is legally required to sign any SIM contract.",
           why: "A registered address is legally required to sign any SIM contract in Japan. Obtain your residence record first. Most carriers (Rakuten, ahamo, LINEMO) accept international debit cards — no Japanese bank account needed.",
           counter: "格安SIMの新規契約をしたいです。住民票と在留カードを持参しました。",
           counterTranslation: "I would like to sign up for a new SIM contract. I have my residence record and Residence Card with me.",
@@ -325,6 +338,7 @@ export const buildPhases = (profile, lang) => {
           id: "bank", title: "Bank Account — Japan Post Bank (ゆうちょ銀行)",
           location: "Post Office or Japan Post Bank branch",
           required: ["Residence Card", "Residence record", "Japanese phone number", "Passport"],
+          keyPoint: "You need a Japanese phone number, so get your SIM before opening the account.",
           why: "Japan Post Bank is the most foreigner-friendly. Important: you need a Japanese phone number to complete the application — get your SIM before opening a bank account.",
           counter: "ゆうちょ銀行の口座を開設したいです。在留カードと住民票を持参しました。",
           counterTranslation: "I would like to open a Japan Post Bank account. I have my Residence Card and residence record with me.",
@@ -339,6 +353,7 @@ export const buildPhases = (profile, lang) => {
           id: "university", title: "Get a Student ID (学生証) or Certificate of Enrollment (在学証明書)",
           location: "International Office at your university",
           required: ["Whatever your university asks you to bring"],
+          keyPoint: "If your university doesn't issue a Student ID, ask for a Certificate of Enrollment instead — either is accepted.",
           why: "You'll need one of these to apply for the pension Student Payment Exception — either one is accepted. Not every university issues a Student ID to exchange students, so if yours doesn't, ask for a Certificate of Enrollment instead.",
           counter: "学生証は発行されますか？発行されない場合は、在学証明書を発行していただけますか？",
           counterTranslation: "Will I be issued a Student ID? If not, could you issue me a Certificate of Enrollment?",
@@ -352,6 +367,7 @@ export const buildPhases = (profile, lang) => {
             "Student ID or Certificate of Enrollment from your university",
             "My Number Card — or, until you have one, a residence record showing your My Number plus your Residence Card",
           ],
+          keyPoint: "Apply as soon as your classes start — an accident or illness before your application date may not qualify for the disability pension.",
           why: "With the Student Payment Exception, you pay no National Pension premiums and those months aren't recorded as unpaid — it's open to students whose income last year was ¥1.28 million or less (higher with dependents). You can apply once your classes have started. Easiest first: ask your international office whether your university accepts the application on campus; if you have your My Number Card, apply from your phone on Mynaportal with a photo of your Student ID or Certificate of Enrollment (only some screens are in English); otherwise, apply at the City Hall pension window. Don't put it off — an accident or illness before your application date may not qualify for the disability pension.",
           counter: "国民年金の学生納付特例の申請をしたいです。交換留学生ですが対象になりますか？学生証（または在学証明書）を持参しました。",
           counterTranslation: "I would like to apply for the Student Payment Exception. I'm an exchange student — am I eligible? I have my Student ID (or Certificate of Enrollment) with me.",
@@ -405,6 +421,29 @@ function CounterModal({ text, translation, onClose, t }) {
           </div>
         )}
         <p className="text-xs text-center text-slate-400">Point your screen at the staff member</p>
+      </div>
+    </div>
+  );
+}
+
+// 「なぜ必要か」は開いたカードの高さの6割を占めるので、本文から出してモーダルに入れる
+function WhyModal({ task, onClose, t }) {
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+      <div role="dialog" aria-modal="true" aria-label={t.why}
+        className="bg-white rounded-2xl shadow-2xl max-w-sm w-full max-h-[85vh] overflow-y-auto p-6 space-y-3.5" onClick={e => e.stopPropagation()}>
+        <div className="flex items-start justify-between gap-3">
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t.why}</span>
+          <button onClick={onClose} aria-label={t.close} className="flex-shrink-0 text-slate-300 hover:text-slate-500 transition-colors"><X size={18} /></button>
+        </div>
+        <p className="text-sm font-semibold text-slate-800 leading-snug">{task.title}</p>
+        <p className="text-sm text-slate-600 leading-relaxed">{task.why}</p>
       </div>
     </div>
   );
@@ -465,7 +504,9 @@ const levelBadge = (task) => {
 function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, isNext }) {
   const [open, setOpen] = useState(isNext);
   const [modal, setModal] = useState(false);
+  const [whyOpen, setWhyOpen] = useState(false);
   const closeModal = useCallback(() => setModal(false), []);
+  const closeWhy = useCallback(() => setWhyOpen(false), []);
 
   // 完了したら閉じる。次のアクションになったら自動的に開き、外れたら自動的に閉じる
   useEffect(() => { if (checked) setOpen(false); }, [checked]);
@@ -480,6 +521,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
   return (
     <>
       {modal && <CounterModal text={task.counter} translation={task.counterTranslation} onClose={closeModal} t={t} />}
+      {whyOpen && <WhyModal task={task} onClose={closeWhy} t={t} />}
       <div id={task.id} className={`rounded-xl border scroll-mt-20 transition-all duration-200 ${
         isNext ? "border-indigo-300 ring-2 ring-indigo-100 bg-indigo-50/30"
           : task.highlight ? "border-amber-300 bg-amber-50/40" : "border-slate-200 bg-white"
@@ -497,9 +539,15 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
               <p className={`text-sm font-semibold leading-snug ${checked ? "line-through text-slate-400" : "text-slate-800"}`}>
                 {task.title}
               </p>
-              <button aria-expanded={open} aria-label={task.title} className="flex-shrink-0 text-slate-300 hover:text-slate-500 transition-colors ml-1">
-                {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-              </button>
+              <div className="flex items-center gap-1 flex-shrink-0 ml-1">
+                <button onClick={e => { e.stopPropagation(); setWhyOpen(true); }} aria-label={t.why}
+                  className="w-6 h-6 rounded-full border border-slate-200 text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-colors flex items-center justify-center text-[11px] font-bold">
+                  ?
+                </button>
+                <button aria-expanded={open} aria-label={task.title} className="text-slate-300 hover:text-slate-500 transition-colors">
+                  {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </button>
+              </div>
             </div>
             {/* 完了したタスクはバッジを畳んで1行に近づける */}
             {!checked && (
@@ -538,6 +586,13 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
                 </div>
               </div>
             )}
+            {/* 期限・金額・順番は「?」の奥に隠さず、開けば必ず目に入る位置に置く */}
+            {task.keyPoint && (
+              <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3">
+                <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
+                <p className="text-sm text-slate-700 leading-relaxed">{task.keyPoint}</p>
+              </div>
+            )}
             <div>
               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t.location}</p>
               <p className="text-sm text-slate-600">{task.location}</p>
@@ -552,10 +607,6 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
                   </li>
                 ))}
               </ul>
-            </div>
-            <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t.why}</p>
-              <p className="text-sm text-slate-600 leading-relaxed">{task.why}</p>
             </div>
             <div className="flex items-center gap-3">
               <button onClick={() => setModal(true)}

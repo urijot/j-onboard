@@ -16,6 +16,8 @@ describe('task data', () => {
       expect(['required', 'recommended', 'optional']).toContain(tk.level);
       // A legal day-count deadline only makes sense on a mandatory task
       if (tk.deadline?.days) expect(tk.level).toBe('required');
+      // Every task needs a key point: the why text now sits behind a modal
+      expect(tk.keyPoint?.length).toBeGreaterThan(0);
       for (const dep of tk.deps || []) expect(ids).toContain(dep.taskId);
       if (tk.source) {
         expect(tk.source.url).toMatch(/^https:\/\//);
@@ -98,6 +100,28 @@ describe('app', () => {
     fireEvent.click(card.getByRole('checkbox'));
     expect(chevron).toHaveAttribute('aria-expanded', 'false');
     expect(screen.getByText('1 / 12 Completed')).toBeInTheDocument();
+  });
+
+  test('the ? button opens the explanation without expanding the card', () => {
+    generateStudentRoadmap();
+    const card = within(document.getElementById('visa'));
+    const chevron = card.getByRole('button', { expanded: false });
+
+    fireEvent.click(card.getByRole('button', { name: 'Why this matters' }));
+    expect(chevron).toHaveAttribute('aria-expanded', 'false');
+
+    const dialog = within(screen.getByRole('dialog'));
+    expect(dialog.getByText(/You cannot board a flight to Japan/)).toBeInTheDocument();
+  });
+
+  // Deadlines, amounts and ordering live in keyPoint, and the source is the app's evidence:
+  // both must be readable without hunting for the "?" button
+  test('keeps the key point and the source on the card itself', () => {
+    generateStudentRoadmap();
+    const card = within(document.getElementById('health'));
+    fireEvent.click(card.getByText('National Health Insurance (国民健康保険)'));
+    expect(card.getByText(/Enroll within 14 days/)).toBeInTheDocument();
+    expect(card.getByRole('link', { name: /Official source/ })).toBeInTheDocument();
   });
 });
 
