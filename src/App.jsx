@@ -34,6 +34,7 @@ const T = {
     location: "Location / Office",
     required: "Required Items",
     bringLabel: "Bring with you",
+    counterSheetBtn: "Show these phrases at the counter 🇯🇵",
     bringNote: "Everything the steps below need, duplicates removed.",
     why: "Why this matters",
     showCounter: "Show at Counter 🇯🇵",
@@ -91,6 +92,7 @@ const T = {
     location: "場所・窓口",
     required: "持ち物",
     bringLabel: "持っていくもの",
+    counterSheetBtn: "これらの文を窓口で見せる 🇯🇵",
     bringNote: "この段階の手続きに必要なもの（重複を除く）",
     why: "なぜ必要か / メリット",
     showCounter: "窓口で見せる 🇯🇵",
@@ -188,7 +190,7 @@ export const buildPhases = (profile, lang) => {
       ],
     },
     {
-      id: "p2", label: t.phase2, color: "sky", bringList: true,
+      id: "p2", label: t.phase2, color: "sky", oneVisit: true,
       icon: <MapPin size={15} />,
       tasks: [
         {
@@ -224,7 +226,7 @@ export const buildPhases = (profile, lang) => {
       ],
     },
     {
-      id: "p3", label: t.phase3, color: "emerald", bringList: true,
+      id: "p3", label: t.phase3, color: "emerald", oneVisit: true,
       icon: <Building2 size={15} />,
       lockedIfTemp: true,
       tasks: [
@@ -453,6 +455,111 @@ function WhyModal({ task, onClose, t }) {
   );
 }
 
+// タイトルの括弧内にある日本語の正式名称。窓口シートで手続き名として使う
+export const japaneseName = (title) => {
+  const inner = title.match(/\(([^)]+)\)/)?.[1];
+  return inner && /[\u3040-\u30ff\u4e00-\u9faf]/.test(inner) ? inner : null;
+};
+
+// 1回の訪問で職員に見せるシート。既存の窓口フレーズを並べ替えるだけで、新しい記述は持たない
+function CounterSheet({ phase, checked, onToggle, profile, onClose, t }) {
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  const todo = phase.tasks.filter(tk => !checked[tk.id]);
+  const done = phase.tasks.filter(tk => checked[tk.id]);
+  const isResearcher = profile.role === "researcher";
+  const introJa = isResearcher
+    ? "客員研究者です。日本語があまり話せません。"
+    : "交換留学生です。日本語があまり話せません。";
+  const introEn = isResearcher
+    ? "I am a visiting researcher, and I don't speak much Japanese."
+    : "I am an exchange student, and I don't speak much Japanese.";
+
+  const Row = ({ task, children }) => (
+    <li className="flex items-start gap-3">
+      <button onClick={() => onToggle(task.id)} role="checkbox" aria-checked={!!checked[task.id]} aria-label={task.title}
+        className="mt-1 flex-shrink-0">
+        {checked[task.id]
+          ? <CheckCircle2 size={22} className="text-emerald-500" />
+          : <Circle size={22} className="text-slate-300" />}
+      </button>
+      <div className="flex-1 min-w-0">{children}</div>
+    </li>
+  );
+
+  return (
+    <div role="dialog" aria-modal="true" aria-label={t.counterSheetBtn}
+      className="fixed inset-0 z-50 bg-white overflow-y-auto">
+      <div className="sticky top-0 flex justify-end bg-white/95 backdrop-blur px-4 py-3">
+        <button onClick={onClose} aria-label={t.close} className="text-slate-400 hover:text-slate-600 transition-colors"><X size={22} /></button>
+      </div>
+
+      {/* lang="ja" がないと、中国語設定の端末などで漢字が中国語の字形で表示される */}
+      <div lang="ja" className="px-5 pb-6 space-y-5">
+        <p className="text-xl font-medium text-slate-800 leading-relaxed">{introJa}</p>
+
+        {todo.length > 0 && (
+          <div>
+            <p className="text-sm font-bold text-slate-500 mb-2">本日お願いしたい手続き</p>
+            <ul className="space-y-3.5">
+              {todo.map(task => (
+                <Row key={task.id} task={task}>
+                  <p className="text-lg text-slate-800 leading-relaxed">{task.counter}</p>
+                </Row>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {done.length > 0 && (
+          <div>
+            <p className="text-sm font-bold text-slate-500 mb-2">すでに済んだ手続き</p>
+            <ul className="space-y-2">
+              {done.map(task => (
+                <Row key={task.id} task={task}>
+                  <p className="text-lg text-slate-500 leading-relaxed">{japaneseName(task.title) || task.title}</p>
+                </Row>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <p className="text-xs text-slate-400 pt-1">本人が記録したチェックリストです。</p>
+      </div>
+
+      <div className="border-t border-slate-200 px-5 py-5 space-y-4 bg-slate-50">
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">What the staff are reading</p>
+        <p className="text-sm text-slate-600 leading-relaxed">{introEn}</p>
+        {todo.length > 0 && (
+          <div>
+            <p className="text-xs font-bold text-slate-500 mb-1.5">Asking for today</p>
+            <ul className="space-y-1.5">
+              {todo.map(task => (
+                <li key={task.id} className="text-sm text-slate-600 leading-relaxed">· {task.counterTranslation}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {done.length > 0 && (
+          <div>
+            <p className="text-xs font-bold text-slate-500 mb-1.5">Already done</p>
+            <ul className="space-y-1.5">
+              {done.map(task => (
+                <li key={task.id} className="text-sm text-slate-500 leading-relaxed">✓ {task.title}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <p className="text-xs text-slate-400">Tap a circle to update this as you go.</p>
+      </div>
+    </div>
+  );
+}
+
 // source は1件のオブジェクトでも、複数の配列でもよい
 const taskSources = (task) =>
   !task.source ? [] : Array.isArray(task.source) ? task.source : [task.source];
@@ -647,6 +754,7 @@ export default function JOnboard() {
   const [profile, setProfile] = useState({ role: null, housing: null, work: false });
   const [checked, setChecked] = useState({});
   const [langOpen, setLangOpen] = useState(false);
+  const [sheetPhase, setSheetPhase] = useState(null);
   const [housingGuideOpen, setHousingGuideOpen] = useState(false);
   const [shortStayOpen, setShortStayOpen] = useState(false);
   const t = T[lang];
@@ -676,12 +784,15 @@ export default function JOnboard() {
     window.scrollTo(0, 0);
   };
 
+  const closeSheet = useCallback(() => setSheetPhase(null), []);
+
   const goToForm = () => {
     try { localStorage.setItem("jonboard_step", "form"); } catch {}
     setStep("form");
   };
 
   const phases = buildPhases(profile, lang);
+  const openSheet = phases.find(ph => ph.id === sheetPhase);
   const allIds = phases.flatMap(p => p.tasks.map(tk => tk.id));
   const doneCount = allIds.filter(id => checked[id]).length;
   const pct = allIds.length ? Math.round((doneCount / allIds.length) * 100) : 0;
@@ -705,6 +816,11 @@ export default function JOnboard() {
 
   return (
     <div className="min-h-screen bg-slate-50" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+      {openSheet && (
+        <CounterSheet phase={openSheet} checked={checked} onToggle={handleToggle}
+          profile={profile} onClose={closeSheet} t={t} />
+      )}
+
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -961,8 +1077,16 @@ export default function JOnboard() {
                     </div>
                   )}
 
-                  {phase.bringList && !locked && (
-                    <BringList items={bringItems(phase.tasks, checked)} t={t} />
+                  {phase.oneVisit && !locked && (
+                    <>
+                      <BringList items={bringItems(phase.tasks, checked)} t={t} />
+                      <button onClick={() => setSheetPhase(phase.id)}
+                        className="w-full flex items-center gap-2.5 text-sm font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl px-4 py-3 mb-3 transition-colors">
+                        <FileText size={15} className="flex-shrink-0" />
+                        <span className="flex-1 text-left">{t.counterSheetBtn}</span>
+                        <ArrowRight size={15} className="flex-shrink-0" />
+                      </button>
+                    </>
                   )}
 
                   <div className="space-y-2.5">

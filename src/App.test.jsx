@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, within } from '@testing-library/react';
-import App, { buildPhases, bringItems } from './App';
+import App, { buildPhases, bringItems, japaneseName } from './App';
 
 const profiles = ['student', 'researcher'].flatMap(role =>
   [false, true].map(work => ({ role, housing: 'confirmed', work }))
@@ -26,6 +26,13 @@ describe('task data', () => {
         if (Array.isArray(tk.source)) expect(src.label?.length).toBeGreaterThan(0);
       }
     }
+  });
+
+  // The counter sheet names a completed step by the Japanese in its title, so it must be there
+  test('every step shown at a counter has a Japanese name in its title', () => {
+    for (const profile of profiles)
+      for (const phase of buildPhases(profile, 'en').filter(ph => ph.oneVisit))
+        for (const tk of phase.tasks) expect(japaneseName(tk.title)).toBeTruthy();
   });
 
   test('only students get the Student ID and Student Payment Exception tasks', () => {
@@ -126,6 +133,39 @@ describe('app', () => {
     // This task rests on three official pages, each labelled with what it backs
     expect(card.getAllByRole('link')).toHaveLength(3);
     expect(card.getByRole('link', { name: /14-day deadline/ })).toBeInTheDocument();
+  });
+});
+
+describe('counter sheet', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    window.scrollTo = vi.fn();
+  });
+
+  const openCityHallSheet = () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: 'Exchange Student' }));
+    fireEvent.click(screen.getByRole('button', { name: /Yes — dorm/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Generate/ }));
+    // Finish the moving-in notification so the sheet has one line of each kind
+    fireEvent.click(within(document.getElementById('juminhyo')).getByRole('checkbox'));
+    fireEvent.click(screen.getAllByRole('button', { name: /Show these phrases at the counter/ })[1]);
+    return within(screen.getByRole('dialog', { name: /Show these phrases at the counter/ }));
+  };
+
+  test('asks only for what is left, and names what is already done', () => {
+    const sheet = openCityHallSheet();
+    expect(sheet.getByText(/国民健康保険に加入したいです/)).toBeInTheDocument();
+    expect(sheet.getByText('転入届')).toBeInTheDocument();
+    // The completed step is named, not asked for again
+    expect(sheet.queryByText(/転入届を提出したいです/)).not.toBeInTheDocument();
+  });
+
+  test('can be ticked off at the counter', () => {
+    const sheet = openCityHallSheet();
+    fireEvent.click(sheet.getByRole('checkbox', { name: /National Health Insurance/ }));
+    expect(sheet.queryByText(/国民健康保険に加入したいです/)).not.toBeInTheDocument();
+    expect(sheet.getByText('国民健康保険')).toBeInTheDocument();
   });
 });
 
