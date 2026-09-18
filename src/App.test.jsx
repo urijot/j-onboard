@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, within } from '@testing-library/react';
-import App, { buildPhases } from './App';
+import App, { buildPhases, bringItems } from './App';
 
 const profiles = ['student', 'researcher'].flatMap(role =>
   [false, true].map(work => ({ role, housing: 'confirmed', work }))
@@ -98,5 +98,32 @@ describe('app', () => {
     fireEvent.click(card.getByRole('checkbox'));
     expect(chevron).toHaveAttribute('aria-expanded', 'false');
     expect(screen.getByText('1 / 12 Completed')).toBeInTheDocument();
+  });
+});
+
+describe('bring list', () => {
+  const cityHall = (profile) => buildPhases(profile, 'en').find(p => p.id === 'p3');
+
+  test.each(profiles)('lists only what you carry from home for %o', (profile) => {
+    const items = bringItems(cityHall(profile).tasks, {});
+    // The residence record is issued at the first window of the same visit
+    expect(items.some(i => /Residence record/i.test(i))).toBe(false);
+    expect(items).toContain('Passport');
+    expect(items).toContain('Residence Card');
+    // Passport and Residence Card each appear in several tasks of this phase
+    expect(new Set(items).size).toBe(items.length);
+  });
+
+  test('keeps the fuller wording when the same item is worded two ways', () => {
+    const airport = buildPhases({ role: 'student', housing: 'confirmed', work: true }, 'en')
+      .find(p => p.id === 'p2');
+    expect(bringItems(airport.tasks, {})).toContain('Passport — with your visa');
+  });
+
+  test('drops items belonging to tasks already done', () => {
+    const profile = { role: 'student', housing: 'confirmed', work: false };
+    const phase = cityHall(profile);
+    const done = Object.fromEntries(phase.tasks.map(tk => [tk.id, true]));
+    expect(bringItems(phase.tasks, done)).toEqual([]);
   });
 });

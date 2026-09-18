@@ -33,6 +33,8 @@ const T = {
     lockedHousing: "Complete these steps after your permanent address is confirmed.",
     location: "Location / Office",
     required: "Required Items",
+    bringLabel: "Bring with you",
+    bringNote: "Everything the steps below need, duplicates removed.",
     why: "Why this matters",
     showCounter: "Show at Counter 🇯🇵",
     close: "Close",
@@ -88,6 +90,8 @@ const T = {
     lockedHousing: "住居確定後に実施してください。",
     location: "場所・窓口",
     required: "持ち物",
+    bringLabel: "持っていくもの",
+    bringNote: "この段階の手続きに必要なもの（重複を除く）",
     why: "なぜ必要か / メリット",
     showCounter: "窓口で見せる 🇯🇵",
     close: "閉じる",
@@ -181,13 +185,13 @@ export const buildPhases = (profile, lang) => {
       ],
     },
     {
-      id: "p2", label: t.phase2, color: "sky",
+      id: "p2", label: t.phase2, color: "sky", bringList: true,
       icon: <MapPin size={15} />,
       tasks: [
         {
           id: "rezcard", title: "Receive Residence Card (在留カード)",
           location: "Immigration counter at your arrival airport — issued automatically during immigration inspection. No application needed.",
-          required: ["Passport with valid visa", "Certificate of Eligibility — original"],
+          required: ["Passport — with your visa", "Certificate of Eligibility — original"],
           why: "The Residence Card is issued automatically during immigration — you don't apply for it. At 10 major airports (Narita, Haneda, Kansai, Chubu, Chitose, Sendai, Niigata, Hiroshima, Fukuoka, Naha) it is handed to you on the spot. At other airports, your passport gets a 'Residence Card to be issued later' stamp and the card is mailed to your registered address after you complete your moving-in notification — allow ~2 weeks. Until it arrives, your stamped passport serves as a substitute.",
           counter: "在留カードを受け取りに来ました。どちらの窓口ですか？",
           counterTranslation: "I am here to receive my Residence Card. Which counter should I go to?",
@@ -199,7 +203,11 @@ export const buildPhases = (profile, lang) => {
           id: "workpermit",
           title: "Apply for Work Permit (資格外活動許可)",
           location: "Immigration counter at your arrival airport — same counter as your Residence Card. Application form is available at the counter, fill in and submit on the spot.",
-          required: ["Passport", "Certificate of Eligibility", "Residence Card — received at the same counter simultaneously"],
+          required: [
+            "Passport",
+            "Certificate of Eligibility",
+            { text: "Residence Card — received at the same counter simultaneously", onSite: true },
+          ],
           why: "You cannot do any paid work without this permit. The airport counter accepts the application from new arrivals granted the Student status of residence, unless your period of stay is 3 months — so apply here and the stamp goes on your Residence Card on the spot, saving a separate trip to a regional immigration bureau later (typically a half-day errand).",
           counter: "資格外活動許可の申請をしたいのですが、ここで手続きできますか？在留カードも同時に受け取りたいです。",
           counterTranslation: "I would like to apply for a Work Permit. Can I do it here? I also need to receive my Residence Card at the same time.",
@@ -211,7 +219,7 @@ export const buildPhases = (profile, lang) => {
       ],
     },
     {
-      id: "p3", label: t.phase3, color: "emerald",
+      id: "p3", label: t.phase3, color: "emerald", bringList: true,
       icon: <Building2 size={15} />,
       lockedIfTemp: true,
       tasks: [
@@ -230,7 +238,11 @@ export const buildPhases = (profile, lang) => {
         {
           id: "health", title: "National Health Insurance (国民健康保険)",
           location: "Same City Hall visit — National Health Insurance window",
-          required: ["Residence Card", "Residence record — just obtained", "Passport"],
+          required: [
+            "Residence Card",
+            { text: "Residence record — just obtained", onSite: true },
+            "Passport",
+          ],
           why: "National Health Insurance covers 70% of medical costs. You must enroll within 14 days, but cities count those days differently — some from your arrival date, others from your move-in date — so enroll on the same City Hall visit as your moving-in notification. If your Japan income last year was zero, you can apply for a premium reduction at the same window.",
           counter: "国民健康保険に加入したいです。前年の日本での所得はゼロです。保険料の軽減申請もお願いできますか？",
           counterTranslation: "I would like to enroll in National Health Insurance. My income in Japan last year was zero. Could I also apply for a premium reduction?",
@@ -246,7 +258,7 @@ export const buildPhases = (profile, lang) => {
           location: "City Hall — pension window",
           required: [
             "Residence Card",
-            "Residence record showing your My Number — needed until you have a My Number Card",
+            { text: "Residence record showing your My Number — needed until you have a My Number Card", onSite: true },
           ],
           why: isStudent
             ? "If you're 20 or older and registered as a resident, joining National Pension is mandatory regardless of nationality — handle it on the same City Hall visit as your moving-in notification. A payment slip for ¥17,920 a month (FY2026) arrives about two weeks later. If you'll apply for the Student Payment Exception once classes start, hold off on paying: months you've already paid aren't refunded, and the slip stays usable for two years if you end up needing it."
@@ -398,6 +410,45 @@ function CounterModal({ text, translation, onClose, t }) {
   );
 }
 
+// required の項目は文字列か { text, onSite }。onSite は窓口で受け取るもので、家から持っていくものではない
+const itemText = (item) => (typeof item === "string" ? item : item.text);
+const isOnSite = (item) => typeof item !== "string" && !!item.onSite;
+
+// 1回の訪問で持っていくものを、未完了のタスクから重複を除いて集める
+export const bringItems = (tasks, checkedIds) => {
+  const groups = new Map();
+  for (const task of tasks) {
+    if (checkedIds[task.id]) continue;
+    for (const item of task.required) {
+      if (isOnSite(item)) continue;
+      const text = itemText(item);
+      // 「Passport」と「Passport — with your visa」は同じ持ち物なので、注記の長い方に寄せる
+      const head = text.split(" — ")[0];
+      const prev = groups.get(head);
+      if (!prev || text.length > prev.length) groups.set(head, text);
+    }
+  }
+  return [...groups.values()];
+};
+
+function BringList({ items, t }) {
+  if (!items.length) return null;
+  return (
+    <div className="border border-slate-200 bg-slate-50 rounded-xl p-4 mb-3">
+      <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">{t.bringLabel}</p>
+      <p className="text-xs text-slate-400 mb-2.5">{t.bringNote}</p>
+      <ul className="space-y-1.5">
+        {items.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+            <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 // level のバッジ設定
 const levelBadge = (task) => {
   const map = {
@@ -433,7 +484,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
         isNext ? "border-indigo-300 ring-2 ring-indigo-100 bg-indigo-50/30"
           : task.highlight ? "border-amber-300 bg-amber-50/40" : "border-slate-200 bg-white"
       } ${checked ? "opacity-60" : ""}`}>
-        <div onClick={() => setOpen(o => !o)} className="flex items-start gap-3 p-4 cursor-pointer">
+        <div onClick={() => setOpen(o => !o)} className={`flex items-start gap-3 cursor-pointer ${checked ? "px-4 py-2.5" : "p-4"}`}>
           <button onClick={e => { e.stopPropagation(); if (!isLocked) onToggle(task.id); }}
             role="checkbox" aria-checked={checked} aria-disabled={isLocked} aria-label={task.title}
             className={`mt-0.5 flex-shrink-0 transition-colors ${isLocked ? "opacity-25 cursor-not-allowed" : "cursor-pointer"}`}>
@@ -450,19 +501,22 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
                 {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </button>
             </div>
-            <div className="flex flex-wrap gap-1.5 mt-1.5">
-              {isNext && !checked && (
-                <span className="inline-flex items-center gap-1 text-xs font-bold text-indigo-700 bg-indigo-100 border border-indigo-200 rounded-full px-2 py-0.5">
-                  {t.nextBadge}
-                </span>
-              )}
-              {levelBadge(task)}
-              {task.highlight && (
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-800 bg-amber-100 border border-amber-300 rounded-full px-2 py-0.5">
-                  ★ {typeof task.highlight === "string" ? task.highlight : "Do this at the airport — saves a separate trip!"}
-                </span>
-              )}
-            </div>
+            {/* 完了したタスクはバッジを畳んで1行に近づける */}
+            {!checked && (
+              <div className="flex flex-wrap gap-1.5 mt-1.5">
+                {isNext && (
+                  <span className="inline-flex items-center gap-1 text-xs font-bold text-indigo-700 bg-indigo-100 border border-indigo-200 rounded-full px-2 py-0.5">
+                    {t.nextBadge}
+                  </span>
+                )}
+                {levelBadge(task)}
+                {task.highlight && (
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-800 bg-amber-100 border border-amber-300 rounded-full px-2 py-0.5">
+                    ★ {typeof task.highlight === "string" ? task.highlight : "Do this at the airport — saves a separate trip!"}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -494,7 +548,7 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
                 {task.required.map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
                     <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-300 flex-shrink-0" />
-                    {item}
+                    {itemText(item)}
                   </li>
                 ))}
               </ul>
@@ -844,6 +898,10 @@ export default function JOnboard() {
                         <p className="text-xs text-emerald-700 leading-relaxed">Your moving-in notification, National Health Insurance, and National Pension can all be handled at the same City Hall on the same day. Tell the first counter you need all three — they'll direct you.</p>
                       </div>
                     </div>
+                  )}
+
+                  {phase.bringList && !locked && (
+                    <BringList items={bringItems(phase.tasks, checked)} t={t} />
                   )}
 
                   <div className="space-y-2.5">
