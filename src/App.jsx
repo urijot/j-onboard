@@ -267,7 +267,6 @@ export const buildPhases = (profile, lang) => {
           required: [
             "Residence Card",
             "Passport",
-            "Application form and PIN request form — handed to you at the counter, nothing to prepare",
           ],
           why: "The My Number Card is increasingly required for online tax filing, digital health insurance, and government services. Moving in from overseas qualifies you for expedited issuance: you apply at the City Hall window, staff hand you the forms there, and the card arrives at your address by registered post in about a week. You must apply within 30 days of registering your address — so don't wait for the individual number notification letter that comes 2–3 weeks later. That letter isn't needed for this route, and it can't be used as ID or as proof of your My Number. Ask at the window whether you need to bring a photo.",
           counter: "マイナンバーカードを申請したいです。海外から転入したので特急発行の対象になりますか？顔写真は必要でしょうか。",
