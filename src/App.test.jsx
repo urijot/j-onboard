@@ -31,7 +31,7 @@ describe('task data', () => {
   // The counter sheet names a completed step by the Japanese in its title, so it must be there
   test('every step shown at a counter has a Japanese name in its title', () => {
     for (const profile of profiles)
-      for (const phase of buildPhases(profile, 'en').filter(ph => ph.oneVisit))
+      for (const phase of buildPhases(profile, 'en').filter(ph => ph.counterSheet))
         for (const tk of phase.tasks) expect(japaneseName(tk.title)).toBeTruthy();
   });
 
@@ -149,7 +149,7 @@ describe('counter sheet', () => {
     fireEvent.click(screen.getByRole('button', { name: /Generate/ }));
     // Finish the moving-in notification so the sheet has one line of each kind
     fireEvent.click(within(document.getElementById('juminhyo')).getByRole('checkbox'));
-    fireEvent.click(screen.getAllByRole('button', { name: /Show these phrases at the counter/ })[1]);
+    fireEvent.click(screen.getByRole('button', { name: /Show these phrases at the counter/ }));
     return within(screen.getByRole('dialog', { name: /Show these phrases at the counter/ }));
   };
 

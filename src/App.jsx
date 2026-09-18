@@ -226,7 +226,7 @@ export const buildPhases = (profile, lang) => {
       ],
     },
     {
-      id: "p3", label: t.phase3, color: "emerald", oneVisit: true,
+      id: "p3", label: t.phase3, color: "emerald", oneVisit: true, counterSheet: true,
       icon: <Building2 size={15} />,
       lockedIfTemp: true,
       tasks: [
@@ -1078,15 +1078,17 @@ export default function JOnboard() {
                   )}
 
                   {phase.oneVisit && !locked && (
-                    <>
-                      <BringList items={bringItems(phase.tasks, checked)} t={t} />
-                      <button onClick={() => setSheetPhase(phase.id)}
-                        className="w-full flex items-center gap-2.5 text-sm font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl px-4 py-3 mb-3 transition-colors">
-                        <FileText size={15} className="flex-shrink-0" />
-                        <span className="flex-1 text-left">{t.counterSheetBtn}</span>
-                        <ArrowRight size={15} className="flex-shrink-0" />
-                      </button>
-                    </>
+                    <BringList items={bringItems(phase.tasks, checked)} t={t} />
+                  )}
+
+                  {/* 窓口シートは、複数の窓口を回る市役所だけに出す */}
+                  {phase.counterSheet && !locked && (
+                    <button onClick={() => setSheetPhase(phase.id)}
+                      className="w-full flex items-center gap-2.5 text-sm font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl px-4 py-3 mb-3 transition-colors">
+                      <FileText size={15} className="flex-shrink-0" />
+                      <span className="flex-1 text-left">{t.counterSheetBtn}</span>
+                      <ArrowRight size={15} className="flex-shrink-0" />
+                    </button>
                   )}
 
                   <div className="space-y-2.5">
