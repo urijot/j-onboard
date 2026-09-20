@@ -139,19 +139,12 @@ export const buildPhases = (profile, lang) => {
       icon: <Plane size={15} />,
       tasks: [
         {
-          id: "coe", title: "Receive your Certificate of Eligibility (在留資格認定証明書) from your Host University in Japan",
-          location: "Sent by your host university in Japan — delivered by international mail or email",
-          required: [
-            "Confirmation email from your university's international office",
-            "Check that your name, nationality, and visa type are correct",
-          ],
-          keyPoint: "If it hasn't arrived 2–3 months before departure, contact your host university's international office.",
-          why: "The Certificate of Eligibility is issued by the Immigration Services Agency on behalf of your host university in Japan — you don't apply for it yourself. Without it, you cannot apply for a visa. Contact your host university's international office if it hasn't arrived 2–3 months before departure.",
-          counter: "在留資格認定証明書の発行状況を確認したいです。いつ頃届きますか？",
-          counterTranslation: "I would like to check the status of my Certificate of Eligibility. When can I expect to receive it?",
+          // 届くのを待つだけの唯一のタスク。行く場所も持ち物も窓口もないのでそれらの項目は持たない
+          id: "coe", title: "Receive your Certificate of Eligibility (在留資格認定証明書) from your Host Institution in Japan",
+          keyPoint: "It may arrive as a PDF by email or as a paper original by post, so watch both. Make sure your name, nationality, and status of residence are correct. If it hasn't arrived 2–3 months before departure, contact your host institution's international office.",
+          why: "The Certificate of Eligibility is issued by the Immigration Services Agency on behalf of your host institution in Japan — you don't apply for it yourself. Without it, you cannot apply for a visa.",
           level: "required",
           deps: [],
-          source: { url: "https://www.moj.go.jp/isa/applications/procedures/16-3.html", verified: "2026-08" },
         },
         {
           id: "visa", title: "Apply for your Student / Researcher Visa at the Embassy",
@@ -573,7 +566,7 @@ export const bringItems = (tasks, checkedIds) => {
   const groups = new Map();
   for (const task of tasks) {
     if (checkedIds[task.id]) continue;
-    for (const item of task.required) {
+    for (const item of task.required || []) {
       if (isOnSite(item)) continue;
       const text = itemText(item);
       // 「Passport」と「Passport — with your visa」は同じ持ち物なので、注記の長い方に寄せる
@@ -701,21 +694,26 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
                 </div>
               </div>
             )}
-            <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t.location}</p>
-              <p className="text-sm text-slate-600">{task.location}</p>
-            </div>
-            <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t.required}</p>
-              <ul className="space-y-1.5">
-                {task.required.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
-                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-300 flex-shrink-0" />
-                    {itemText(item)}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* 届くのを待つだけのタスクには行く場所も持ち物もない */}
+            {task.location && (
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t.location}</p>
+                <p className="text-sm text-slate-600">{task.location}</p>
+              </div>
+            )}
+            {task.required?.length > 0 && (
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">{t.required}</p>
+                <ul className="space-y-1.5">
+                  {task.required.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                      <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-300 flex-shrink-0" />
+                      {itemText(item)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             {/* 期限・金額・順番は「?」の奥に隠さず、開けば必ず目に入る位置に置く */}
             {task.keyPoint && (
               <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3">
@@ -724,10 +722,12 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
               </div>
             )}
             <div className="space-y-2.5">
-              <button onClick={() => setModal(true)}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg px-3 py-2 transition-colors">
-                <FileText size={13} /> {t.showCounter}
-              </button>
+              {task.counter && (
+                <button onClick={() => setModal(true)}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg px-3 py-2 transition-colors">
+                  <FileText size={13} /> {t.showCounter}
+                </button>
+              )}
               <div className="flex flex-col items-start gap-1">
                 {taskSources(task).map((src, i) => (
                   <a key={i} href={src.url} target="_blank" rel="noopener noreferrer"
