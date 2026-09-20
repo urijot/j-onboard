@@ -113,14 +113,14 @@ describe('app', () => {
 
   test('the ? button opens the explanation without expanding the card', () => {
     generateStudentRoadmap();
-    const card = within(document.getElementById('cash'));
+    const card = within(document.getElementById('health'));
     const chevron = card.getByRole('button', { expanded: false });
 
     fireEvent.click(card.getByRole('button', { name: 'Why this matters' }));
     expect(chevron).toHaveAttribute('aria-expanded', 'false');
 
     const dialog = within(screen.getByRole('dialog'));
-    expect(dialog.getByText(/Wise or Revolut cards work reliably/)).toBeInTheDocument();
+    expect(dialog.getByText(/covers 70% of medical costs/)).toBeInTheDocument();
   });
 
   // 背景説明を持たないタスクで「?」を押すと空のダイアログが開いてしまうため、ボタン自体を出さない
