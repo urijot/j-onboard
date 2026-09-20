@@ -147,22 +147,17 @@ export const buildPhases = (profile, lang) => {
           deps: [],
         },
         {
+          // 書類・写真・手数料・所要日数は国ごとに違うので書かない。持ち物はどこでも共通の2点だけにする。
+          // 申請先は自国の日本大使館で、手続きの中身は国ごとに違うため、載せる価値のある公式ソースがない
           id: "visa", title: "Apply for your Student / Researcher Visa at the Embassy",
           location: "Japanese Embassy, Consulate, or Visa Application Center (e.g. VFS Global) in your country",
           required: [
             "Certificate of Eligibility — original",
-            "Passport (valid 6+ months beyond intended stay)",
-            "Visa application form (download from embassy website)",
-            "Passport-size photo",
-            "Application fee (varies by country)",
+            "Passport",
           ],
-          keyPoint: "Processing typically takes 5–10 business days, and the exact requirements vary by country.",
-          why: "You cannot board a flight to Japan without a visa. Processing typically takes 5–10 business days. Check your country's Japanese embassy website for exact requirements as they vary by country.",
-          counter: "学生ビザの申請をしたいです。在留資格認定証明書を持参しました。",
-          counterTranslation: "I would like to apply for a student visa. I have my Certificate of Eligibility with me.",
+          keyPoint: "The embassy handling your country sets its own document list, photo size, fee and processing time — check its website before you go, and apply early enough that the visa is in your passport before you fly.",
           level: "required",
           deps: [{ taskId: "coe", type: "REQUIRED" }],
-          source: { url: "https://www.mofa.go.jp/j_info/visit/visa/index.html", verified: "2026-08" },
         },
         {
           id: "cash", title: "Prepare Cash, Credit Cards / Debit Cards & Travel eSIM",
@@ -648,10 +643,13 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
                 {task.title}
               </p>
               <div className="flex items-center gap-1 flex-shrink-0 ml-1">
-                <button onClick={e => { e.stopPropagation(); setWhyOpen(true); }} aria-label={t.why}
-                  className="w-6 h-6 rounded-full border border-slate-200 text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-colors flex items-center justify-center text-[11px] font-bold">
-                  ?
-                </button>
+                {/* 背景説明を持たないタスクでは「?」を出さない（押しても空のダイアログが開くだけになる） */}
+                {task.why && (
+                  <button onClick={e => { e.stopPropagation(); setWhyOpen(true); }} aria-label={t.why}
+                    className="w-6 h-6 rounded-full border border-slate-200 text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-colors flex items-center justify-center text-[11px] font-bold">
+                    ?
+                  </button>
+                )}
                 <button aria-expanded={open} aria-label={task.title} className="text-slate-300 hover:text-slate-500 transition-colors">
                   {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </button>
