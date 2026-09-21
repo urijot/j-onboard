@@ -13,7 +13,7 @@ describe('task data', () => {
     expect(new Set(ids).size).toBe(ids.length);
 
     for (const tk of tasks) {
-      expect(['required', 'recommended', 'optional']).toContain(tk.level);
+      expect(['required', 'recommended']).toContain(tk.level);
       // A legal day-count deadline only makes sense on a mandatory task
       if (tk.deadline?.days) expect(tk.level).toBe('required');
       // Every task needs a key point: the why text now sits behind a modal

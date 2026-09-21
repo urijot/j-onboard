@@ -123,7 +123,7 @@ const T = {
 };
 
 // 依存の強さ: REQUIRED=物理的・法的に必須 / STRONGLY_ADVISED=事業者運用依存・例外あり / TIP=アドバイス
-// level: required=義務（法的に必須 or 飛ばすと先に進めない） / recommended=推奨（任意だがやらないと損） / optional=任意
+// level: required=義務（法的に必須 or 飛ばすと先に進めない） / recommended=推奨（任意だがやらないと損）
 // deadline.days: 住み始めた日からの法定期限（日数）。バッジに「within N days of moving in」と出す。起点が住み始めた日でない期限には付けない
 
 export const buildPhases = (profile, lang) => {
@@ -164,7 +164,7 @@ export const buildPhases = (profile, lang) => {
             "Travel eSIM or prepaid physical SIM",
           ],
           keyPoint: "Seven Bank and Japan Post Bank ATMs let you withdraw yen with a card issued outside Japan. Buy and install your eSIM before you leave home.",
-          level: "optional",
+          level: "recommended",
           deps: [],
           source: [
             { url: "https://www.sevenbank.co.jp/intlcard/card.html", label: "Overseas-issued cards at Seven Bank ATMs", verified: "2026-09" },
@@ -586,7 +586,6 @@ const levelBadge = (task) => {
   const map = {
     required:    { cls: "text-red-700 bg-red-50 border-red-200",    label: "Required" },
     recommended: { cls: "text-sky-700 bg-sky-50 border-sky-200",    label: "Recommended" },
-    optional:    { cls: "text-slate-600 bg-slate-50 border-slate-200", label: "Optional" },
   };
   const cfg = map[task.level];
   if (!cfg) return null;
