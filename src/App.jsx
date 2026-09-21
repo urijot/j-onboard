@@ -62,6 +62,7 @@ const T = {
     nextActionLabel: "Do This Next",
     nextBadge: "→ Next",
     incompleteHint: "Answer all questions above to continue.",
+    reportGeneral: "If something was different for you, or a link didn't work, let us know",
   },
   ja: {
     subtitle: "日本での生活を、スムーズにスタート",
@@ -119,6 +120,7 @@ const T = {
     nextActionLabel: "次にやること",
     nextBadge: "→ 次にやる",
     incompleteHint: "上記の質問にすべて回答すると次に進めます。",
+    reportGeneral: "窓口で言われたことが違った、リンクが開けなかったなどの場合は教えてください",
   },
 };
 
@@ -538,6 +540,9 @@ function CounterSheet({ phase, checked, profile, onClose, t }) {
     </div>
   );
 }
+
+// 問題報告の Google フォーム。窓口での食い違い・リンク切れ・古い情報など、公式ページだけでは気づけないズレを利用者から受け取る唯一の経路
+const FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSccozx6wCgHnanNR7a3RdLgjR7i3Uc7W1OhOS8fgxER5GcnhQ/viewform";
 
 // source は1件のオブジェクトでも、複数の配列でもよい
 const taskSources = (task) =>
@@ -1088,6 +1093,10 @@ export default function JOnboard() {
               <p className="text-xs text-slate-400 leading-relaxed">
                 Administrative procedures and requirements may change. Always confirm with your university's international office or the relevant government agency before acting.
               </p>
+              <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer"
+                className="inline-block mt-2 text-xs text-slate-500 underline underline-offset-2 hover:text-indigo-600 transition-colors">
+                {t.reportGeneral} ↗
+              </a>
             </div>
 
             <p className="text-center text-xs text-slate-400 pb-4">
