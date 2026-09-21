@@ -36,7 +36,7 @@ const T = {
     bringLabel: "Bring with you",
     counterSheetBtn: "Show these phrases at the counter 🇯🇵",
     bringNote: "Everything the steps below need, duplicates removed.",
-    why: "Why this matters",
+    why: "What to know",
     showCounter: "Show at Counter 🇯🇵",
     close: "Close",
     editBtn: "← Edit Answers",
@@ -94,7 +94,7 @@ const T = {
     bringLabel: "持っていくもの",
     counterSheetBtn: "これらの文を窓口で見せる 🇯🇵",
     bringNote: "この段階の手続きに必要なもの（重複を除く）",
-    why: "なぜ必要か / メリット",
+    why: "知っておくこと",
     showCounter: "窓口で見せる 🇯🇵",
     close: "閉じる",
     editBtn: "← 入力に戻る",
@@ -647,11 +647,11 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
                 {task.title}
               </p>
               <div className="flex items-center gap-1 flex-shrink-0 ml-1">
-                {/* 背景説明を持たないタスクでは「?」を出さない（押しても空のダイアログが開くだけになる） */}
+                {/* 背景説明を持たないタスクでは情報アイコンを出さない（押しても空のダイアログが開くだけになる） */}
                 {task.why && (
                   <button onClick={e => { e.stopPropagation(); setWhyOpen(true); }} aria-label={t.why}
-                    className="w-6 h-6 rounded-full border border-slate-200 text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-colors flex items-center justify-center text-[11px] font-bold">
-                    ?
+                    className="w-6 h-6 rounded-full text-slate-400 hover:text-indigo-600 transition-colors flex items-center justify-center">
+                    <Info size={16} />
                   </button>
                 )}
                 <button aria-expanded={open} aria-label={task.title} className="text-slate-300 hover:text-slate-500 transition-colors">

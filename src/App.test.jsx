@@ -111,23 +111,23 @@ describe('app', () => {
     expect(screen.getByText('1 / 12 Completed')).toBeInTheDocument();
   });
 
-  test('the ? button opens the explanation without expanding the card', () => {
+  test('the info button opens the explanation without expanding the card', () => {
     generateStudentRoadmap();
     const card = within(document.getElementById('health'));
     const chevron = card.getByRole('button', { expanded: false });
 
-    fireEvent.click(card.getByRole('button', { name: 'Why this matters' }));
+    fireEvent.click(card.getByRole('button', { name: 'What to know' }));
     expect(chevron).toHaveAttribute('aria-expanded', 'false');
 
     const dialog = within(screen.getByRole('dialog'));
     expect(dialog.getByText(/covers 70% of medical costs/)).toBeInTheDocument();
   });
 
-  // 背景説明を持たないタスクで「?」を押すと空のダイアログが開いてしまうため、ボタン自体を出さない
-  test('hides the ? button on a task that has no explanation', () => {
+  // 背景説明を持たないタスクで情報アイコンを押すと空のダイアログが開いてしまうため、ボタン自体を出さない
+  test('hides the info button on a task that has no explanation', () => {
     generateStudentRoadmap();
     const card = within(document.getElementById('visa'));
-    expect(card.queryByRole('button', { name: 'Why this matters' })).toBeNull();
+    expect(card.queryByRole('button', { name: 'What to know' })).toBeNull();
   });
 
   // Deadlines, amounts and ordering live in keyPoint, and the source is the app's evidence:
