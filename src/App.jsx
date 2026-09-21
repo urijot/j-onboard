@@ -614,9 +614,10 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
   const closeModal = useCallback(() => setModal(false), []);
   const closeWhy = useCallback(() => setWhyOpen(false), []);
 
-  // 完了したら閉じる。次のアクションになったら自動的に開き、外れたら自動的に閉じる
+  // 完了したら閉じる
   useEffect(() => { if (checked) setOpen(false); }, [checked]);
-  useEffect(() => { setOpen(isNext && !checked); }, [isNext, checked]);
+  // 次のアクションになったら自動的に開く。次が別のタスクに移っても、手で開いたカードは閉じない
+  useEffect(() => { if (isNext && !checked) setOpen(true); }, [isNext, checked]);
 
   // REQUIRED依存が未完了のものを探す
   const unmetDeps = (task.deps || [])
