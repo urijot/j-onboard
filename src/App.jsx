@@ -219,14 +219,19 @@ export const buildPhases = (profile, lang) => {
         {
           id: "juminhyo", title: "Moving-in Notification (転入届)",
           location: "City Hall — Residents Affairs Division / resident registration window",
-          required: ["Passport", "Residence Card", "Lease contract or dorm registration letter"],
+          required: [
+            "Passport",
+            "Residence Card — or your passport, if no card was issued at the airport",
+          ],
           keyPoint: "Get 1–2 certified copies of your residence record at the same visit — you'll need them for SIM and bank contracts.",
           why: "The moving-in notification is a legal obligation within 14 days of moving in. Get 1–2 certified copies of your residence record at the same visit — you'll need them for SIM contracts and bank accounts.",
           counter: "転入届を提出したいです。住民票の写しも2部お願いします。",
           counterTranslation: "I would like to submit my moving-in notification. Could I also get 2 copies of my residence record?",
           level: "required",
           deadline: { days: 14 },
-          deps: [{ taskId: "rezcard", type: "REQUIRED" }],
+          // 後日交付の空港から入国した人は、この届出をしてから在留カードが郵送される。
+          // rezcard を先に求めると、14日の期限を持つこの届出を待たせることになるので依存は張らない
+          deps: [],
           source: { url: "https://www.soumu.go.jp/main_sosiki/jichi_gyousei/c-gyousei/zairyu/move-in_move-out.html", verified: "2026-09" },
         },
         {

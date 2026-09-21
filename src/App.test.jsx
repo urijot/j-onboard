@@ -184,7 +184,8 @@ describe('bring list', () => {
     // The residence record is issued at the first window of the same visit
     expect(items.some(i => /Residence record/i.test(i))).toBe(false);
     expect(items).toContain('Passport');
-    expect(items).toContain('Residence Card');
+    // 後日交付の人はカードの代わりにパスポートを出すため、注記付きの1件にまとまる
+    expect(items.filter(i => /^Residence Card/.test(i))).toHaveLength(1);
     // Passport and Residence Card each appear in several tasks of this phase
     expect(new Set(items).size).toBe(items.length);
   });
