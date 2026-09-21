@@ -35,7 +35,6 @@ const T = {
     required: "Required Items",
     bringLabel: "Bring with you",
     counterSheetBtn: "Show these phrases at the counter 🇯🇵",
-    bringNote: "Everything the steps below need, duplicates removed.",
     why: "What to know",
     showCounter: "Show at Counter 🇯🇵",
     close: "Close",
@@ -93,7 +92,6 @@ const T = {
     required: "持ち物",
     bringLabel: "持っていくもの",
     counterSheetBtn: "これらの文を窓口で見せる 🇯🇵",
-    bringNote: "この段階の手続きに必要なもの（重複を除く）",
     why: "知っておくこと",
     showCounter: "窓口で見せる 🇯🇵",
     close: "閉じる",
@@ -222,7 +220,7 @@ export const buildPhases = (profile, lang) => {
           location: "City Hall — Residents Affairs Division / resident registration window",
           required: [
             "Passport",
-            "Residence Card — or your passport, if no card was issued at the airport",
+            "Residence Card — if you have it",
           ],
           keyPoint: "Get 1–2 certified copies of your residence record at the same visit — you'll need them for SIM and bank contracts.",
           why: "The moving-in notification is a legal obligation within 14 days of moving in. Get 1–2 certified copies of your residence record at the same visit — you'll need them for SIM contracts and bank accounts.",
@@ -584,8 +582,7 @@ function BringList({ items, t }) {
   if (!items.length) return null;
   return (
     <div className="border border-slate-200 bg-slate-50 rounded-xl p-4 mb-3">
-      <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">{t.bringLabel}</p>
-      <p className="text-xs text-slate-400 mb-2.5">{t.bringNote}</p>
+      <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2.5">{t.bringLabel}</p>
       <ul className="space-y-1.5">
         {items.map((item, i) => (
           <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
@@ -1054,7 +1051,7 @@ export default function JOnboard() {
                 <div key={phase.id}>
                   <div className="flex items-center gap-2.5 mb-3">
                     <span className={`inline-flex items-center gap-1.5 text-xs font-bold rounded-full px-2.5 py-1 ${c.badge}`}>
-                      {phase.icon} {phase.label}
+                      {phase.icon} {phase.label}{phase.counterSheet && !locked && " — Save time by doing these in one visit"}
                     </span>
                     {locked && (
                       <span className="flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">
@@ -1067,19 +1064,6 @@ export default function JOnboard() {
                     <div className="flex gap-2.5 bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-sm text-amber-700 mb-3">
                       <AlertTriangle size={15} className="flex-shrink-0 mt-0.5" />
                       <span>{t.lockedHousing}</span>
-                    </div>
-                  )}
-
-                  {/* Phase 3: 役所まとめバナー */}
-                  {phase.id === "p3" && !locked && (
-                    <div className="flex gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-3">
-                      <div className="flex-shrink-0 w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                        <Building2 size={15} className="text-emerald-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-emerald-800 mb-0.5">💡 Save time — do these in one City Hall visit</p>
-                        <p className="text-xs text-emerald-700 leading-relaxed">Your moving-in notification, National Health Insurance, and National Pension can all be handled at the same City Hall on the same day. Tell the first counter you need all three — they'll direct you.</p>
-                      </div>
                     </div>
                   )}
 
