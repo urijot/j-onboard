@@ -306,7 +306,7 @@ export const buildPhases = (profile, lang) => {
           title: "Apply for Work Permit (資格外活動許可)",
           location: "Regional immigration bureau covering the area where you live",
           required: [
-            "Application form (資格外活動許可申請書) — available at the counter",
+            "Application form — printed and filled in",
             "A document showing what work you will be doing",
             "Residence Card",
             "Passport",
@@ -317,7 +317,10 @@ export const buildPhases = (profile, lang) => {
           counterTranslation: "I am here to apply for a Work Permit. Could you check whether I have all the documents I need?",
           level: "required",
           deps: [{ taskId: "rezcard", type: "REQUIRED" }],
-          source: { url: "https://www.moj.go.jp/isa/applications/procedures/16-8.html", verified: "2026-09" },
+          source: [
+            { url: "https://www.moj.go.jp/isa/content/930004124.pdf", label: "Application form — English/Japanese (PDF)", verified: "2026-09" },
+            { url: "https://www.moj.go.jp/isa/applications/procedures/16-8.html", label: "Processing time and fee", verified: "2026-09" },
+          ],
         }] : []),
         {
           id: "sim", title: "Voice/SMS SIM Contract (格安SIM)",
