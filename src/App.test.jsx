@@ -168,11 +168,10 @@ describe('counter sheet', () => {
     expect(sheet.queryByText(/転入届を提出したいです/)).not.toBeInTheDocument();
   });
 
-  test('can be ticked off at the counter', () => {
+  // The sheet is only for showing to staff; tasks are ticked off on the roadmap
+  test('has nothing to tick off', () => {
     const sheet = openCityHallSheet();
-    fireEvent.click(sheet.getByRole('checkbox', { name: /National Health Insurance/ }));
-    expect(sheet.queryByText(/国民健康保険に加入したいです/)).not.toBeInTheDocument();
-    expect(sheet.getByText('国民健康保険')).toBeInTheDocument();
+    expect(sheet.queryAllByRole('checkbox')).toHaveLength(0);
   });
 });
 

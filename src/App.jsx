@@ -198,8 +198,8 @@ export const buildPhases = (profile, lang) => {
           ],
           keyPoint: "The airport counter cannot accept this if your period of stay is 3 months. Once granted, you may work up to 28 hours a week — 8 hours a day during your school's long holidays.",
           why: "You cannot do any paid work without this permit. The airport counter accepts the application from new arrivals granted the Student status of residence, unless your period of stay is 3 months — so apply here and the stamp goes on your Residence Card on the spot, saving a separate trip to a regional immigration bureau later (typically a half-day errand).",
-          counter: "資格外活動許可の申請をしたいのですが、ここで手続きできますか？",
-          counterTranslation: "I would like to apply for a Work Permit. Can I do it here?",
+          counter: "資格外活動許可の申請をしたいです。",
+          counterTranslation: "I would like to apply for a Work Permit.",
           highlight: "Same counter as Residence Card",
           level: "required",
           deps: [],
@@ -243,8 +243,8 @@ export const buildPhases = (profile, lang) => {
           ],
           keyPoint: "Enroll within 14 days — cities count the days differently, so go on the same visit as your moving-in notification. If you had no income in Japan last year, ask for the low-income reduction: it is not applied automatically.",
           why: "National Health Insurance covers 70% of medical costs, and everyone registered as a resident pays premiums. Being a student does not reduce them by itself — the Student Payment Exception that exists for National Pension has no equivalent here. What can reduce them is the reduction for low-income households, which students arriving with no income in Japan often qualify for. You have to claim it: cities ask you to declare last year's income, and a household that declares nothing is left out of the reduction. Each city sets its own premiums, and its own income limit if you work part-time, so ask at the window what applies to you. If you stay into another fiscal year, expect to declare again — some cities ask students to repeat it every year.",
-          counter: "国民健康保険に加入したいです。前年の日本での所得はゼロです。保険料の軽減申請もお願いできますか？",
-          counterTranslation: "I would like to enroll in National Health Insurance. My income in Japan last year was zero. Could I also apply for a premium reduction?",
+          counter: "国民健康保険に加入したいです。前年の日本での所得はゼロです。保険料の軽減に必要な手続きがあれば、あわせてお願いします。",
+          counterTranslation: "I would like to enroll in National Health Insurance. My income in Japan last year was zero. If anything is needed for a premium reduction, please handle that too.",
           level: "required",
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
           source: [
@@ -271,10 +271,10 @@ export const buildPhases = (profile, lang) => {
             : "Not everyone living in Japan pays into National Pension — people covered by Employees' Pension through their job don't — and which applies to you depends on your employment situation. Ask at the pension window. If you do need to join, a payment slip for ¥17,920 a month (FY2026) arrives about two weeks after you enroll, so ask at the same time whether you can apply for a premium exemption.",
           counter: isStudent
             ? "国民年金の加入手続きをしたいです。留学生なので、授業が始まったら学生納付特例を申請する予定です。"
-            : "国民年金に加入する必要があるか確認したいです。加入が必要な場合、保険料の免除は申請できますか？",
+            : "国民年金に加入する必要があるか確認したいです。必要な場合は加入の手続きと、申請できるなら保険料の免除もお願いします。",
           counterTranslation: isStudent
             ? "I would like to enroll in National Pension. I'm an international student, and I plan to apply for the Student Payment Exception once my classes start."
-            : "I would like to check whether I need to join National Pension. If I do, can I apply for a premium exemption?",
+            : "I would like to check whether I need to join National Pension. If I do, please enroll me — and if I can apply for a premium exemption, please process that too.",
           level: isStudent ? "required" : "recommended",
           source: { url: "https://www.nenkin.go.jp/service/kokunen/kanyu/20140710-04.html", verified: "2026-09" },
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
@@ -287,9 +287,9 @@ export const buildPhases = (profile, lang) => {
             "Passport",
           ],
           keyPoint: "Apply within 30 days of registering your address — don't wait for the notification letter, it isn't needed for this route.",
-          why: "The My Number Card is increasingly required for online tax filing, digital health insurance, and government services. Moving in from overseas qualifies you for expedited issuance: you apply at the City Hall window, staff hand you the forms there, and the card arrives at your address by registered post in about a week. You must apply within 30 days of registering your address — so don't wait for the individual number notification letter that comes 2–3 weeks later. That letter isn't needed for this route, and it can't be used as ID or as proof of your My Number. Ask at the window whether you need to bring a photo.",
-          counter: "マイナンバーカードを申請したいです。海外から転入したので特急発行の対象になりますか？顔写真は必要でしょうか。",
-          counterTranslation: "I would like to apply for a My Number Card. I moved in from overseas — am I eligible for expedited issuance? Do I need to bring a photo?",
+          why: "The My Number Card is increasingly required for online tax filing, digital health insurance, and government services. Moving in from overseas qualifies you for expedited issuance: you apply at the City Hall window, staff hand you the forms there, and the card arrives at your address by registered post in about a week. You must apply within 30 days of registering your address — so don't wait for the individual number notification letter that comes 2–3 weeks later. That letter isn't needed for this route, and it can't be used as ID or as proof of your My Number.",
+          counter: "マイナンバーカードを申請したいです。海外からの転入なので、特急発行でお願いします。",
+          counterTranslation: "I would like to apply for a My Number Card. I moved in from overseas, so I would like expedited issuance.",
           level: "recommended",
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
           source: { url: "https://www.kojinbango-card.go.jp/apprec/apply/express_apply/", verified: "2026-09" },
@@ -312,8 +312,8 @@ export const buildPhases = (profile, lang) => {
           ],
           keyPoint: "Processing takes 2 weeks to 2 months, so apply well before you plan to start working. There is no fee.",
           why: "You cannot do any paid work without this permit. The airport counter only accepts these applications from new arrivals granted the Student status of residence, so you apply at the regional immigration bureau for your address instead. There is no fee. Processing takes 2 weeks to 2 months, so apply well before you plan to start working.",
-          counter: "資格外活動許可の申請に来ました。必要な書類がそろっているか確認していただけますか？",
-          counterTranslation: "I am here to apply for a Work Permit. Could you check whether I have all the documents I need?",
+          counter: "資格外活動許可の申請に来ました。",
+          counterTranslation: "I am here to apply for a Work Permit.",
           level: "required",
           deps: [{ taskId: "rezcard", type: "REQUIRED" }],
           source: [
@@ -354,8 +354,8 @@ export const buildPhases = (profile, lang) => {
           required: ["Whatever your university asks you to bring"],
           keyPoint: "If your university doesn't issue a Student ID, ask for a Certificate of Enrollment instead — either is accepted.",
           why: "You'll need one of these to apply for the pension Student Payment Exception — either one is accepted. Not every university issues a Student ID to exchange students, so if yours doesn't, ask for a Certificate of Enrollment instead.",
-          counter: "学生証は発行されますか？発行されない場合は、在学証明書を発行していただけますか？",
-          counterTranslation: "Will I be issued a Student ID? If not, could you issue me a Certificate of Enrollment?",
+          counter: "学生証を発行していただきたいです。発行されない場合は、在学証明書をお願いします。",
+          counterTranslation: "I would like to be issued a Student ID. If that isn't possible, please issue me a Certificate of Enrollment.",
           level: "recommended",
           deps: [],
           source: { url: "https://www.nenkin.go.jp/service/kokunen/menjo/20150514.html", verified: "2026-09" },
@@ -368,8 +368,8 @@ export const buildPhases = (profile, lang) => {
           ],
           keyPoint: "Apply as soon as your classes start — an accident or illness before your application date may not qualify for the disability pension.",
           why: "With the Student Payment Exception, you pay no National Pension premiums and those months aren't recorded as unpaid — it's open to students whose income last year was ¥1.28 million or less (higher with dependents). You can apply once your classes have started. Easiest first: ask your international office whether your university accepts the application on campus; if you have your My Number Card, apply from your phone on Mynaportal with a photo of your Student ID or Certificate of Enrollment (only some screens are in English); otherwise, apply at the City Hall pension window. Don't put it off — an accident or illness before your application date may not qualify for the disability pension.",
-          counter: "国民年金の学生納付特例の申請をしたいです。交換留学生ですが対象になりますか？学生証（または在学証明書）を持参しました。",
-          counterTranslation: "I would like to apply for the Student Payment Exception. I'm an exchange student — am I eligible? I have my Student ID (or Certificate of Enrollment) with me.",
+          counter: "国民年金の学生納付特例の申請をしたいです。学生証（または在学証明書）を持参しました。",
+          counterTranslation: "I would like to apply for the Student Payment Exception. I have my Student ID (or Certificate of Enrollment) with me.",
           level: "recommended",
           deps: [
             { taskId: "pension", type: "REQUIRED" },
@@ -455,7 +455,8 @@ export const japaneseName = (title) => {
 };
 
 // 1回の訪問で職員に見せるシート。既存の窓口フレーズを並べ替えるだけで、新しい記述は持たない
-function CounterSheet({ phase, checked, onToggle, profile, onClose, t }) {
+// 職員に見せるだけの画面なので、完了のチェックはここではつけない（ロードマップ側でつける）
+function CounterSheet({ phase, checked, profile, onClose, t }) {
   useEffect(() => {
     const onKey = e => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
@@ -472,23 +473,12 @@ function CounterSheet({ phase, checked, onToggle, profile, onClose, t }) {
     ? "I am a visiting researcher, and I don't speak much Japanese."
     : "I am an exchange student, and I don't speak much Japanese.";
 
-  const Row = ({ task, children }) => (
-    <li className="flex items-start gap-3">
-      <button onClick={() => onToggle(task.id)} role="checkbox" aria-checked={!!checked[task.id]} aria-label={task.title}
-        className="mt-1 flex-shrink-0">
-        {checked[task.id]
-          ? <CheckCircle2 size={22} className="text-emerald-500" />
-          : <Circle size={22} className="text-slate-300" />}
-      </button>
-      <div className="flex-1 min-w-0">{children}</div>
-    </li>
-  );
-
   return (
-    <div role="dialog" aria-modal="true" aria-label={t.counterSheetBtn}
-      className="fixed inset-0 z-50 bg-white overflow-y-auto">
-      <div className="sticky top-0 flex justify-end bg-white/95 backdrop-blur px-4 py-3">
-        <button onClick={onClose} aria-label={t.close} className="text-slate-400 hover:text-slate-600 transition-colors"><X size={22} /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+      <div role="dialog" aria-modal="true" aria-label={t.counterSheetBtn}
+        className="bg-white rounded-2xl shadow-2xl max-w-sm w-full max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+      <div className="sticky top-0 flex justify-end bg-white/95 backdrop-blur px-4 pt-3 pb-1">
+        <button onClick={onClose} aria-label={t.close} className="text-slate-300 hover:text-slate-500 transition-colors"><X size={20} /></button>
       </div>
 
       {/* lang="ja" がないと、中国語設定の端末などで漢字が中国語の字形で表示される */}
@@ -498,11 +488,9 @@ function CounterSheet({ phase, checked, onToggle, profile, onClose, t }) {
         {todo.length > 0 && (
           <div>
             <p className="text-sm font-bold text-slate-500 mb-2">本日お願いしたい手続き</p>
-            <ul className="space-y-3.5">
+            <ul className="space-y-3.5 list-disc pl-5 marker:text-slate-300">
               {todo.map(task => (
-                <Row key={task.id} task={task}>
-                  <p className="text-lg text-slate-800 leading-relaxed">{task.counter}</p>
-                </Row>
+                <li key={task.id} className="text-lg text-slate-800 leading-relaxed">{task.counter}</li>
               ))}
             </ul>
           </div>
@@ -513,9 +501,7 @@ function CounterSheet({ phase, checked, onToggle, profile, onClose, t }) {
             <p className="text-sm font-bold text-slate-500 mb-2">すでに済んだ手続き</p>
             <ul className="space-y-2">
               {done.map(task => (
-                <Row key={task.id} task={task}>
-                  <p className="text-lg text-slate-500 leading-relaxed">{japaneseName(task.title) || task.title}</p>
-                </Row>
+                <li key={task.id} className="text-lg text-slate-500 leading-relaxed"><span aria-hidden="true">✓ </span><span>{japaneseName(task.title) || task.title}</span></li>
               ))}
             </ul>
           </div>
@@ -524,7 +510,7 @@ function CounterSheet({ phase, checked, onToggle, profile, onClose, t }) {
         <p className="text-xs text-slate-400 pt-1">本人が記録したチェックリストです。</p>
       </div>
 
-      <div className="border-t border-slate-200 px-5 py-5 space-y-4 bg-slate-50">
+      <div className="border-t border-slate-200 px-5 py-5 space-y-4 bg-slate-50 rounded-b-2xl">
         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">What the staff are reading</p>
         <p className="text-sm text-slate-600 leading-relaxed">{introEn}</p>
         {todo.length > 0 && (
@@ -547,7 +533,7 @@ function CounterSheet({ phase, checked, onToggle, profile, onClose, t }) {
             </ul>
           </div>
         )}
-        <p className="text-xs text-slate-400">Tap a circle to update this as you go.</p>
+      </div>
       </div>
     </div>
   );
@@ -820,7 +806,7 @@ export default function JOnboard() {
   return (
     <div className="min-h-screen bg-slate-50" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
       {openSheet && (
-        <CounterSheet phase={openSheet} checked={checked} onToggle={handleToggle}
+        <CounterSheet phase={openSheet} checked={checked}
           profile={profile} onClose={closeSheet} t={t} />
       )}
 
