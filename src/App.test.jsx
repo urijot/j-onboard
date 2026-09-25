@@ -74,6 +74,26 @@ describe('app', () => {
     fireEvent.click(screen.getByRole('button', { name: /Generate/ }));
   };
 
+  describe('content date note', () => {
+    afterEach(() => vi.useRealTimers());
+
+    test('quietly states the check date until March 2028', () => {
+      vi.useFakeTimers({ toFake: ['Date'] });
+      vi.setSystemTime(new Date(2028, 1, 29));
+      render(<App />);
+      expect(screen.getByText(/no longer updated/)).toBeInTheDocument();
+      expect(screen.queryByText(/may be out of date/)).not.toBeInTheDocument();
+    });
+
+    test('switches to a warning from March 2028', () => {
+      vi.useFakeTimers({ toFake: ['Date'] });
+      vi.setSystemTime(new Date(2028, 2, 1));
+      render(<App />);
+      expect(screen.getByText(/may be out of date/)).toBeInTheDocument();
+      expect(screen.queryByText(/no longer updated/)).not.toBeInTheDocument();
+    });
+  });
+
   test('keeps Generate disabled until housing is answered', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: 'Exchange Student' }));

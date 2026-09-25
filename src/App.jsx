@@ -47,6 +47,8 @@ const T = {
     shortStayToggle: "Staying 3 months or less?",
     shortStayBody: "You won't receive a Residence Card, so the procedures in this app (residence registration, health insurance, pension, etc.) don't apply to you. Just arrange travel health insurance and a data SIM or eSIM before you leave.",
     reassuranceNote: "Not sure about something? Answer what you know — you can edit later.",
+    contentDateNote: "Checked against official sources in September 2026 · no longer updated",
+    staleContentNote: "This information was checked in September 2026 and may be out of date. Confirm each step through its official link or with your university's international office.",
     homeScreenNote: "On iPhone? Add J-Onboard to your Home Screen before you start (Share → Add to Home Screen). It will open even without internet. Your progress in the browser won't carry over.",
     housingGuideToggle: "Dorms aren't your only housing option",
     housingGuideIntro: "If you didn't get a dorm place, or your housing still isn't settled, it's worth knowing about furnished monthly and share-house services aimed at foreign residents before you start a full apartment search — Sakura House and Oakhouse are two well-known examples. They typically offer:",
@@ -66,7 +68,6 @@ const T = {
     nextActionLabel: "Do This Next",
     nextBadge: "→ Next",
     incompleteHint: "Answer all questions above to continue.",
-    reportGeneral: "If something was different for you, or a link didn't work, let us know",
     housingOk: "Housing ✓",
     housingWarn: "Housing ⚠",
     workPermitBadge: "Work Permit",
@@ -129,6 +130,8 @@ const T = {
     shortStayToggle: "3ヶ月以下の滞在の方へ",
     shortStayBody: "3ヶ月以下の滞在では在留カードが発行されないため、このアプリの手続き（住民登録・国民健康保険・年金など）は対象外です。出発前に海外旅行保険とデータSIM・eSIMを用意しておけば十分です。",
     reassuranceNote: "わからない質問があっても大丈夫。あとから編集できます。",
+    contentDateNote: "2026年9月に公式情報で確認した内容です（以降は更新していません）",
+    staleContentNote: "この内容は2026年9月に確認したもので、古くなっている可能性があります。各手続きの公式リンクか、大学の国際担当部署で最新の情報を確認してください。",
     homeScreenNote: "iPhoneの方は、始める前にホーム画面に追加してください（共有 → ホーム画面に追加）。ネットがなくても開けます。ブラウザでの進捗は引き継がれません。",
     housingGuideToggle: "住まいは大学の寮だけじゃない",
     housingGuideIntro: "寮の抽選に落ちた、あるいはまだ住まいが決まっていない——そんなときにまず検討する価値があるのが「外国人向けマンスリー・シェアハウス」です。代表的なところでSakura House、Oakhouseなどがあり、共通して次のような特徴があります。",
@@ -148,7 +151,6 @@ const T = {
     nextActionLabel: "次にやること",
     nextBadge: "→ 次にやる",
     incompleteHint: "上記の質問にすべて回答すると次に進めます。",
-    reportGeneral: "窓口で言われたことが違った、リンクが開けなかったなどの場合は教えてください",
     housingOk: "住まい ✓",
     housingWarn: "住まい ⚠",
     workPermitBadge: "資格外活動許可",
@@ -787,8 +789,13 @@ function CounterSheet({ phase, checked, profile, onClose, t }) {
   );
 }
 
-// 問題報告の Google フォーム。窓口での食い違い・リンク切れ・古い情報など、公式ページだけでは気づけないズレを利用者から受け取る唯一の経路
-const FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSccozx6wCgHnanNR7a3RdLgjR7i3Uc7W1OhOS8fgxER5GcnhQ/viewform";
+// 内容は2026年9月の確認を最後に更新しない。確認から1年半経ったら、古い可能性を目立つ形で知らせる
+const STALE_FROM = new Date(2028, 2, 1);
+// 開発中だけ ?today=2028-03-01 のように日付を指定して、切り替え後の表示を確認できる
+const isContentStale = () => {
+  const preview = import.meta.env.DEV && new URLSearchParams(window.location.search).get("today");
+  return (preview ? new Date(preview) : new Date()) >= STALE_FROM;
+};
 
 // source は1件のオブジェクトでも、複数の配列でもよい
 const taskSources = (task) =>
@@ -997,6 +1004,7 @@ export default function JOnboard() {
   const [sheetPhase, setSheetPhase] = useState(null);
   const [housingGuideOpen, setHousingGuideOpen] = useState(false);
   const [shortStayOpen, setShortStayOpen] = useState(false);
+  const contentStale = isContentStale();
   const t = T[lang];
 
   useEffect(() => {
@@ -1105,6 +1113,12 @@ export default function JOnboard() {
             <div>
               <h1 className="text-2xl font-bold text-slate-900">{t.formTitle}</h1>
               <p className="text-sm text-slate-500 mt-1">{t.reassuranceNote}</p>
+              {contentStale && (
+                <div className="flex gap-2.5 bg-amber-50 border border-amber-200 rounded-xl p-3.5 mt-3 text-sm text-amber-800">
+                  <AlertTriangle size={15} className="flex-shrink-0 mt-0.5 text-amber-500" />
+                  <span>{t.staleContentNote}</span>
+                </div>
+              )}
               <div className="flex gap-2.5 bg-indigo-50 border border-indigo-200 rounded-xl p-3.5 mt-3 text-sm text-indigo-800">
                 <Info size={15} className="flex-shrink-0 mt-0.5 text-indigo-400" />
                 <div className="space-y-1.5">
@@ -1115,6 +1129,7 @@ export default function JOnboard() {
                     {shortStayOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                   </button>
                   {shortStayOpen && <p className="text-xs text-indigo-700/80">{t.shortStayBody}</p>}
+                  {!contentStale && <p className="text-xs text-indigo-700/80">{t.contentDateNote}</p>}
                 </div>
               </div>
 
@@ -1348,10 +1363,6 @@ export default function JOnboard() {
               <p className="text-xs text-slate-400 leading-relaxed">
                 {t.disclaimer}
               </p>
-              <a href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-block mt-2 text-xs text-slate-500 underline underline-offset-2 hover:text-indigo-600 transition-colors">
-                {t.reportGeneral} ↗
-              </a>
             </div>
 
             <p className="text-center text-xs text-slate-400 pb-4">
