@@ -15,7 +15,7 @@ A web app that guides exchange students and visiting researchers staying in Japa
   - At City Hall (moving-in notification, National Health Insurance, National Pension, etc.). Users without settled housing can't mark this phase done until they have an address
   - Living Setup (SIM, bank account, etc.)
 - Each task shows where to go, what to bring, why it matters, a Japanese phrase to show at the counter (with an English translation), and a link to the official source with the month it was last checked
-- Badges mark each task as required or recommended. The moving-in notification shows its legal deadline: within 14 days of moving in
+- Badges mark each task as required, recommended or optional. Optional tasks (such as the My Number Card) don't count toward progress and are never suggested as the next task. The moving-in notification shows its legal deadline: within 14 days of moving in
 - The next task to do is shown at the top of the screen, and a warning appears when a task that must come first is still unfinished
 - Switches between English and Japanese, including the task content
 - Answers and progress are stored on your device only (no account, nothing sent to a server)

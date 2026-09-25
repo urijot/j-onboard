@@ -71,11 +71,12 @@ const T = {
     workPermitBadge: "Work Permit",
     progressSaved: "Your progress is automatically saved on this device",
     allDoneTitle: "You're all settled in!",
-    allDoneBody: "You've finished every setup task in this guide. Enjoy your time in Japan!",
+    allDoneBody: "You've finished every task you need in this guide. Enjoy your time in Japan!",
     oneVisitSuffix: " — Save time by doing these in one visit",
     needsAddress: "Needs permanent address",
     levelRequired: "Required",
     levelRecommended: "Recommended",
+    levelOptional: "Optional",
     deadlineWithin: (days) => ` · within ${days} days of moving in`,
     completeFirst: "Complete this first:",
     officialSource: "Official source",
@@ -151,11 +152,12 @@ const T = {
     workPermitBadge: "資格外活動許可",
     progressSaved: "進捗はこの端末に自動保存されます",
     allDoneTitle: "日本での準備が全部終わりました！",
-    allDoneBody: "すべてのタスクが完了しました。日本での生活を楽しんでください。",
+    allDoneBody: "必要なタスクはすべて完了しました。日本での生活を楽しんでください。",
     oneVisitSuffix: " — 1回の来庁でまとめて済ませると手間が減ります",
     needsAddress: "本住居の確定が必要",
     levelRequired: "必須",
     levelRecommended: "推奨",
+    levelOptional: "任意",
     deadlineWithin: (days) => ` · 住み始めてから${days}日以内`,
     completeFirst: "先に完了させるもの",
     officialSource: "公式の情報",
@@ -169,7 +171,7 @@ const T = {
 };
 
 // 依存の強さ: REQUIRED=物理的・法的に必須 / STRONGLY_ADVISED=事業者運用依存・例外あり / TIP=アドバイス
-// level: required=義務（法的に必須 or 飛ばすと先に進めない） / recommended=推奨（任意だがやらないと損）
+// level: required=義務（法的に必須 or 飛ばすと先に進めない） / recommended=推奨（任意だがやらないと損） / optional=任意（必要な人だけ）。optional は進捗と「次にやること」の対象外
 // deadline.days: 住み始めた日からの法定期限（日数）。バッジに「within N days of moving in」と出す。起点が住み始めた日でない期限には付けない
 
 export const buildPhases = (profile, lang) => {
@@ -445,8 +447,8 @@ export const buildPhases = (profile, lang) => {
             { en: "Passport", ja: "パスポート" },
           ]),
           keyPoint: L({
-            en: "Optional. If you want one, apply within 30 days of registering your address — no need to wait for the notification letter.",
-            ja: "任意。作る場合は、住民登録から30日以内に申請する。個人番号通知書が届くのを待つ必要はない。",
+            en: "If you want one, apply within 30 days of registering your address — no need to wait for the notification letter.",
+            ja: "作る場合は、住民登録から30日以内に申請する。個人番号通知書が届くのを待つ必要はない。",
           }),
           why: L({
             en: "The My Number Card is Japan's digital ID card. You can use it as your health insurance card and to apply to immigration online. It is valid until your period of stay ends.",
@@ -454,7 +456,7 @@ export const buildPhases = (profile, lang) => {
           }),
           counter: "マイナンバーカードを申請したいです。海外から転入しました。",
           counterTranslation: "I would like to apply for a My Number Card. I have moved here from overseas.",
-          level: "recommended",
+          level: "optional",
           deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
           source: { url: "https://www.kojinbango-card.go.jp/apprec/apply/express_apply/", verified: "2026-09" },
         },
@@ -619,7 +621,7 @@ export const buildPhases = (profile, lang) => {
           counterTranslation: isStudent
             ? "I would like to open a Japan Post Bank account. I have my Residence Card and Student ID with me."
             : "I would like to open a Japan Post Bank account. I have my Residence Card with me.",
-          level: "recommended",
+          level: "optional",
           source: { url: "https://www.jp-bank.japanpost.jp/kaisetu/kat_gaikokujin.html", verified: "2026-09" },
           deps: [
             { taskId: "juminhyo", type: "REQUIRED" },
@@ -838,6 +840,7 @@ const levelBadge = (task, t) => {
   const map = {
     required:    { cls: "text-red-700 bg-red-50 border-red-200",    label: t.levelRequired },
     recommended: { cls: "text-sky-700 bg-sky-50 border-sky-200",    label: t.levelRecommended },
+    optional:    { cls: "text-slate-600 bg-slate-50 border-slate-200", label: t.levelOptional },
   };
   const cfg = map[task.level];
   if (!cfg) return null;
@@ -1014,7 +1017,7 @@ export default function JOnboard() {
     setChecked(next);
     try { localStorage.setItem("jonboard_checked", JSON.stringify(next)); } catch {}
     // 最後のタスクを完了したら、上部の完了メッセージが見えるように戻る（カードが閉じるのを見せてから）
-    if (next[id] && allIds.every(tid => next[tid])) {
+    if (next[id] && progressIds.every(tid => next[tid])) {
       setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 500);
     }
   };
@@ -1037,9 +1040,10 @@ export default function JOnboard() {
 
   const phases = buildPhases(profile, lang);
   const openSheet = phases.find(ph => ph.id === sheetPhase);
-  const allIds = phases.flatMap(p => p.tasks.map(tk => tk.id));
-  const doneCount = allIds.filter(id => checked[id]).length;
-  const pct = allIds.length ? Math.round((doneCount / allIds.length) * 100) : 0;
+  // 任意のタスクは必要な人だけがやるので、進捗の分母にも「次にやること」にも入れない
+  const progressIds = phases.flatMap(p => p.tasks.filter(tk => tk.level !== "optional").map(tk => tk.id));
+  const doneCount = progressIds.filter(id => checked[id]).length;
+  const pct = progressIds.length ? Math.round((doneCount / progressIds.length) * 100) : 0;
   const isTemp = profile.housing === "temp";
   const isFormComplete = !!profile.housing;
 
@@ -1048,7 +1052,7 @@ export default function JOnboard() {
     .filter(p => !(p.lockedIfTemp && isTemp))
     .flatMap(p => p.tasks)
     .find(tk => {
-      if (checked[tk.id]) return false;
+      if (checked[tk.id] || tk.level === "optional") return false;
       const unmetDeps = (tk.deps || []).filter(d => d.type === "REQUIRED" && !checked[d.taskId]);
       return unmetDeps.length === 0;
     });
@@ -1248,7 +1252,7 @@ export default function JOnboard() {
                   <div className="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full transition-all duration-700" style={{ width: `${pct}%` }} />
                 </div>
                 <span className="text-xs font-bold text-slate-600 whitespace-nowrap">
-                  {doneCount} / {allIds.length} {t.progressLabel}
+                  {doneCount} / {progressIds.length} {t.progressLabel}
                 </span>
               </div>
               {pct === 100 ? (

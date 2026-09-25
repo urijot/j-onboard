@@ -13,7 +13,7 @@ describe('task data', () => {
     expect(new Set(ids).size).toBe(ids.length);
 
     for (const tk of tasks) {
-      expect(['required', 'recommended']).toContain(tk.level);
+      expect(['required', 'recommended', 'optional']).toContain(tk.level);
       // A legal day-count deadline only makes sense on a mandatory task
       if (tk.deadline?.days) expect(tk.level).toBe('required');
       // Every task needs a key point: the why text now sits behind a modal
@@ -108,7 +108,7 @@ describe('app', () => {
 
     fireEvent.click(card.getByRole('checkbox'));
     expect(chevron).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.getByText('1 / 12 Completed')).toBeInTheDocument();
+    expect(screen.getByText('1 / 10 Completed')).toBeInTheDocument();
   });
 
   test('the info button opens the explanation without expanding the card', () => {
@@ -128,6 +128,19 @@ describe('app', () => {
     generateStudentRoadmap();
     const card = within(document.getElementById('visa'));
     expect(card.queryByRole('button', { name: 'What to know' })).toBeNull();
+  });
+
+  // Optional tasks are only for some people, so leaving them undone must not block completion
+  test('finishes without the optional tasks and never suggests them next', () => {
+    generateStudentRoadmap();
+    const optional = ['mynumber', 'bank'];
+    for (const tk of tasksFor({ role: 'student', housing: 'confirmed', work: false }))
+      if (!optional.includes(tk.id))
+        fireEvent.click(within(document.getElementById(tk.id)).getByRole('checkbox'));
+    expect(screen.getByText('10 / 10 Completed')).toBeInTheDocument();
+    expect(screen.getByText("You're all settled in!")).toBeInTheDocument();
+    expect(screen.queryByText('Do This Next')).not.toBeInTheDocument();
+    expect(within(document.getElementById('bank')).getByText('Optional')).toBeInTheDocument();
   });
 
   // Deadlines, amounts and ordering live in keyPoint, and the source is the app's evidence:
