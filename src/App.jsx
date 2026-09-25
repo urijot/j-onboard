@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
   CheckCircle2, Circle, ChevronDown, ChevronUp,
   AlertTriangle, Info, Globe, ArrowRight, Building2,
-  Plane, MapPin, Shield, X, FileText, BadgeCheck, Lock, ExternalLink, Smartphone
+  Plane, MapPin, Shield, X, FileText, Route, Lock, ExternalLink, Smartphone
 } from "lucide-react";
 
 const T = {
@@ -1071,7 +1071,7 @@ export default function JOnboard() {
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
             <button onClick={goToForm} className="flex items-center gap-2.5 hover:opacity-70 transition-opacity cursor-pointer group">
               <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm">
-                <BadgeCheck size={16} className="text-white" />
+                <Route size={16} className="text-white" />
               </div>
               <div>
                 <div className="text-base font-bold text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">J-Onboard</div>
