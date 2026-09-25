@@ -1123,32 +1123,34 @@ export default function JOnboard() {
                 </div>
               </div>
 
-              <button onClick={() => setHousingGuideOpen(o => !o)}
-                className="w-full flex items-center justify-between gap-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-xl px-4 py-3 mt-2.5 hover:border-indigo-300 transition-colors">
-                <span className="flex items-center gap-2">
-                  <Building2 size={15} className="text-indigo-400 flex-shrink-0" />
-                  {t.housingGuideToggle}
-                </span>
-                {housingGuideOpen ? <ChevronUp size={16} className="flex-shrink-0" /> : <ChevronDown size={16} className="flex-shrink-0" />}
-              </button>
-              {housingGuideOpen && (
-                <div className="bg-white border border-slate-200 rounded-xl p-4 mt-2 text-sm text-slate-700 space-y-3 leading-relaxed">
-                  <p>{t.housingGuideIntro}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {t.housingGuideLinks.map(l => (
-                      <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 bg-indigo-50 border border-indigo-200 rounded-full px-3 py-1 hover:bg-indigo-100 transition-colors">
-                        {l.name} <ExternalLink size={10} />
-                      </a>
-                    ))}
+              <div className="bg-white border border-slate-200 rounded-xl mt-2.5 overflow-hidden hover:border-indigo-300 transition-colors">
+                <button onClick={() => setHousingGuideOpen(o => !o)}
+                  className="w-full flex items-center justify-between gap-2 text-sm font-medium text-slate-700 px-4 py-3">
+                  <span className="flex items-center gap-2">
+                    <Building2 size={15} className="text-indigo-400 flex-shrink-0" />
+                    {t.housingGuideToggle}
+                  </span>
+                  {housingGuideOpen ? <ChevronUp size={16} className="flex-shrink-0" /> : <ChevronDown size={16} className="flex-shrink-0" />}
+                </button>
+                {housingGuideOpen && (
+                  <div className="border-t border-slate-100 p-4 text-sm text-slate-700 space-y-3 leading-relaxed">
+                    <p>{t.housingGuideIntro}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {t.housingGuideLinks.map(l => (
+                        <a key={l.name} href={l.url} target="_blank" rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 bg-indigo-50 border border-indigo-200 rounded-full px-3 py-1 hover:bg-indigo-100 transition-colors">
+                          {l.name} <ExternalLink size={10} />
+                        </a>
+                      ))}
+                    </div>
+                    <ul className="list-disc pl-5 space-y-1">
+                      {t.housingGuideFeatures.map((f, i) => <li key={i}>{f}</li>)}
+                    </ul>
+                    <p>{t.housingGuideMiddle}</p>
+                    <p className="text-slate-500 text-xs">{t.housingGuideCostNote}</p>
                   </div>
-                  <ul className="list-disc pl-5 space-y-1">
-                    {t.housingGuideFeatures.map((f, i) => <li key={i}>{f}</li>)}
-                  </ul>
-                  <p>{t.housingGuideMiddle}</p>
-                  <p className="text-slate-500 text-xs">{t.housingGuideCostNote}</p>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {isTemp && profile.role !== "other" && (
