@@ -961,9 +961,9 @@ function TaskCard({ task, checked, onToggle, t, isLocked, checkedIds, allTasks, 
               </div>
             )}
             {/* 期限・金額・順番は「?」の奥に隠さず、開けば必ず目に入る位置に置く */}
+            {/* 見出しの押せる i と紛らわしくなるので、この枠にはアイコンを付けない */}
             {task.keyPoint && (
-              <div className="flex gap-2.5 bg-slate-50 border border-slate-200 rounded-xl p-3">
-                <Info size={15} className="flex-shrink-0 mt-0.5 text-slate-400" />
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3">
                 <p className="text-sm text-slate-700 leading-relaxed">{task.keyPoint}</p>
               </div>
             )}
