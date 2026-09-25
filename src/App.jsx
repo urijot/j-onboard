@@ -1167,7 +1167,7 @@ export default function JOnboard() {
                 <p className="text-xs text-slate-400 mb-2.5">{t.roleHint}</p>
                 <div className="flex gap-2.5 flex-wrap">
                   {[["student", t.roleStudent], ["researcher", t.roleResearcher], ["other", t.roleOther]].map(([v, label]) => (
-                    <button key={v} onClick={() => setProfile(p => ({ ...p, role: v, work: false }))}
+                    <button key={v} onClick={() => setProfile(p => p.role === v ? { ...p, role: null, housing: null, work: false } : { ...p, role: v, work: false })}
                       aria-pressed={profile.role === v}
                       className={`px-4 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${profile.role === v ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"}`}>
                       {label}
@@ -1191,7 +1191,7 @@ export default function JOnboard() {
                 <p className="text-xs text-slate-400 mb-2.5">{t.housingHint}</p>
                 <div className="flex gap-2.5 flex-wrap">
                   {[["confirmed", t.housingConfirmed], ["temp", t.housingTemp]].map(([v, label]) => (
-                    <button key={v} onClick={() => setProfile(p => ({ ...p, housing: v }))}
+                    <button key={v} onClick={() => setProfile(p => ({ ...p, housing: p.housing === v ? null : v }))}
                       aria-pressed={profile.housing === v}
                       className={`px-4 py-2.5 rounded-xl text-sm font-medium border-2 transition-all ${profile.housing === v ? "bg-indigo-600 text-white border-indigo-600" : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-indigo-50"}`}>
                       {label}
