@@ -1,49 +1,51 @@
 # J-Onboard
 
-日本に3ヶ月を超えて滞在する交換留学生・客員研究者向けに、ビザ書類の受け取りから来日後の生活準備までの手続きをガイドするWebアプリです。役割（留学生／研究者）、住居状況、アルバイトの予定などを入力すると、それに応じたセットアップ・ロードマップ（フェーズ別のタスクリスト）を自動生成します。
+English | [日本語](README.ja.md)
 
-🔗 デプロイ先: [https://j-onboard.vercel.app/](https://j-onboard.vercel.app/)
+A web app that guides exchange students and visiting researchers staying in Japan for more than 3 months through the procedures they face, from receiving their visa documents to settling into daily life after arrival. Enter your role (student or researcher), your housing situation and whether you might work part-time, and the app builds a setup roadmap for you: a task list organized by phase.
 
-## 主な機能
+🔗 Live app: [https://j-onboard.vercel.app/](https://j-onboard.vercel.app/)
 
-- **プロフィール入力フォーム**：役割（交換留学生／客員研究者／その他・わからない）、住居が決まっているか、アルバイトの予定を入力。「その他・わからない」を選んだ人には、ビザを発行してもらった窓口に確認するよう案内する
-- **フェーズ別ロードマップ**：
-  - 来日前（在留資格認定証明書の受け取り、ビザ申請など）
-  - 来日当日（空港）（在留カード受け取り、資格外活動許可など）
-  - 役所の手続き（転入届、国民健康保険、国民年金など）。住居が決まっていない人は、決まるまで完了にできない
-  - 生活・決済（SIM、銀行口座など）
-- 各タスクには「場所・窓口」「持ち物」「なぜ必要か」「窓口で見せる日本語の案内文（英訳付き）」「公式情報へのリンクと確認した年月」を表示
-- 優先度（義務／推奨／任意）のバッジ表示。転入届には「住み始めた日から14日以内」の期限を表示
-- 次にやるべきタスクを画面上部に表示し、先に済ませるべきタスクが残っている場合は警告を表示
-- 日本語・英語の切り替えに対応（手続きの本文は英語のみ）
-- 入力内容と進捗はこの端末のみに保存（アカウント不要・サーバーには送らない）
+## Features
 
-## 技術スタック
+- **Profile form**: asks for your role (Exchange Student / Visiting Researcher / Other or Not Sure), whether your housing is arranged, and whether you might work part-time. People who choose "Other / Not Sure" are pointed to the office that sponsored their visa
+- **Roadmap by phase**:
+  - Before Arrival (receiving the Certificate of Eligibility, applying for a visa, etc.)
+  - At the Airport (receiving the Residence Card, applying for a work permit, etc.)
+  - At City Hall (moving-in notification, National Health Insurance, National Pension, etc.). Users without settled housing can't mark this phase done until they have an address
+  - Living Setup (SIM, bank account, etc.)
+- Each task shows where to go, what to bring, why it matters, a Japanese phrase to show at the counter (with an English translation), and a link to the official source with the month it was last checked
+- Badges mark each task as required or recommended. The moving-in notification shows its legal deadline: within 14 days of moving in
+- The next task to do is shown at the top of the screen, and a warning appears when a task that must come first is still unfinished
+- Switches between English and Japanese, including the task content
+- Answers and progress are stored on your device only (no account, nothing sent to a server)
 
-- [React](https://react.dev/)（[Vite](https://vite.dev/) でビルド）
+## Tech stack
+
+- [React](https://react.dev/) (built with [Vite](https://vite.dev/))
 - [Tailwind CSS](https://tailwindcss.com/)
-- [lucide-react](https://lucide.dev/)（アイコン）
-- [Vitest](https://vitest.dev/) + Testing Library（テスト）
+- [lucide-react](https://lucide.dev/) (icons)
+- [Vitest](https://vitest.dev/) + Testing Library (tests)
 
-## セットアップ
+## Setup
 
 ```bash
 npm install
 ```
 
-## 利用可能なコマンド
+## Commands
 
 ### `npm start`
 
-開発モードでアプリを起動します。\
-ブラウザで [http://localhost:3000](http://localhost:3000) を開いて確認してください。
+Runs the app in development mode.\
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-ファイルを編集して保存すると、自動的に反映されます。
+Changes are reflected automatically when you save a file.
 
 ### `npm test`
 
-テストを1回実行します。
+Runs the tests once.
 
 ### `npm run build`
 
-本番用にアプリを `dist` フォルダへビルドします。`npm run preview` でビルド結果を手元で確認できます。
+Builds the app for production into the `dist` folder. Run `npm run preview` to check the build locally.
