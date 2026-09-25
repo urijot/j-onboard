@@ -517,8 +517,8 @@ export const buildPhases = (profile, lang) => {
             ja: "在留カードの裏面に住所が印字されている必要がある。これは転入届を出したときに記載される。",
           }),
           why: L({
-            en: "Signing a SIM contract requires identity verification that includes your address, and the back of your Residence Card is what shows it — so file your moving-in notification first. All three of these providers let you apply in English. Mobal and Sakura Mobile state that they accept cards issued outside Japan and that no Japanese bank account is needed, which matters because you can't open one until you have a phone number. Rakuten Mobile is cheaper, but it doesn't state whether cards issued outside Japan are accepted.",
-            ja: "SIMの契約には住所を含む本人確認が必要で、それを示すのが在留カードの裏面。先に転入届を出す。ここに挙げた3社はいずれも英語で申し込める。MobalとSakura Mobileは、海外で発行されたカードが使えること、日本の銀行口座が不要であることを明記している。銀行口座は電話番号がないと開けないので、この点が効いてくる。楽天モバイルは料金が安いが、海外発行のカードが使えるかは明記されていない。",
+            en: "Signing a SIM contract requires identity verification that includes your address, and the back of your Residence Card is what shows it — so file your moving-in notification first. All three of these providers let you apply in English. Mobal and Sakura Mobile state that they accept cards issued outside Japan and that no Japanese bank account is needed. Rakuten Mobile is cheaper, but it doesn't state whether cards issued outside Japan are accepted.",
+            ja: "SIMの契約には住所を含む本人確認が必要で、それを示すのが在留カードの裏面。先に転入届を出す。ここに挙げた3社はいずれも英語で申し込める。MobalとSakura Mobileは、海外で発行されたカードが使えること、日本の銀行口座が不要であることを明記している。楽天モバイルは料金が安いが、海外発行のカードが使えるかは明記されていない。",
           }),
           counter: "SIMの新規契約をしたいです。在留カードを持参しました。",
           counterTranslation: "I would like to sign up for a new SIM contract. I have my Residence Card with me.",
@@ -543,21 +543,15 @@ export const buildPhases = (profile, lang) => {
           required: items([
             { en: "Residence Card", ja: "在留カード" },
             ...(isStudent ? [{ en: "Student ID — or a Certificate of Enrollment", ja: "学生証 — または在学証明書" }] : []),
-            { en: "Japanese phone number", ja: "日本の電話番号" },
             { en: "Passport", ja: "パスポート" },
           ]),
-          keyPoint: L(isStudent
-            ? {
-                en: "Bring your Student ID as well — Japan Post Bank asks for it from holders of the Student status of residence.",
-                ja: "学生証もあわせて持っていく。ゆうちょ銀行は在留資格「留学」の人に提示を求めている。",
-              }
-            : {
-                en: "You need a Japanese phone number, so get your SIM before opening the account.",
-                ja: "日本の電話番号が必要なので、口座開設より先にSIMを契約する。",
-              }),
+          keyPoint: L({
+            en: "Open one if someone in Japan will pay you or charge you by bank transfer — ask your employer, scholarship office or landlord how they handle payments.",
+            ja: "日本で給与や奨学金を振込で受け取る場合や、家賃などを口座から支払う場合に開設する。払い方は、雇用先・奨学金の窓口・大家に確認する。",
+          }),
           why: L({
-            en: "Japan Post Bank is the most foreigner-friendly. You need a Japanese phone number to complete the application, so get your SIM first. If your status of residence is Student, Japan Post Bank also asks to see your Student ID; if your university hasn't issued you one, the bank has its own enrollment certificate form you can use instead.",
-            ja: "ゆうちょ銀行は外国人にとって最も開設しやすい。申込みの完了には日本の電話番号が必要なので、先にSIMを契約しておく。在留資格が「留学」の場合は、あわせて学生証の提示を求められる。大学から学生証が発行されていない場合は、ゆうちょ銀行が用意している在籍・在学証明書のフォーマットを使うこともできる。",
+            en: "Wages, a scholarship or a salary paid in Japan may come in cash or by bank transfer, and rent may be collected either way — only a bank transfer needs an account, so ask whoever pays you or charges you. Japan Post Bank won't open an account if your period of stay ends within 3 months of applying, so if your stay is short, apply soon after moving in. If your status of residence is Student, it also asks to see your Student ID; if your university hasn't issued you one, the bank has its own enrollment certificate form you can use instead.",
+            ja: "日本で受け取る給与・奨学金や家賃の支払いは、現金の場合も振込の場合もある。口座が必要なのは振込の場合だけなので、支払う側・受け取る側に確認する。ゆうちょ銀行は、在留期間の満了日が申込日から3か月以内だと口座を開設できない。滞在が短い場合は、住み始めたら早めに申し込む。在留資格が「留学」の場合は学生証の提示も求められる。大学から学生証が発行されていない場合は、ゆうちょ銀行が用意している在籍・在学証明書のフォーマットを使える。",
           }),
           counter: isStudent
             ? "ゆうちょ銀行の口座を開設したいです。在留カードと学生証を持参しました。"
@@ -567,10 +561,7 @@ export const buildPhases = (profile, lang) => {
             : "I would like to open a Japan Post Bank account. I have my Residence Card with me.",
           level: "recommended",
           source: { url: "https://www.jp-bank.japanpost.jp/kaisetu/kat_gaikokujin.html", verified: "2026-09" },
-          deps: [
-            { taskId: "juminhyo", type: "REQUIRED" },
-            { taskId: "sim", type: "STRONGLY_ADVISED", note: "Japanese phone number needed for application" },
-          ],
+          deps: [{ taskId: "juminhyo", type: "REQUIRED" }],
         },
         ...(isStudent ? [{
           id: "university",
