@@ -70,8 +70,8 @@ const T = {
     housingWarn: "Housing ⚠",
     workPermitBadge: "Work Permit",
     progressSaved: "Your progress is automatically saved on this device",
-    allDoneTitle: "You're all set in Japan!",
-    allDoneBody: "All tasks completed. Welcome to Japan — enjoy your stay!",
+    allDoneTitle: "You're all settled in!",
+    allDoneBody: "You've finished every setup task in this guide. Enjoy your time in Japan!",
     oneVisitSuffix: " — Save time by doing these in one visit",
     needsAddress: "Needs permanent address",
     levelRequired: "Required",
@@ -1019,6 +1019,10 @@ export default function JOnboard() {
     const next = { ...checked, [id]: !checked[id] };
     setChecked(next);
     try { localStorage.setItem("jonboard_checked", JSON.stringify(next)); } catch {}
+    // 最後のタスクを完了したら、上部の完了メッセージが見えるように戻る（カードが閉じるのを見せてから）
+    if (next[id] && allIds.every(tid => next[tid])) {
+      setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 500);
+    }
   };
 
   const handleGenerate = () => {
