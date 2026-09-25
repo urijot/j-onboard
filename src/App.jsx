@@ -642,11 +642,6 @@ const phaseColors = {
   violet: { badge: "bg-violet-100 text-violet-700", dot: "bg-violet-500", ring: "ring-violet-200" },
 };
 
-function AnsweredMark({ answered }) {
-  if (!answered) return null;
-  return <CheckCircle2 size={14} className="text-emerald-500 flex-shrink-0" />;
-}
-
 function CounterModal({ text, translation, onClose, t }) {
   useEffect(() => {
     const onKey = e => { if (e.key === "Escape") onClose(); };
@@ -1168,9 +1163,7 @@ export default function JOnboard() {
             <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6 shadow-sm">
               {/* Role */}
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-1">
-                  {t.roleLabel} <AnsweredMark answered={!!profile.role} />
-                </label>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">{t.roleLabel}</label>
                 <p className="text-xs text-slate-400 mb-2.5">{t.roleHint}</p>
                 <div className="flex gap-2.5 flex-wrap">
                   {[["student", t.roleStudent], ["researcher", t.roleResearcher], ["other", t.roleOther]].map(([v, label]) => (
@@ -1194,9 +1187,7 @@ export default function JOnboard() {
               <>
               {/* Housing */}
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-1">
-                  {t.housingLabel} <AnsweredMark answered={!!profile.housing} />
-                </label>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">{t.housingLabel}</label>
                 <p className="text-xs text-slate-400 mb-2.5">{t.housingHint}</p>
                 <div className="flex gap-2.5 flex-wrap">
                   {[["confirmed", t.housingConfirmed], ["temp", t.housingTemp]].map(([v, label]) => (
