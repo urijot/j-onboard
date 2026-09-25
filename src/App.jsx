@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
   CheckCircle2, Circle, ChevronDown, ChevronUp,
   AlertTriangle, Info, Globe, ArrowRight, Building2,
-  Plane, MapPin, Shield, X, FileText, BadgeCheck, Lock, ExternalLink
+  Plane, MapPin, Shield, X, FileText, BadgeCheck, Lock, ExternalLink, Smartphone
 } from "lucide-react";
 
 const T = {
@@ -47,6 +47,7 @@ const T = {
     shortStayToggle: "Staying 3 months or less?",
     shortStayBody: "You won't receive a Residence Card, so the procedures in this app (residence registration, health insurance, pension, etc.) don't apply to you. Just arrange travel health insurance and a data SIM or eSIM before you leave.",
     reassuranceNote: "Not sure about something? Answer what you know — you can edit later.",
+    homeScreenNote: "On iPhone? Add J-Onboard to your Home Screen before you start (Share → Add to Home Screen). It will open even without internet. Your progress in the browser won't carry over.",
     housingGuideToggle: "Dorms aren't your only housing option",
     housingGuideIntro: "If you didn't get a dorm place, or your housing still isn't settled, it's worth knowing about furnished monthly and share-house services aimed at foreign residents before you start a full apartment search — Sakura House and Oakhouse are two well-known examples. They typically offer:",
     housingGuideFeatures: [
@@ -128,6 +129,7 @@ const T = {
     shortStayToggle: "3ヶ月以下の滞在の方へ",
     shortStayBody: "3ヶ月以下の滞在では在留カードが発行されないため、このアプリの手続き（住民登録・国民健康保険・年金など）は対象外です。出発前に海外旅行保険とデータSIM・eSIMを用意しておけば十分です。",
     reassuranceNote: "わからない質問があっても大丈夫。あとから編集できます。",
+    homeScreenNote: "iPhoneの方は、始める前にホーム画面に追加してください（共有 → ホーム画面に追加）。ネットがなくても開けます。ブラウザでの進捗は引き継がれません。",
     housingGuideToggle: "住まいは大学の寮だけじゃない",
     housingGuideIntro: "寮の抽選に落ちた、あるいはまだ住まいが決まっていない——そんなときにまず検討する価値があるのが「外国人向けマンスリー・シェアハウス」です。代表的なところでSakura House、Oakhouseなどがあり、共通して次のような特徴があります。",
     housingGuideFeatures: [
@@ -1148,6 +1150,11 @@ export default function JOnboard() {
                     <p className="text-slate-500 text-xs">{t.housingGuideCostNote}</p>
                   </div>
                 )}
+              </div>
+
+              <div className="flex gap-2 bg-white border border-slate-200 rounded-xl mt-2.5 px-4 py-3 text-sm text-slate-700">
+                <Smartphone size={15} className="flex-shrink-0 mt-0.5 text-indigo-400" />
+                <span>{t.homeScreenNote}</span>
               </div>
             </div>
 
