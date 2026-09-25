@@ -22,6 +22,9 @@ const T = {
     workLabel: "Will you work or do any paid activity in Japan?",
     workHint: "This decides whether you need to apply for a work permit at immigration.",
     workCheck: "Yes, I plan to work part-time",
+    workLabelStudent: "Might you work part-time or do any paid activity while in Japan?",
+    workHintStudent: "Nothing needs to be decided yet — students can apply at the airport with just the application form, no job lined up.",
+    workCheckStudent: "Yes, or maybe",
     generate: "Generate My Setup Roadmap",
     tempHousingAlert: "You cannot register your residence at a hotel or temporary address. Come back to City Hall once your permanent address is confirmed.",
     summaryLabel: "Your Profile",
@@ -99,6 +102,9 @@ const T = {
     workLabel: "日本でアルバイトなど有償の活動をする予定はありますか？",
     workHint: "資格外活動許可の申請が必要かどうかがこれで決まります。",
     workCheck: "はい、アルバイトを予定している（資格外活動許可申請）",
+    workLabelStudent: "日本滞在中に、アルバイトなど有償の活動をする可能性はありますか？",
+    workHintStudent: "まだ決まっていなくても大丈夫です。留学生は空港で、申請書だけで申請できます。仕事先が決まっている必要はありません。",
+    workCheckStudent: "ある・かもしれない",
     generate: "自分のロードマップを見る",
     tempHousingAlert: "ホテル等の仮住まいでは住民登録（転入届）ができません。本住居確定後に役所へ行く必要があります。",
     summaryLabel: "あなたのプロフィール",
@@ -1194,15 +1200,15 @@ export default function JOnboard() {
 
               {/* Work */}
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">{t.workLabel}</label>
-                <p className="text-xs text-slate-400 mb-2.5">{t.workHint}</p>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">{profile.role === "student" ? t.workLabelStudent : t.workLabel}</label>
+                <p className="text-xs text-slate-400 mb-2.5">{profile.role === "student" ? t.workHintStudent : t.workHint}</p>
                 <button type="button" role="checkbox" aria-checked={profile.work}
                   onClick={() => setProfile(p => ({ ...p, work: !p.work }))}
                   className="flex items-start gap-3 cursor-pointer group text-left">
                   <div className={`mt-0.5 w-5 h-5 rounded-md border-2 flex items-center justify-center flex-shrink-0 transition-all ${profile.work ? "bg-indigo-600 border-indigo-600" : "border-slate-300 group-hover:border-indigo-400"}`}>
                     {profile.work && <CheckCircle2 size={12} className="text-white" />}
                   </div>
-                  <span className="text-sm text-slate-700 leading-snug">{t.workCheck}</span>
+                  <span className="text-sm text-slate-700 leading-snug">{profile.role === "student" ? t.workCheckStudent : t.workCheck}</span>
                 </button>
               </div>
 
