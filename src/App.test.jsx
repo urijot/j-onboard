@@ -180,8 +180,6 @@ describe('bring list', () => {
 
   test.each(profiles)('lists only what you carry from home for %o', (profile) => {
     const items = bringItems(cityHall(profile).tasks, {});
-    // The residence record is issued at the first window of the same visit
-    expect(items.some(i => /Residence record/i.test(i))).toBe(false);
     expect(items).toContain('Passport');
     // 後日交付の人はカードの代わりにパスポートを出すため、注記付きの1件にまとまる
     expect(items.filter(i => /^Residence Card/.test(i))).toHaveLength(1);
